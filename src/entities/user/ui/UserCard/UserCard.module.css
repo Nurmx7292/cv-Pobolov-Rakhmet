@@ -1,18 +1,44 @@
 .card {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 4px;
-    padding: 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: #fff;
+    grid-template-areas: 'avatar fn ln email role dn pn';
+    grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr 1fr;
+    border-bottom: 1px solid black;
+    margin-bottom: 20px;
 }
 
-.name {
-    font-weight: 600;
+.firstName {
+    grid-area: fn;
 }
 
-.meta {
-    color: #6b7280;
-    font-size: 14px;
+.lastName {
+    grid-area: ln;
+}
+
+.email {
+    grid-area: email;
+}
+
+.role {
+    grid-area: role;
+}
+
+.departmentName {
+    grid-area: dn;
+}
+
+.positionName {
+    grid-area: pn;
+}
+
+.avatar {
+    grid-area: avatar;
+    border-radius: 25px;
+    background-color: black;
+    height: 50px;
+    width: 50px;
+}
+
+.avatar p {
+    color: white;
+    padding-left: 20px;
 }
