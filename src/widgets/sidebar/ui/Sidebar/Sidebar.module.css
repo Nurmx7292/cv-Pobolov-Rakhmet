@@ -1,0 +1,125 @@
+.sidebar {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: width 0.3s ease;
+}
+
+.sidebarExpanded {
+    width: 240px;
+}
+
+.sidebarCollapsed {
+    width: 72px;
+}
+
+.contentBox {
+    flex: 1;
+    overflow: auto;
+}
+
+.list {
+    padding: 8px;
+}
+
+.listItem {
+    margin-bottom: 4px;
+}
+
+.listItemButton {
+    border-radius: 8px;
+    min-height: 48px;
+    justify-content: flex-start;
+    background-color: transparent;
+}
+
+.listItemButtonCollapsed {
+    justify-content: center;
+}
+
+.listItemButtonActive {
+    background-color: rgba(198, 48, 49, 0.1);
+}
+
+.listItemButton:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.listItemButtonActive:hover {
+    background-color: rgba(198, 48, 49, 0.15);
+}
+
+.listItemIcon {
+    min-width: 40px;
+    justify-content: center;
+}
+
+.listItemIconCollapsed {
+    min-width: 0;
+}
+
+.listItemText {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.listItemTextActive {
+    font-weight: 600;
+}
+
+.profileBox {
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.profileBoxCollapsed {
+    flex-direction: column;
+    gap: 8px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+}
+
+.avatarCollapsed {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+}
+
+.emailBox {
+    flex: 1;
+    min-width: 0;
+}
+
+.emailText {
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.toggleBox {
+    padding: 8px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.toggleBoxCollapsed {
+    justify-content: center;
+}
+
+.iconButton {
+    color: inherit;
+}
+
+.iconButton:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
