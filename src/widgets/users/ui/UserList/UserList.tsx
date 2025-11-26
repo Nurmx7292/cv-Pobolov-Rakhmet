@@ -111,13 +111,17 @@ export const UserList = () => {
     const sortedUsers = sortUsers(usersWithoutCurrentUser);
 
     let filteredUsers = sortedUsers;
-    if(searchString!=='') filteredUsers = sortedUsers.filter((user)=>{
-        if( user.first_name.includes(searchString) ||
-            user.last_name.includes(searchString) ||
-            user.email.includes(searchString)
-        )return true;
-        else return false;
-    })
+    if (searchString !== '') {
+        const lowerSearch = searchString.toLowerCase();
+        filteredUsers = sortedUsers.filter((user) => {
+            if (
+                user.first_name.toLowerCase().includes(lowerSearch) ||
+                user.last_name.toLowerCase().includes(lowerSearch) ||
+                user.email.toLowerCase().includes(lowerSearch)
+            ) return true;
+            else return false;
+        });
+    }
 
     return (
         <div>
