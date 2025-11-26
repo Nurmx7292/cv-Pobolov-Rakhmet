@@ -1,7 +1,7 @@
 .card {
     display: grid;
-    grid-template-areas: 'avatar fn ln email role dn pn';
-    grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr 1fr;
+    grid-template-areas: 'avatar fn ln email dn pn';
+    grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr;
     border-bottom: 1px solid black;
     margin-bottom: 20px;
 }
@@ -18,9 +18,6 @@
     grid-area: email;
 }
 
-.role {
-    grid-area: role;
-}
 
 .departmentName {
     grid-area: dn;
@@ -32,10 +29,21 @@
 
 .avatar {
     grid-area: avatar;
-    border-radius: 25px;
-    background-color: black;
     height: 50px;
     width: 50px;
+    border-radius: 50%;
+    background-color: black;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .avatar p {
