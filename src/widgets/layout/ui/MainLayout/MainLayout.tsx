@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import type { ReactNode } from "react";
+import { Sidebar } from "@widgets/sidebar";
 
 interface MainLayoutProps {
     children: ReactNode;
@@ -14,12 +15,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                 backgroundColor: "background.default",
             }}
         >
-            <Box
-                sx={{
-                    width: 0,
-                    flexShrink: 0,
-                }}
-            />
+            <Sidebar />
             <Box
                 sx={{
                     flex: 1,
