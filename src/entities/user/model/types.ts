@@ -1,6 +1,7 @@
 export interface UserProfile {
     first_name: string | null;
     last_name: string | null;
+    avatar: string | null;
 }
 
 export interface User {

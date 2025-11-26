@@ -11,6 +11,7 @@ export const GET_USERS = gql`
             profile {
                 first_name
                 last_name
+                avatar
             }
         }
     }

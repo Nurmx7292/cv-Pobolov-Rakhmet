@@ -1,0 +1,40 @@
+.columnTitles {
+    display: grid;
+    grid-template-areas: 'avatar fn ln email dn pn';
+    grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr;
+    border-bottom: 1px solid black;
+    margin-bottom: 20px;
+    height: 40px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.firstName {
+    grid-area: fn;
+}
+
+.lastName {
+    grid-area: ln;
+}
+
+.email {
+    grid-area: email;
+}
+
+.departmentName {
+    grid-area: dn;
+}
+
+.positionName {
+    grid-area: pn;
+}
+
+.avatar {
+    grid-area: avatar;
+    border-radius: 25px;
+    background-color: black;
+    height: 50px;
+    width: 50px;
+
+}
+
