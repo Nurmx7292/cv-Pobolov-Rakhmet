@@ -6,7 +6,7 @@ import {
     Language as LanguageIcon,
     Description as DescriptionIcon,
 } from "@mui/icons-material";
-import { useActiveNavItem } from "../../lib/useActiveNavItem";
+import { useActiveNavItem } from "@widgets/sidebar/lib/useActiveNavItem";
 import styles from "./NavList.module.css";
 
 interface NavItem {
