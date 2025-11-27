@@ -1,17 +1,8 @@
 import { useState } from "react";
-import {
-    Box,
-    Divider,
-    Avatar,
-    Typography,
-    IconButton,
-    useTheme,
-} from "@mui/material";
-import {
-    ChevronLeft as ChevronLeftIcon,
-    ChevronRight as ChevronRightIcon,
-} from "@mui/icons-material";
+import { Box, Divider, useTheme } from "@mui/material";
 import { NavList } from "./NavList/NavList";
+import { ToggleButton } from "./ToggleButton/ToggleButton";
+import { UserProfile } from "./UserProfile/UserProfile";
 import styles from "./Sidebar.module.css";
 
 export const Sidebar = () => {
@@ -36,45 +27,9 @@ export const Sidebar = () => {
 
             <Divider />
 
-            <Box
-                className={`${styles.profileBox} ${
-                    isCollapsed ? styles.profileBoxCollapsed : ""
-                }`}
-            >
-                <Avatar
-                    className={`${styles.avatar} ${isCollapsed ? styles.avatarCollapsed : ""}`}
-                    sx={{
-                        bgcolor: theme.palette.primary.main,
-                    }}
-                >
-                    T
-                </Avatar>
-                {!isCollapsed && (
-                    <Box className={styles.emailBox}>
-                        <Typography
-                            variant="body2"
-                            className={styles.emailText}
-                            sx={{
-                                color: theme.palette.text.primary,
-                            }}
-                        >
-                            testacc5@gmail.com
-                        </Typography>
-                    </Box>
-                )}
-            </Box>
+            <UserProfile isCollapsed={isCollapsed} />
 
-            <Box
-                className={`${styles.toggleBox} ${isCollapsed ? styles.toggleBoxCollapsed : ""}`}
-            >
-                <IconButton
-                    onClick={handleToggle}
-                    size="small"
-                    className={styles.iconButton}
-                >
-                    {isCollapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                </IconButton>
-            </Box>
+            <ToggleButton isCollapsed={isCollapsed} onToggle={handleToggle} />
         </Box>
     );
 };
