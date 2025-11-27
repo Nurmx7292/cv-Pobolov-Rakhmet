@@ -27,6 +27,14 @@ export const UserProfile = ({ isCollapsed }: UserProfileProps) => {
                 onClick={handleClick}
                 tabIndex={0}
                 role="button"
+                sx={{
+                    "&:hover": {
+                        backgroundColor:
+                            theme.palette.mode === "dark"
+                                ? "rgba(255,255,255,0.08)"
+                                : "rgba(0,0,0,0.05)",
+                    },
+                }}
             >
                 <Avatar
                     className={`${styles.avatar} ${isCollapsed ? styles.avatarCollapsed : ""}`}
@@ -36,19 +44,20 @@ export const UserProfile = ({ isCollapsed }: UserProfileProps) => {
                 >
                     T
                 </Avatar>
-                {!isCollapsed && (
-                    <Box className={styles.emailBox}>
-                        <Typography
-                            variant="body2"
-                            className={styles.emailText}
-                            sx={{
-                                color: theme.palette.text.primary,
-                            }}
-                        >
-                            testacc5@gmail.com
-                        </Typography>
-                    </Box>
-                )}
+                <Box className={styles.emailBox}>
+                    <Typography
+                        variant="body2"
+                        className={styles.emailText}
+                        sx={{
+                            color: theme.palette.text.primary,
+                            opacity: isCollapsed ? 0 : 1,
+                            maxWidth: isCollapsed ? 0 : "140px",
+                            transition: "opacity 0.2s ease, max-width 0.2s ease",
+                        }}
+                    >
+                        testacc5@gmail.com
+                    </Typography>
+                </Box>
             </Box>    
             <UserMenu anchorEl={anchorEl} open={open} onClose={handleClose} />
         </>

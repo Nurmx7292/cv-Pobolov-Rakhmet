@@ -1,13 +1,16 @@
 .profileBox {
-    padding: 16px;
+    padding: 8px 0;
+    margin: 0px 6px 0;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
 .profileBoxCollapsed {
-    flex-direction: column;
     gap: 8px;
 }
 
@@ -29,18 +32,8 @@
 }
 
 .emailText {
-    font-size: 12px;
+    font-size: 13px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-.profileBox,
-.profileBoxCollapsed {
-    cursor: pointer;
-    transition: background 0.15s;
-}
-.profileBox:hover,
-.profileBoxCollapsed:hover {
-    background: rgba(198, 48, 49, 0.09);
 }

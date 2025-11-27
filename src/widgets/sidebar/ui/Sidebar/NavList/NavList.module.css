@@ -1,49 +1,32 @@
 .list {
-    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    margin-top: 2.75rem !important;
+    padding: 0;
+    overflow: auto;
+    max-height: calc(100vh - 12rem);
 }
 
 .listItem {
-    margin-bottom: 4px;
+    margin: 0;
 }
 
 .listItemButton {
-    border-radius: 8px;
-    min-height: 48px;
-    justify-content: flex-start;
-    background-color: transparent;
+    width: 100%;
 }
 
 .listItemButtonCollapsed {
     justify-content: center;
 }
 
-.listItemButtonActive {
-    background-color: rgba(198, 48, 49, 0.1);
-}
-
-.listItemButton:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-.listItemButtonActive:hover {
-    background-color: rgba(198, 48, 49, 0.15);
-}
-
 .listItemIcon {
-    min-width: 40px;
     justify-content: center;
 }
 
-.listItemIconCollapsed {
-    min-width: 0;
-}
-
 .listItemText {
-    font-size: 14px;
-    font-weight: 400;
-}
-
-.listItemTextActive {
-    font-weight: 600;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
