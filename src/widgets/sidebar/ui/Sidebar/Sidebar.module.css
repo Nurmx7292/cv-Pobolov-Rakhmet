@@ -1,0 +1,29 @@
+.drawer {
+    position: relative;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.navSection {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer {
+    position: absolute;
+    bottom: 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
