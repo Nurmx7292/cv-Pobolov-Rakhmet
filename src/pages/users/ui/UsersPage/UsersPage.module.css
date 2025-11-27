@@ -12,19 +12,5 @@
 /*}*/
 
 .layout {
-    background-color: cyan;
     display: grid;
-    grid-template-areas: 'n u';
-    grid-template-columns: 1fr 5fr;
-    grid-template-rows: 1fr;
-}
-
-.navbar {
-    grid-area: n;
-    background-color: grey;
-}
-
-.users {
-    grid-area: u;
-    background-color: darkgrey;
 }

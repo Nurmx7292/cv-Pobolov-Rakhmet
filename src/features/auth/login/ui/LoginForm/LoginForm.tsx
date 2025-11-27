@@ -31,7 +31,10 @@ export const LoginForm = () => {
                 password,
             },
         });
+
         const tokens = result.data?.login;
+
+        console.log(result.data)//сохран
         if (tokens) {
             tokenStorage.setTokens(tokens.access_token, tokens.refresh_token);
             navigate("/");
