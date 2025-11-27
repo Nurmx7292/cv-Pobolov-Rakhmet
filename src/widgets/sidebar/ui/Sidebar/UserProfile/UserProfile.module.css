@@ -35,3 +35,12 @@
     white-space: nowrap;
 }
 
+.profileBox,
+.profileBoxCollapsed {
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.profileBox:hover,
+.profileBoxCollapsed:hover {
+    background: rgba(198, 48, 49, 0.09);
+}

@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Box, Avatar, Typography, useTheme } from "@mui/material";
+import { UserMenu } from "./UserMenu/UserMenu";
 import styles from "./UserProfile.module.css";
 
 interface UserProfileProps {
@@ -7,35 +9,49 @@ interface UserProfileProps {
 
 export const UserProfile = ({ isCollapsed }: UserProfileProps) => {
     const theme = useTheme();
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
-        <Box
-            className={`${styles.profileBox} ${
-                isCollapsed ? styles.profileBoxCollapsed : ""
-            }`}
-        >
-            <Avatar
-                className={`${styles.avatar} ${isCollapsed ? styles.avatarCollapsed : ""}`}
-                sx={{
-                    bgcolor: theme.palette.primary.main,
-                }}
+        <>
+            <Box
+                className={`${styles.profileBox} ${isCollapsed ? styles.profileBoxCollapsed : ""}`}
+                onClick={handleClick}
+                tabIndex={0}
+                role="button"
             >
-                T
-            </Avatar>
-            {!isCollapsed && (
-                <Box className={styles.emailBox}>
-                    <Typography
-                        variant="body2"
-                        className={styles.emailText}
-                        sx={{
-                            color: theme.palette.text.primary,
-                        }}
-                    >
-                        testacc5@gmail.com
-                    </Typography>
-                </Box>
-            )}
-        </Box>
+                <Avatar
+                    className={`${styles.avatar} ${isCollapsed ? styles.avatarCollapsed : ""}`}
+                    sx={{
+                        bgcolor: theme.palette.primary.main,
+                    }}
+                >
+                    T
+                </Avatar>
+                {!isCollapsed && (
+                    <Box className={styles.emailBox}>
+                        <Typography
+                            variant="body2"
+                            className={styles.emailText}
+                            sx={{
+                                color: theme.palette.text.primary,
+                            }}
+                        >
+                            testacc5@gmail.com
+                        </Typography>
+                    </Box>
+                )}
+            </Box>    
+            <UserMenu anchorEl={anchorEl} open={open} onClose={handleClose} />
+        </>
     );
 };
 
