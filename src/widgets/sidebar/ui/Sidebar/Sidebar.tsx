@@ -47,8 +47,10 @@ export const Sidebar = () => {
                 <div className={styles.navSection}>
                     <NavList isCollapsed={isCollapsed} />
                 </div>
-                <Divider />
-                <UserProfile isCollapsed={isCollapsed} />
+                <div className={styles.footer}>
+                    <Divider />
+                    <UserProfile isCollapsed={isCollapsed} />
+                </div>
             </div>
             <ToggleButton isCollapsed={isCollapsed} onChange={setIsExpanded} />
         </Drawer>
