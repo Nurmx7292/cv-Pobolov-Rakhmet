@@ -1,36 +1,57 @@
 import { useState } from "react";
-import { Box, Divider, useTheme } from "@mui/material";
+import { Drawer, Divider, useTheme } from "@mui/material";
+import type { Theme } from "@mui/material";
 import { NavList } from "./NavList/NavList";
 import { ToggleButton } from "./ToggleButton/ToggleButton";
 import { UserProfile } from "./UserProfile/UserProfile";
 import styles from "./Sidebar.module.css";
 
+const expandedWidth = 200;
+const collapsedWidth = 56;
+
+const mapWidthStyles = (expanded: boolean, theme: Theme) => ({
+    width: expanded ? expandedWidth : collapsedWidth,
+    transition: theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: expanded
+            ? theme.transitions.duration.enteringScreen
+            : theme.transitions.duration.leavingScreen,
+    }),
+});
+
 export const Sidebar = () => {
     const theme = useTheme();
-    const [isCollapsed, setIsCollapsed] = useState(false);
-
-    const handleToggle = () => {
-        setIsCollapsed((prev) => !prev);
-    };
+    const [isExpanded, setIsExpanded] = useState(true);
+    const isCollapsed = !isExpanded;
 
     return (
-        <Box
-            className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : styles.sidebarExpanded}`}
+        <Drawer
+            variant="permanent"
+            anchor="left"
+            open={isExpanded}
+            className={styles.drawer}
             sx={{
-                backgroundColor: theme.palette.background.paper,
-                borderRight: `1px solid ${theme.palette.divider}`,
+                ...mapWidthStyles(isExpanded, theme),
+                "& .MuiDrawer-paper": {
+                    ...mapWidthStyles(isExpanded, theme),
+                    borderRight: "none",
+                    backgroundColor: theme.palette.background.default,
+                    overflow: "hidden",
+                    display: "flex",
+                    flexDirection: "column",
+                    position: "relative",
+                },
             }}
         >
-            <Box className={styles.contentBox}>
-                <NavList isCollapsed={isCollapsed} />
-            </Box>
-
-            <Divider />
-
-            <UserProfile isCollapsed={isCollapsed} />
-
-            <ToggleButton isCollapsed={isCollapsed} onToggle={handleToggle} />
-        </Box>
+            <div className={styles.inner}>
+                <div className={styles.navSection}>
+                    <NavList isCollapsed={isCollapsed} />
+                </div>
+                <Divider />
+                <UserProfile isCollapsed={isCollapsed} />
+            </div>
+            <ToggleButton isCollapsed={isCollapsed} onChange={setIsExpanded} />
+        </Drawer>
     );
 };
 

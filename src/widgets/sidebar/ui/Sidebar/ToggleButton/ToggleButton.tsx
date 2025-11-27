@@ -3,22 +3,29 @@ import {
     ChevronLeft as ChevronLeftIcon,
     ChevronRight as ChevronRightIcon,
 } from "@mui/icons-material";
+import type { Dispatch, SetStateAction } from "react";
 import styles from "./ToggleButton.module.css";
 
 interface ToggleButtonProps {
     isCollapsed: boolean;
-    onToggle: () => void;
+    onChange: Dispatch<SetStateAction<boolean>>;
 }
 
-export const ToggleButton = ({ isCollapsed, onToggle }: ToggleButtonProps) => {
+export const ToggleButton = ({ isCollapsed, onChange }: ToggleButtonProps) => {
     return (
-        <div
-            className={`${styles.toggleBox} ${isCollapsed ? styles.toggleBoxCollapsed : ""}`}
+        <IconButton
+            className={styles.btn}
+            size="small"
+            onClick={() => onChange((prev) => !prev)}
+            sx={(theme) => ({
+                backgroundColor: theme.palette.background.default,
+                "&:hover": {
+                    backgroundColor: theme.palette.background.default,
+                },
+            })}
         >
-            <IconButton onClick={onToggle} size="small" className={styles.iconButton}>
-                {isCollapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-        </div>
+            {isCollapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+        </IconButton>
     );
 };
 

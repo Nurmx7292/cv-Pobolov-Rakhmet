@@ -1,18 +1,8 @@
-.toggleBox {
-    padding: 8px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.toggleBoxCollapsed {
-    justify-content: center;
-}
-
-.iconButton {
+.btn {
+    position: absolute !important;
+    bottom: 1rem;
+    left: 0.5rem;
+    z-index: 1300;
     color: inherit;
-}
-
-.iconButton:hover {
-    background-color: rgba(255, 255, 255, 0.05);
 }
 
