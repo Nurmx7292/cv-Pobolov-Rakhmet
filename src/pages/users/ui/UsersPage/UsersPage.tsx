@@ -1,13 +1,11 @@
-import { Navbar } from "@widgets/navbar";
+
 import { UserList } from "@widgets/users";
 import styles from "./UsersPage.module.css";
 
 export const UsersPage = () => {
     return (
         <section className={styles.layout}>
-            <section>
-                <Navbar className={styles.navbar}/>
-            </section>
+
             <section className={styles.users}>
                 <UserList />
             </section>
