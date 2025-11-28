@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLazyQuery } from "@apollo/client/react";
 import { useNavigate } from "react-router-dom";
-import { LOGIN_QUERY } from "../../api/loginMutation.ts";
+import { LOGIN_QUERY } from "../../api/loginQuery.ts";
 import { tokenStorage } from "@shared/lib/tokenStorage.ts";
 import styles from "./LoginForm.module.css";
 
@@ -31,19 +31,20 @@ export const LoginForm = () => {
                 password,
             },
         });
-
         const tokens = result.data?.login;
-
-        console.log(result.data)//сохран
         if (tokens) {
             tokenStorage.setTokens(tokens.access_token, tokens.refresh_token);
             navigate("/");
         }
+        if (tokens.user.id) {
+            localStorage.setItem('currentUserId', tokens.user.id);
+        }
+        navigate("/users");
     };
 
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.title}>Sign in</div>
+            <div className={styles.title}>Log in</div>
             <input
                 className={styles.input}
                 type="email"
@@ -62,7 +63,7 @@ export const LoginForm = () => {
             />
             {error && <div>{error.message}</div>}
             <button className={styles.button} type="submit" disabled={loading}>
-                {loading ? "Signing in..." : "Sign in"}
+                {loading ? "logging in..." : "log in"}
             </button>
         </form>
     );
