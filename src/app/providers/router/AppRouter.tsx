@@ -2,8 +2,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "@pages/login";
 import { SignupPage } from "@pages/signup";
 import { UsersPage } from "@pages/users";
-import { MainLayout } from "@widgets/layout";
 import { tokenStorage } from "@shared/lib/tokenStorage.ts";
+import UserProfile from "@widgets/users/ui/UserProfile/UserProfile";
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     const isAuthorized = Boolean(tokenStorage.getAccessToken());
@@ -14,15 +14,22 @@ export const AppRouter = () => {
     return (
         <BrowserRouter>
             <Routes>
+                <Route path="/" element={<Navigate to="/login" replace />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route
-                    path="/"
+                    path="/users"
                     element={
                         <PrivateRoute>
-                            <MainLayout>
-                                <UsersPage />
-                            </MainLayout>
+                            <UsersPage />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/users/:userId"
+                    element={
+                        <PrivateRoute>
+                            <UserProfile/>
                         </PrivateRoute>
                     }
                 />
