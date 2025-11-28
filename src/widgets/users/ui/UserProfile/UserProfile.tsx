@@ -30,6 +30,7 @@ const UserProfile = () => {
     const {loading, error, data, refetch} = useQuery(GET_USER_BY_ID_QUERY, {
         variables: {id: userId},
         skip: !userId,
+        notifyOnNetworkStatusChange: false
     });
 
     const {loading: positionsLoading, error: positionsError, data: positionsData} = useQuery(GET_POSITIONS_QUERY);
