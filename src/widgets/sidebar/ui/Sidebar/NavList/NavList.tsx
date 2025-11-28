@@ -17,7 +17,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-    { to: "/", label: "Employees", icon: <PeopleIcon /> },
+    { to: "/users", label: "Employees", icon: <PeopleIcon /> },
     { to: "/skills", label: "Skills", icon: <BarChartIcon /> },
     { to: "/languages", label: "Languages", icon: <LanguageIcon /> },
     { to: "/cvs", label: "CVs", icon: <DescriptionIcon /> },

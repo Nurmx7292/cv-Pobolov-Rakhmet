@@ -11,10 +11,49 @@ import {MenuItem} from '@mui/material';
 import {useMutation} from "@apollo/client/react";
 import {UPDATE_USER_MUTATION} from "@widgets/users/api/updateUserMutation";
 import {UPDATE_PROFILE_MUTATION} from "@widgets/users/api/updateProfileMutation.ts";
+import {UPLOAD_AVATAR_MUTATION} from "@widgets/users/api/uploadAvatarMutation";
 
 const UserProfile = () => {
     const [updateUser] = useMutation(UPDATE_USER_MUTATION);
     const [updateProfile] = useMutation(UPDATE_PROFILE_MUTATION);
+
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [uploadAvatar] = useMutation(UPLOAD_AVATAR_MUTATION);
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
+    const onUploadAvatarClick = () => {
+        fileInputRef.current?.click(); // открываем диалог
+    };
+
+    const onFileSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const base64 = await fileToBase64(file);
+
+        await uploadAvatar({
+            variables: {
+                avatar: {
+                    userId: currentUserId,
+                    base64,
+                    size: file.size,
+                    type: file.type,
+                },
+            },
+        });
+
+        alert("Аватар успешно загружен!");
+    };
+
+    function fileToBase64(file: File): Promise<string> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string); // сохраняем полный data URL
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+
 
     const [firstNameInputValue, setFirstNameInputValue] = useState('');
     const [lastNameInputValue, setLastNameInputValue] = useState('');
@@ -239,6 +278,18 @@ const UserProfile = () => {
 
 
             {updateButton}
+
+            <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                style={{ display: 'none' }} // скрываем input
+                onChange={onFileSelected}
+            />
+
+            <Button variant="contained" onClick={onUploadAvatarClick}>
+                Upload Avatar
+            </Button>
 
         </div>
     );
