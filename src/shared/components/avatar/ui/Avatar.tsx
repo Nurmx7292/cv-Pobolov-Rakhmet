@@ -1,14 +1,41 @@
 import React from 'react';
-import styles from "./Avatar.module.css";
+import styles from './Avatar.module.css';
 
-const Avatar = ({size, avatarReference,firstName, lastName, email}) => {
+type AvatarProps = {
+    size: number;
+    avatarReference?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+};
 
-    const avatarAltText = firstName ? firstName.toUpperCase().split('')[0] : (lastName ? lastName.toUpperCase().split('')[0] : email.toUpperCase().split('')[0])
-    const avatarElement = avatarReference ? <div className={styles.avatar}><img src={avatarReference}/></div> : <div className={styles.avatar}><p>{avatarAltText}</p></div>
+const Avatar: React.FC<AvatarProps> = ({
+                                           size,
+                                           avatarReference,
+                                           firstName,
+                                           lastName,
+                                           email
+                                       }) => {
+    const avatarAltText =
+        firstName?.[0]?.toUpperCase() ||
+        lastName?.[0]?.toUpperCase() ||
+        email[0].toUpperCase();
+
+    const avatarStyle: React.CSSProperties = {
+        width: `${size}px`,
+        height: `${size}px`,
+    };
 
     return (
-        <div>
-            {avatarElement}
+        <div
+            className={styles.avatar}
+            style={avatarStyle}
+        >
+            {avatarReference ? (
+                <img src={avatarReference} alt="avatar" />
+            ) : (
+                <p>{avatarAltText}</p>
+            )}
         </div>
     );
 };
