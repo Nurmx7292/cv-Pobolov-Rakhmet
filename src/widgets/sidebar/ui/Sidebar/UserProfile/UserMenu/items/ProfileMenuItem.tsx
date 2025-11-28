@@ -7,9 +7,9 @@ interface ProfileMenuItemProps {
 
 export const ProfileMenuItem = ({ onClose }: ProfileMenuItemProps) => {
     const navigate = useNavigate();
-
+    const currentUserId = localStorage.getItem('currentUserId');
     const handleClick = () => {
-        navigate("/profile");
+        navigate(`/users/${currentUserId}`);
         onClose();
     };
 

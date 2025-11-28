@@ -3,6 +3,7 @@ import { Box, Avatar, Typography, useTheme } from "@mui/material";
 import { UserMenu } from "./UserMenu/UserMenu";
 import styles from "./UserProfile.module.css";
 
+
 interface UserProfileProps {
     isCollapsed: boolean;
 }
