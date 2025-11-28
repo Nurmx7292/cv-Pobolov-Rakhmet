@@ -31,17 +31,13 @@ export const UserCard = ({ user }: Props) => {
     const position_name = user?.position_name ?? "";
     const userId = user.id;
 
-    //
-    // const avatarAltText = firstName ? firstName.toUpperCase().split('')[0] : (lastName ? lastName.toUpperCase().split('')[0] : email.toUpperCase().split('')[0])
-    // const avatarElement = avatar ? <div className={styles.avatar}><img src={avatar}/></div> : <div className={styles.avatar}><p>{avatarAltText}</p></div>
-
     const onProfileClick = (userId) => {
         navigate(`/users/${userId}`);
     };
 
     return (
         <article className={styles.card}>
-            {/*<div className={styles.avatar}>{avatarElement}</div>*/}
+
             <div>
                 <Avatar size={40}
                         avatarReference={avatar}

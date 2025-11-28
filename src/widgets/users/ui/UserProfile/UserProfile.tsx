@@ -12,6 +12,7 @@ import {useMutation} from "@apollo/client/react";
 import {UPDATE_USER_MUTATION} from "@widgets/users/api/updateUserMutation";
 import {UPDATE_PROFILE_MUTATION} from "@widgets/users/api/updateProfileMutation.ts";
 import {UPLOAD_AVATAR_MUTATION} from "@widgets/users/api/uploadAvatarMutation";
+import Avatar from "@shared/components/avatar/ui/Avatar.tsx";
 
 const UserProfile = () => {
     const [updateUser] = useMutation(UPDATE_USER_MUTATION);
@@ -214,6 +215,15 @@ const UserProfile = () => {
             <div>{email}</div>
             <div>A member since {memberSinceString}</div>
 
+            <div>
+                <Avatar size={60}
+                        avatarReference={user.profile.avatar}
+                        firstName={firstNameInputValue}
+                        lastName={lastNameInputValue}
+                        email={email}
+                />
+            </div>
+
 
             <TextField
                 className={styles.input}
@@ -283,7 +293,7 @@ const UserProfile = () => {
                 type="file"
                 accept="image/*"
                 ref={fileInputRef}
-                style={{ display: 'none' }} // скрываем input
+                style={{display: 'none'}} // скрываем input
                 onChange={onFileSelected}
             />
 
