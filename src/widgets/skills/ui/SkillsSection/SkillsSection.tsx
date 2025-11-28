@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useMemo, useState, type ReactNode } from "react";
 import {
     Box,
     Button,
@@ -11,7 +11,6 @@ import {
     Stack,
     Typography,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CloseIcon from "@mui/icons-material/Close";
 import type { SkillMasteryMock } from "../../model/types";
@@ -20,8 +19,8 @@ interface SkillsSectionProps {
     title?: string;
     skills: SkillMasteryMock[];
     isEditable?: boolean;
-    onAddSkill?: () => void;
-    onUpdateSkill?: (skill: SkillMasteryMock) => void;
+    renderAddButton?: () => ReactNode;
+    renderUpdateButton?: (skill: SkillMasteryMock) => ReactNode;
     onDeleteSkills?: (skillIds: string[]) => void;
 }
 
@@ -42,8 +41,8 @@ export const SkillsSection = ({
     title = "Skills",
     skills,
     isEditable = false,
-    onAddSkill,
-    onUpdateSkill,
+    renderAddButton,
+    renderUpdateButton,
     onDeleteSkills,
 }: SkillsSectionProps) => {
     const groupedSkills = useSkillsByCategory(skills);
@@ -78,14 +77,7 @@ export const SkillsSection = ({
                 <Typography variant="h4">{title}</Typography>
                 {isEditable && (
                     <Stack direction="row" spacing={2}>
-                        <Button
-                            variant="outlined"
-                            startIcon={<AddIcon />}
-                            onClick={onAddSkill}
-                            color="primary"
-                        >
-                            Add skill
-                        </Button>
+                        {renderAddButton && renderAddButton()}
                         {!isDeleting ? (
                             <Button
                                 variant="text"
@@ -162,15 +154,7 @@ export const SkillsSection = ({
                                         <Typography variant="caption" color="text.secondary">
                                             Mastery: {skill.mastery}%
                                         </Typography>
-                                        {isEditable && !isDeleting && (
-                                            <Button
-                                                size="small"
-                                                variant="text"
-                                                onClick={() => onUpdateSkill?.(skill)}
-                                            >
-                                                Update mastery
-                                            </Button>
-                                        )}
+                                        {isEditable && !isDeleting && renderUpdateButton && renderUpdateButton(skill)}
                                     </Box>
                                 ))}
                             </Stack>

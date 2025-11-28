@@ -1,12 +1,16 @@
 import { useCallback, useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { useProfileSkills, type ProfileSkill } from "@entities/profile";
+import { useProfileSkills, useAddProfileSkill, useUpdateProfileSkill, type ProfileSkill } from "@entities/profile";
+import { useNotification } from "@shared/lib/notifications";
 import type { SkillMasteryMock } from "@widgets/skills";
 import { UserSkillsLayout, type UserSkillsMock } from "@widgets/users";
 
 export const UserSkillsPage = () => {
     const { userId } = useParams();
     const { data, loading, error, refetch } = useProfileSkills(userId);
+    const [addProfileSkill, { loading: adding, error: addError }] = useAddProfileSkill();
+    const [updateProfileSkill, { loading: updating, error: updateError }] = useUpdateProfileSkill();
+    const notify = useNotification();
 
     const skills = useMemo<SkillMasteryMock[]>(() => {
         if (!data?.profile?.skills) {
@@ -21,6 +25,8 @@ export const UserSkillsPage = () => {
         }));
     }, [data?.profile?.skills]);
 
+    const existingSkillIds = useMemo(() => skills.map((skill) => skill.id), [skills]);
+
     const user = useMemo<UserSkillsMock | null>(() => {
         if (!data?.profile || !userId) {
             return null;
@@ -33,17 +39,34 @@ export const UserSkillsPage = () => {
         };
     }, [data?.profile, skills, userId]);
 
-    const handleAddSkill = useCallback(() => {
-        console.info("Add skill action");
-        void refetch();
-    }, [refetch]);
+    const handleAddSkill = useCallback(
+        async (skillId: string, mastery: number) => {
+            try {
+                await addProfileSkill({
+                    variables: { skillId, mastery },
+                });
+                notify("Skill was added", "success");
+                await refetch();
+            } catch (err) {
+                notify("Failed to add skill", "error");
+            }
+        },
+        [addProfileSkill, notify, refetch],
+    );
 
     const handleUpdateSkill = useCallback(
-        (skill: SkillMasteryMock) => {
-            console.info("Update skill", skill);
-            void refetch();
+        async (skillId: string, mastery: number) => {
+            try {
+                await updateProfileSkill({
+                    variables: { skillId, mastery },
+                });
+                notify("Skill was updated", "success");
+                await refetch();
+            } catch (err) {
+                notify("Failed to update skill", "error");
+            }
         },
-        [refetch],
+        [updateProfileSkill, notify, refetch],
     );
 
     const handleDeleteSkills = useCallback(
@@ -62,7 +85,7 @@ export const UserSkillsPage = () => {
         return <div>Failed to load skills: {error.message}</div>;
     }
 
-    if (!user) {
+    if (!user || !userId) {
         return <div>Profile not found</div>;
     }
 
@@ -70,9 +93,15 @@ export const UserSkillsPage = () => {
         <UserSkillsLayout
             user={user}
             isEditable
+            userId={userId}
+            existingSkillIds={existingSkillIds}
             onAddSkill={handleAddSkill}
             onUpdateSkill={handleUpdateSkill}
             onDeleteSkills={handleDeleteSkills}
+            adding={adding}
+            updating={updating}
+            addError={addError}
+            updateError={updateError}
         />
     );
 };
