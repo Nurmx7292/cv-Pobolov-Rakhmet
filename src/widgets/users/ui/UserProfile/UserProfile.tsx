@@ -4,51 +4,77 @@ import {useParams} from "react-router-dom";
 import {useQuery} from "@apollo/client/react";
 import {GET_USER_BY_ID_QUERY} from "@widgets/users/api/getUserByIdQuery";
 import TextField from '@mui/material/TextField';
+import {Button} from "@mui/material";
 import {GET_DEPARTMENTS_QUERY} from "@widgets/users/api/getDepartmentsQuery";
 import {GET_POSITIONS_QUERY} from "@widgets/users/api/getPositionsQuery";
-import {MenuItem, Button} from '@mui/material';
+import {MenuItem} from '@mui/material';
+import {useMutation} from "@apollo/client/react";
+import {UPDATE_USER_MUTATION} from "@widgets/users/api/updateUserMutation";
+import {UPDATE_PROFILE_MUTATION} from "@widgets/users/api/updateProfileMutation.ts";
 
 const UserProfile = () => {
+    const [updateUser] = useMutation(UPDATE_USER_MUTATION);
+    const [updateProfile] = useMutation(UPDATE_PROFILE_MUTATION);
+
     const [firstNameInputValue, setFirstNameInputValue] = useState('');
     const [lastNameInputValue, setLastNameInputValue] = useState('');
     const [departmentInputValue, setDepartmentInputValue] = useState('');
     const [positionInputValue, setPositionInputValue] = useState('');
-    const [isUpdateDisabled, setIsUpdateDisabled] = useState(true);
+
+    const [isUpdateDisabled, setIsUpdateDisabled] = useState(true)
 
     const {userId} = useParams<{ userId: string }>();
     const currentUserId = localStorage.getItem('currentUserId');
 
-    const {loading, error, data} = useQuery(GET_USER_BY_ID_QUERY, {
+
+    const {loading, error, data, refetch} = useQuery(GET_USER_BY_ID_QUERY, {
         variables: {id: userId},
         skip: !userId,
     });
 
-    const {data: positionsData} = useQuery(GET_POSITIONS_QUERY);
-    const {data: departmentsData} = useQuery(GET_DEPARTMENTS_QUERY);
+    const {loading: positionsLoading, error: positionsError, data: positionsData} = useQuery(GET_POSITIONS_QUERY);
+    let positionsDataFromServer = positionsData?.positions ?? [];
+    positionsDataFromServer = [{name: "", id: '0'}, ...positionsDataFromServer]
+
 
     let positions = null;
     if (positionsData) {
-        positions = positionsData.positions.map((position) => position.name);
+        positions = positionsData.positions.map((position) => position.name)
         positions.unshift('No position');
     }
+
+    const {
+        loading: departmentsLoading,
+        error: departmentEerror,
+        data: departmentsData
+    } = useQuery(GET_DEPARTMENTS_QUERY);
+
+    let departmentsDataFromServer = departmentsData?.departments ?? [];
+    departmentsDataFromServer = [{name: "", id: '0'}, ...departmentsDataFromServer]
 
     let departments = null;
     if (departmentsData) {
         departments = departmentsData.departments.map((department) => department.name);
-        departments.unshift('No department');
+        departments.unshift('No department')
     }
 
     const user = data?.user;
     const profile = user?.profile;
+    const firstName = profile?.first_name || '';
+    const lastName = profile?.last_name || '';
+    const department_name = user?.department_name || '';
+    const position_name = user?.position_name || '';
+
 
     useEffect(() => {
         if (!user) return;
 
-        setFirstNameInputValue(profile?.first_name || '');
-        setLastNameInputValue(profile?.last_name || '');
-        setDepartmentInputValue(user?.department_name || '');
-        setPositionInputValue(user?.position_name || '');
-    }, [user, profile]);
+        setFirstNameInputValue(firstName);
+        setLastNameInputValue(lastName);
+        setDepartmentInputValue(department_name);
+        setPositionInputValue(position_name);
+
+    }, [user, firstName, lastName, department_name, position_name]);
 
     useEffect(() => {
         if (!user) return;
@@ -61,21 +87,10 @@ const UserProfile = () => {
         setIsUpdateDisabled(!(firstNameChanged || lastNameChanged || departmentChanged || positionChanged));
     }, [firstNameInputValue, lastNameInputValue, departmentInputValue, positionInputValue, profile, user]);
 
+
     if (loading) return <div>Загрузка профиля...</div>;
     if (error) return <div>Ошибка загрузки: {error.message}</div>;
     if (!user) return <div>Пользователь не найден</div>;
-
-    let disableInputs = true;
-    let updateButton = null;
-
-    if (+currentUserId === +userId) {
-        disableInputs = false;
-        updateButton = (
-            <Button variant="contained" disabled={isUpdateDisabled}>
-                UPDATE
-            </Button>
-        );
-    }
 
     const created_at = user.created_at;
     const email = user.email;
@@ -88,59 +103,142 @@ const UserProfile = () => {
         day: '2-digit',
     });
 
+
+    function getDepartmentIdByName(departments, name) {
+        const dept = departments.find(d => d.name === name);
+        return dept ? dept.id : null;
+    }
+
+    function getPositionIdByName(positions, name) {
+        const position = positions.find(p => p.name === name);
+        return position ? position.id : null;
+    }
+
+
+    const onUpdateButtonClick = async () => {
+
+        const departmentId = getDepartmentIdByName(departmentsDataFromServer, departmentInputValue)?.toString()
+        const positionId = getPositionIdByName(positionsDataFromServer, positionInputValue)?.toString()
+
+        await updateUser({
+            variables: {
+                user: {
+                    userId: currentUserId.toString(),
+                    departmentId:  departmentId.toString(),
+                    positionId: positionId.toString(),
+                },
+            },
+        });
+
+
+        await updateProfile({
+            variables: {
+                profile: {
+                    userId: currentUserId.toString(),
+                    first_name: firstNameInputValue,
+                    last_name: lastNameInputValue
+                },
+            },
+        });
+
+        await refetch();
+
+
+    };
+
+
+    let updateButton = null;
+    let disableInputs = true;
+    if (+currentUserId === +userId) {
+        updateButton = <Button variant="contained" onClick={onUpdateButtonClick} disabled={isUpdateDisabled}>UPDATE</Button>
+        disableInputs = false;
+    }
+
+    const onDepartmentChange = (e) => {
+        if (e.target.value === 'No department') {
+            setDepartmentInputValue('')
+        } else setDepartmentInputValue(e.target.value)
+    }
+
+    const onPositionChange = (e) => {
+        if (e.target.value === 'No position') {
+            setPositionInputValue('')
+        } else setPositionInputValue(e.target.value)
+    }
+
+
     return (
         <div className={styles.userProfile}>
-            <div>{firstNameInputValue} {lastNameInputValue}</div>
+
+            <div>{firstName} {lastName}</div>
             <div>{email}</div>
             <div>A member since {memberSinceString}</div>
+
 
             <TextField
                 className={styles.input}
                 label="First Name"
+                variant="outlined"
                 value={firstNameInputValue}
                 disabled={disableInputs}
                 onChange={e => setFirstNameInputValue(e.target.value)}
+                InputLabelProps={{shrink: firstNameInputValue !== ''}}
             />
+
 
             <TextField
                 className={styles.input}
                 label="Last Name"
+                variant="outlined"
                 value={lastNameInputValue}
                 disabled={disableInputs}
                 onChange={e => setLastNameInputValue(e.target.value)}
+                InputLabelProps={{shrink: lastNameInputValue !== ''}}
             />
+
 
             <TextField
                 className={styles.input}
                 label="Department"
+                variant="outlined"
                 select
                 value={departmentInputValue}
                 disabled={disableInputs}
-                onChange={e => setDepartmentInputValue(e.target.value)}
+                onChange={onDepartmentChange}
             >
-                {departments?.map(department => (
-                    <MenuItem key={department} value={department}>
-                        {department}
-                    </MenuItem>
-                ))}
+                {departments !== null ?
+
+                    departments.map((department) => (
+                        <MenuItem key={department} value={department}>
+                            {department}
+                        </MenuItem>
+                    )) : null
+                }
             </TextField>
+
 
             <TextField
                 className={styles.input}
                 label="Position"
+                variant="outlined"
                 select
                 value={positionInputValue}
                 disabled={disableInputs}
-                onChange={e => setPositionInputValue(e.target.value)}
+                onChange={onPositionChange}
             >
-                {positions?.map(position => (
-                    <MenuItem key={position} value={position}>
-                        {position}
-                    </MenuItem>
-                ))}
+                {positions !== null ?
+
+                    positions.map((position) => (
+                        <MenuItem key={position} value={position}>
+                            {position}
+                        </MenuItem>
+                    )) : null
+                }
             </TextField>
 
+
             {updateButton}
+
         </div>
     );
 };
