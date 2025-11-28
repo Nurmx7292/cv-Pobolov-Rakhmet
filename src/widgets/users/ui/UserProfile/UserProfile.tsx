@@ -41,8 +41,8 @@ const UserProfile = () => {
                 },
             },
         });
+        await refetch();
 
-        alert("Аватар успешно загружен!");
     };
 
     function fileToBase64(file: File): Promise<string> {
