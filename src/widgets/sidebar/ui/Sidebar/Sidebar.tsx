@@ -39,7 +39,9 @@ export const Sidebar = () => {
                     overflow: "hidden",
                     display: "flex",
                     flexDirection: "column",
-                    position: "relative",
+                    position: "sticky",
+                    height: "100vh",
+                    top: 0,
                 },
             }}
         >
