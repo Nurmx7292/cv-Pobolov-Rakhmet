@@ -39,33 +39,49 @@ export const LoginForm = () => {
         if (tokens.user.id) {
             localStorage.setItem('currentUserId', tokens.user.id);
         }
-        navigate("/users");
+        navigate(`/users/${tokens.user.id}`);
     };
 
+    const handleSignUpClick = () => {
+        navigate('/auth/signup')
+    }
+
     return (
-        <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.title}>Log in</div>
-            <input
-                className={styles.input}
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                required
-            />
-            <input
-                className={styles.input}
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                required
-            />
-            {error && <div>{error.message}</div>}
-            <button className={styles.button} type="submit" disabled={loading}>
-                {loading ? "logging in..." : "log in"}
-            </button>
-        </form>
+        <>
+            <button>LOG IN</button>
+            <button onClick={handleSignUpClick}>SIGN UP</button>
+            <div>
+                Welcome back
+            </div>
+            <div>
+                Hello again! Log in to continue
+            </div>
+            <form className={styles.form} onSubmit={handleSubmit}>
+                <div className={styles.title}>Log in</div>
+                <input
+                    className={styles.input}
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    required
+                />
+                <input
+                    className={styles.input}
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    required
+                />
+                {error && <div>{error.message}</div>}
+                <button className={styles.button} type="submit" disabled={loading}>
+                    {loading ? "logging in..." : "LOG IN"}
+                </button>
+                <button>FORGOT PASSWORD</button>
+            </form>
+        </>
+
     );
 };
 
