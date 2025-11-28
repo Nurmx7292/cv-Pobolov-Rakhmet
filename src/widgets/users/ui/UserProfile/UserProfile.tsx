@@ -15,6 +15,7 @@ const UserProfile = () => {
     const [positionInputValue, setPositionInputValue] = useState('');
 
     const {userId} = useParams<{ userId: string }>();
+    const currentUserId = localStorage.getItem('currentUserId');
 
     const {loading, error, data} = useQuery(GET_USER_BY_ID_QUERY, {
         variables: {id: userId},
@@ -52,6 +53,11 @@ const UserProfile = () => {
     if (error) return <div>Ошибка загрузки: {error.message}</div>;
     if (!user) return <div>Пользователь не найден</div>;
 
+    let disableInputs = true;
+    if (+currentUserId === +userId) {
+        disableInputs = false;
+    }
+
     const created_at = user.created_at;
     const email = user.email;
 
@@ -73,6 +79,7 @@ const UserProfile = () => {
                 className={styles.input}
                 label="First Name"
                 value={firstNameInputValue}
+                disabled={disableInputs}
                 onChange={e => setFirstNameInputValue(e.target.value)}
             />
 
@@ -80,6 +87,7 @@ const UserProfile = () => {
                 className={styles.input}
                 label="Last Name"
                 value={lastNameInputValue}
+                disabled={disableInputs}
                 onChange={e => setLastNameInputValue(e.target.value)}
             />
 
@@ -88,6 +96,7 @@ const UserProfile = () => {
                 label="Department"
                 select
                 value={departmentInputValue}
+                disabled={disableInputs}
                 onChange={e => setDepartmentInputValue(e.target.value)}
             >
                 {departments?.map(department => (
@@ -102,6 +111,7 @@ const UserProfile = () => {
                 label="Position"
                 select
                 value={positionInputValue}
+                disabled={disableInputs}
                 onChange={e => setPositionInputValue(e.target.value)}
             >
                 {positions?.map(position => (
