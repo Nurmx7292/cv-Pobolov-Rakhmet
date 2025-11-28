@@ -1,5 +1,6 @@
 import type { User } from "../../model/types.ts";
 import styles from "./UserCard.module.css";
+import {useNavigate} from "react-router-dom";
 
 interface UserData {
     id: string;
@@ -17,18 +18,26 @@ interface Props {
 }
 
 export const UserCard = ({ user }: Props) => {
+
+    const navigate = useNavigate();
+
     const firstName = user?.first_name ?? "";
     const lastName = user?.last_name ?? "";
     const avatar = user?.avatar ?? "";
     const email = user?.email ?? "";
     const department_name = user?.department_name ?? "";
     const position_name = user?.position_name ?? "";
+    const userId = user.id;
 
 
     const avatarAltText = firstName ? firstName.toUpperCase().split('')[0] : (lastName ? lastName.toUpperCase().split('')[0] : email.toUpperCase().split('')[0])
 
 
     const avatarElement = avatar ? <div className={styles.avatar}><img src={avatar}/></div> : <div className={styles.avatar}><p>{avatarAltText}</p></div>
+
+    const onProfileClick = (userId) => {
+        navigate(`/users/${userId}`);
+    };
 
     return (
         <article className={styles.card}>
@@ -38,6 +47,7 @@ export const UserCard = ({ user }: Props) => {
             <div className={styles.email}>{email}</div>
             <div className={styles.departmentName}>{department_name || "No department"}</div>
             <div className={styles.positionName}>{position_name || "No position"}</div>
+            <div className={styles.profile} onClick={()=>onProfileClick(userId)}>{'>'}</div>
         </article>
     );
 };
