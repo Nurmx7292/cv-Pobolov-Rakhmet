@@ -45,8 +45,8 @@ export const UserCard = ({ user }: Props) => {
             <div className={styles.firstName}>{firstName}</div>
             <div className={styles.lastName}>{lastName}</div>
             <div className={styles.email}>{email}</div>
-            <div className={styles.departmentName}>{department_name || "No department"}</div>
-            <div className={styles.positionName}>{position_name || "No position"}</div>
+            <div className={styles.departmentName}>{department_name}</div>
+            <div className={styles.positionName}>{position_name}</div>
             <div className={styles.profile} onClick={()=>onProfileClick(userId)}>{'>'}</div>
         </article>
     );
