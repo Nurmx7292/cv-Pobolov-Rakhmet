@@ -3,7 +3,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ccc;
+    background: gray;
+    color: black;
     overflow: hidden;
 }
 
