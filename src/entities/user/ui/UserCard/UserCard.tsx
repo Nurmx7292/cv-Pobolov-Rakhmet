@@ -31,8 +31,6 @@ export const UserCard = ({ user }: Props) => {
 
 
     const avatarAltText = firstName ? firstName.toUpperCase().split('')[0] : (lastName ? lastName.toUpperCase().split('')[0] : email.toUpperCase().split('')[0])
-
-
     const avatarElement = avatar ? <div className={styles.avatar}><img src={avatar}/></div> : <div className={styles.avatar}><p>{avatarAltText}</p></div>
 
     const onProfileClick = (userId) => {
