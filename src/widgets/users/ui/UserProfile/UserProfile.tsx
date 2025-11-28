@@ -4,10 +4,15 @@ import {useParams} from "react-router-dom";
 import {useQuery} from "@apollo/client/react";
 import {GET_USER_BY_ID_QUERY} from "@widgets/users/api/getUserByIdQuery";
 import TextField from '@mui/material/TextField';
+import {GET_DEPARTMENTS_QUERY} from "@widgets/users/api/getDepartmentsQuery";
+import {GET_POSITIONS_QUERY} from "@widgets/users/api/getPositionsQuery";
+import {MenuItem} from '@mui/material';
 
 const UserProfile = () => {
     const [firstNameInputValue, setFirstNameInputValue] = useState('');
     const [lastNameInputValue, setLastNameInputValue] = useState('');
+    const [departmentInputValue, setDepartmentInputValue] = useState('');
+    const [positionInputValue, setPositionInputValue] = useState('');
 
     const {userId} = useParams<{ userId: string }>();
 
@@ -15,6 +20,21 @@ const UserProfile = () => {
         variables: {id: userId},
         skip: !userId,
     });
+
+    const {data: positionsData} = useQuery(GET_POSITIONS_QUERY);
+    const {data: departmentsData} = useQuery(GET_DEPARTMENTS_QUERY);
+
+    let positions = null;
+    if (positionsData) {
+        positions = positionsData.positions.map((position) => position.name);
+        positions.unshift('No position');
+    }
+
+    let departments = null;
+    if (departmentsData) {
+        departments = departmentsData.departments.map((department) => department.name);
+        departments.unshift('No department');
+    }
 
     const user = data?.user;
     const profile = user?.profile;
@@ -24,6 +44,8 @@ const UserProfile = () => {
 
         setFirstNameInputValue(profile?.first_name || '');
         setLastNameInputValue(profile?.last_name || '');
+        setDepartmentInputValue(user?.department_name || '');
+        setPositionInputValue(user?.position_name || '');
     }, [user, profile]);
 
     if (loading) return <div>Загрузка профиля...</div>;
@@ -50,20 +72,44 @@ const UserProfile = () => {
             <TextField
                 className={styles.input}
                 label="First Name"
-                variant="outlined"
                 value={firstNameInputValue}
                 onChange={e => setFirstNameInputValue(e.target.value)}
-                InputLabelProps={{shrink: firstNameInputValue !== ''}}
             />
 
             <TextField
                 className={styles.input}
                 label="Last Name"
-                variant="outlined"
                 value={lastNameInputValue}
                 onChange={e => setLastNameInputValue(e.target.value)}
-                InputLabelProps={{shrink: lastNameInputValue !== ''}}
             />
+
+            <TextField
+                className={styles.input}
+                label="Department"
+                select
+                value={departmentInputValue}
+                onChange={e => setDepartmentInputValue(e.target.value)}
+            >
+                {departments?.map(department => (
+                    <MenuItem key={department} value={department}>
+                        {department}
+                    </MenuItem>
+                ))}
+            </TextField>
+
+            <TextField
+                className={styles.input}
+                label="Position"
+                select
+                value={positionInputValue}
+                onChange={e => setPositionInputValue(e.target.value)}
+            >
+                {positions?.map(position => (
+                    <MenuItem key={position} value={position}>
+                        {position}
+                    </MenuItem>
+                ))}
+            </TextField>
         </div>
     );
 };
