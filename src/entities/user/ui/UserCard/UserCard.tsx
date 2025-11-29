@@ -192,6 +192,18 @@ export const UserCard = ({ user }: Props) => {
                         {/* Модальное окно для Update user */}
                         <Dialog open={isUpdateDialogOpen} onClose={handleDialogClose}>
                             <DialogTitle>Update User</DialogTitle>
+                            <IconButton
+                                aria-label="close"
+                                onClick={handleDialogClose}
+                                sx={{
+                                    position: 'absolute',
+                                    right: 8,
+                                    top: 8,
+                                    color: (theme) => theme.palette.grey[500],
+                                }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
                             <DialogContent>
 
                                 <UpdateUserDialog/>
