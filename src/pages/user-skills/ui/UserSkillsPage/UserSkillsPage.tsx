@@ -11,7 +11,7 @@ export const UserSkillsPage = () => {
     const [addProfileSkill, { loading: adding, error: addError }] = useAddProfileSkill();
     const [updateProfileSkill, { loading: updating, error: updateError }] = useUpdateProfileSkill();
     const notify = useNotification();
-
+    console.log(error);
     const skills = useMemo<SkillMasteryMock[]>(() => {
         if (!data?.profile?.skills) {
             return [];
