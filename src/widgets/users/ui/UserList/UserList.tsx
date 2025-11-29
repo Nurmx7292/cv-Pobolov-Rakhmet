@@ -94,7 +94,7 @@ export const UserList = () => {
 
     const currentUser = users.find((user) => user.id === currentUserId);
     let currentUserElement = null;
-    if(currentUser)currentUserElement = <UserCard key={currentUser.id} user={currentUser} />;
+    if(currentUser)currentUserElement = <UserCard  user={currentUser}/>;
 
 
 

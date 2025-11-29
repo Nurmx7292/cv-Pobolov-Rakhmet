@@ -1,6 +1,6 @@
 .columnTitles {
     display: grid;
-    grid-template-areas: 'avatar fn ln email dn pn';
+    grid-template-areas: 'avatar fn ln email dn pn ';
     grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr 1fr;
     border-bottom: 1px solid black;
     margin-bottom: 20px;
