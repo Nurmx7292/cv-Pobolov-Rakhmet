@@ -23,10 +23,10 @@ export const UpdateProfileSkillButton = ({
                 <UpdateProfileSkillDialog
                     open={open}
                     onClose={onClose}
-                    skillId={skill.id}
+                    skillId={skill.name}
                     initialMastery={skill.mastery}
-                    onSubmit={async (skillId, mastery) => {
-                        await onSubmit(skillId, mastery);
+                    onSubmit={async (skillName, mastery) => {
+                        await onSubmit(skillName, mastery);
                         onClose();
                     }}
                     loading={loading}

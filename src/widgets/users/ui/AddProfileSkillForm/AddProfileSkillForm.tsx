@@ -1,35 +1,34 @@
-import { useState, FormEvent } from "react";
-import { Stack, CircularProgress, Alert } from "@mui/material";
-import { SkillSelect } from "@features/skills";
-import { SkillMasterySelect } from "@features/skills";
+import { useState } from "react";
+import type { FormEvent } from "react";
+import { Stack, Alert } from "@mui/material";
+import { SkillSelect, SkillMasterySelect } from "@features/skills/ui";
 import { FormButtons } from "@shared/ui";
 
 interface AddProfileSkillFormProps {
-    userId: string;
     existingSkillIds: string[];
-    onSubmit: (skillId: string, mastery: number) => Promise<void>;
+    onSubmit: (name: string, categoryId: string, mastery: number) => Promise<void>;
     onCancel: () => void;
     loading?: boolean;
     error?: Error | null;
 }
 
 export const AddProfileSkillForm = ({
-    userId,
     existingSkillIds,
     onSubmit,
     onCancel,
     loading = false,
     error,
 }: AddProfileSkillFormProps) => {
-    const [skillId, setSkillId] = useState("");
+    const [skillValue, setSkillValue] = useState("");
     const [mastery, setMastery] = useState(20);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        if (!skillId) {
+        if (!skillValue) {
             return;
         }
-        await onSubmit(skillId, mastery);
+        const [name, categoryId] = skillValue.split(":");
+        await onSubmit(name, categoryId, mastery);
     };
 
     return (
@@ -37,8 +36,8 @@ export const AddProfileSkillForm = ({
             <Stack spacing={3}>
                 {error && <Alert severity="error">{error.message}</Alert>}
                 <SkillSelect
-                    value={skillId}
-                    onChange={setSkillId}
+                    value={skillValue}
+                    onChange={setSkillValue}
                     excludeIds={existingSkillIds}
                     label="Skill"
                     disabled={loading}
@@ -47,7 +46,7 @@ export const AddProfileSkillForm = ({
                 <FormButtons
                     title="Add"
                     loading={loading}
-                    disabled={!skillId || loading}
+                    disabled={!skillValue || loading}
                     onCancel={onCancel}
                 />
             </Stack>

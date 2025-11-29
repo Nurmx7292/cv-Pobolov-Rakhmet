@@ -4,9 +4,8 @@ import { AddProfileSkillForm } from "../AddProfileSkillForm";
 interface AddProfileSkillDialogProps {
     open: boolean;
     onClose: () => void;
-    userId: string;
     existingSkillIds: string[];
-    onSubmit: (skillId: string, mastery: number) => Promise<void>;
+    onSubmit: (name: string, categoryId: string, mastery: number) => Promise<void>;
     loading?: boolean;
     error?: Error | null;
 }
@@ -14,7 +13,6 @@ interface AddProfileSkillDialogProps {
 export const AddProfileSkillDialog = ({
     open,
     onClose,
-    userId,
     existingSkillIds,
     onSubmit,
     loading = false,
@@ -23,7 +21,6 @@ export const AddProfileSkillDialog = ({
     return (
         <FormDialog open={open} onClose={onClose} entityName="Skill" variant="add">
             <AddProfileSkillForm
-                userId={userId}
                 existingSkillIds={existingSkillIds}
                 onSubmit={onSubmit}
                 onCancel={onClose}

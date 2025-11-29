@@ -1,18 +1,12 @@
-import { Fragment, useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CardHeader,
-    Checkbox,
-    Divider,
-    LinearProgress,
+    Grid,
     Stack,
     Typography,
 } from "@mui/material";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import CloseIcon from "@mui/icons-material/Close";
+import { SkillProgress } from "@features/skills";
+import { SelectorButton } from "@shared/ui";
+import { DeleteSelectorButton } from "@shared/ui";
 import type { SkillMasteryMock } from "../../model/types";
 
 interface SkillsSectionProps {
@@ -66,101 +60,57 @@ export const SkillsSection = ({
         setIsDeleting(false);
     };
 
-    const handleCancel = () => {
-        setSelectedIds([]);
-        setIsDeleting(false);
-    };
-
     return (
-        <Stack spacing={4}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <Typography variant="h4">{title}</Typography>
+        <Stack sx={{ alignItems: "center", px: "1.25rem" }}>
+            <Stack maxWidth="900px" spacing={6} width="100%">
+                <Stack spacing={4}>
+                    {Object.entries(groupedSkills).map(([categoryName, categorySkills]) => (
+                        <Stack spacing={2} key={categoryName}>
+                            <Typography variant="subtitle1" component="h2">
+                                {categoryName}
+                            </Typography>
+                            <Grid container columns={{ xs: 1, sm: 2, lg: 3 }}>
+                                {categorySkills.map((skill) => (
+                                    <Grid
+                                        key={skill.id}
+                                        size={1}
+                                        sx={{ minWidth: "17rem", padding: "0.75rem 1rem" }}
+                                    >
+                                        {isDeleting ? (
+                                            <SelectorButton
+                                                isSelected={selectedIds.includes(skill.id)}
+                                                onClick={() => toggleSelection(skill.id)}
+                                            >
+                                                <SkillProgress 
+                                                    skillName={skill.name} 
+                                                    mastery={skill.mastery}
+                                                    isSelected={selectedIds.includes(skill.id)}
+                                                />
+                                            </SelectorButton>
+                                        ) : isEditable && renderUpdateButton ? (
+                                            renderUpdateButton(skill)
+                                        ) : (
+                                            <SkillProgress skillName={skill.name} mastery={skill.mastery} />
+                                        )}
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Stack>
+                    ))}
+                </Stack>
                 {isEditable && (
-                    <Stack direction="row" spacing={2}>
-                        {renderAddButton && renderAddButton()}
-                        {!isDeleting ? (
-                            <Button
-                                variant="text"
-                                startIcon={<DeleteOutlineIcon />}
-                                onClick={() => setIsDeleting(true)}
-                                disabled={!skills.length}
-                            >
-                                Remove skills
-                            </Button>
-                        ) : (
-                            <Fragment>
-                                <Button variant="contained" color="error" onClick={handleDelete}>
-                                    Confirm remove ({selectedIds.length})
-                                </Button>
-                                <Button startIcon={<CloseIcon />} onClick={handleCancel}>
-                                    Cancel
-                                </Button>
-                            </Fragment>
-                        )}
+                    <Stack direction="row" spacing={3} justifyContent="flex-end">
+                        {!isDeleting && renderAddButton && renderAddButton()}
+                        <DeleteSelectorButton
+                            data={selectedIds}
+                            entityName="skill"
+                            isDeleting={isDeleting}
+                            loading={false}
+                            onSubmit={handleDelete}
+                            onChange={setIsDeleting}
+                        />
                     </Stack>
                 )}
-            </Stack>
-
-            <Stack spacing={4}>
-                {Object.entries(groupedSkills).map(([categoryName, categorySkills]) => (
-                    <Card key={categoryName} elevation={0} sx={{ backgroundColor: "transparent" }}>
-                        <CardHeader
-                            titleTypographyProps={{ variant: "subtitle1" }}
-                            title={categoryName}
-                            sx={{ px: 0 }}
-                        />
-                        <CardContent sx={{ pt: 0, px: 0 }}>
-                            <Stack
-                                direction="row"
-                                flexWrap="wrap"
-                                divider={<Divider flexItem orientation="vertical" />}
-                            >
-                                {categorySkills.map((skill) => (
-                                    <Box
-                                        key={skill.id}
-                                        sx={{
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            gap: 1,
-                                            width: { xs: "100%", sm: "50%", lg: "33.33%" },
-                                            minWidth: 220,
-                                            p: 1,
-                                        }}
-                                    >
-                                        <Stack direction="row" alignItems="center" spacing={1}>
-                                            {isDeleting && (
-                                                <Checkbox
-                                                    checked={selectedIds.includes(skill.id)}
-                                                    onChange={() => toggleSelection(skill.id)}
-                                                    size="small"
-                                                />
-                                            )}
-                                            <Typography variant="body1" fontWeight={500}>
-                                                {skill.name}
-                                            </Typography>
-                                        </Stack>
-                                        <LinearProgress
-                                            variant="determinate"
-                                            value={skill.mastery}
-                                            sx={{
-                                                height: 6,
-                                                borderRadius: 3,
-                                                backgroundColor: "rgba(255,255,255,0.08)",
-                                                "& .MuiLinearProgress-bar": {
-                                                    borderRadius: 3,
-                                                },
-                                            }}
-                                        />
-                                        <Typography variant="caption" color="text.secondary">
-                                            Mastery: {skill.mastery}%
-                                        </Typography>
-                                        {isEditable && !isDeleting && renderUpdateButton && renderUpdateButton(skill)}
-                                    </Box>
-                                ))}
-                            </Stack>
-                        </CardContent>
-                    </Card>
-                ))}
             </Stack>
         </Stack>
     );
