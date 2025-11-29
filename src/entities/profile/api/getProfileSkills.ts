@@ -6,28 +6,18 @@ export const GET_PROFILE_SKILLS = gql`
             id
             full_name
             skills {
-                id
                 name
+                categoryId
                 mastery
-                category {
-                    id
-                    name
-                }
             }
         }
     }
 `;
 
-export interface ProfileSkillCategory {
-    id: string;
-    name: string;
-}
-
 export interface ProfileSkill {
-    id: string;
     name: string;
-    mastery: number;
-    category: ProfileSkillCategory;
+    categoryId: string | null;
+    mastery: string;
 }
 
 export interface ProfileSkillsResponse {

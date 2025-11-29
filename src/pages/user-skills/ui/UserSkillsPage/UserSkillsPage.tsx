@@ -11,7 +11,16 @@ export const UserSkillsPage = () => {
     const [addProfileSkill, { loading: adding, error: addError }] = useAddProfileSkill();
     const [updateProfileSkill, { loading: updating, error: updateError }] = useUpdateProfileSkill();
     const notify = useNotification();
-    console.log(error);
+    
+    // Debug error details
+    if (error) {
+        console.error("Profile Skills Query Error:", {
+            message: error.message,
+            graphQLErrors: error.graphQLErrors,
+            networkError: error.networkError,
+            extraInfo: error.extraInfo,
+        });
+    }
     const skills = useMemo<SkillMasteryMock[]>(() => {
         if (!data?.profile?.skills) {
             return [];

@@ -6,13 +6,9 @@ export const UPDATE_PROFILE_SKILL = gql`
             id
             full_name
             skills {
-                id
                 name
+                categoryId
                 mastery
-                category {
-                    id
-                    name
-                }
             }
         }
     }
@@ -23,13 +19,9 @@ export interface UpdateProfileSkillResponse {
         id: string;
         full_name?: string | null;
         skills: Array<{
-            id: string;
             name: string;
-            mastery: number;
-            category: {
-                id: string;
-                name: string;
-            } | null;
+            categoryId: string | null;
+            mastery: string;
         }>;
     };
 }

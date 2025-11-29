@@ -1,4 +1,4 @@
-    import { gql } from "@apollo/client";
+import { gql } from "@apollo/client";
 
 export const ADD_PROFILE_SKILL = gql`
     mutation AddProfileSkill($skillId: ID!, $mastery: Int!) {
@@ -6,13 +6,9 @@ export const ADD_PROFILE_SKILL = gql`
             id
             full_name
             skills {
-                id
                 name
+                categoryId
                 mastery
-                category {
-                    id
-                    name
-                }
             }
         }
     }
@@ -23,13 +19,9 @@ export interface AddProfileSkillResponse {
         id: string;
         full_name?: string | null;
         skills: Array<{
-            id: string;
             name: string;
-            mastery: number;
-            category: {
-                id: string;
-                name: string;
-            } | null;
+            categoryId: string | null;
+            mastery: string;
         }>;
     };
 }
