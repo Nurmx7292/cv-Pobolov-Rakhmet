@@ -1,6 +1,7 @@
 import { useMemo } from "react";
-import { TextField, MenuItem, CircularProgress } from "@mui/material";
+import { TextField, MenuItem, CircularProgress, ListSubheader } from "@mui/material";
 import { useSkillOptions } from "@entities/skill";
+import type { SkillOption } from "@entities/skill";
 
 interface SkillSelectProps {
     value: string;
@@ -24,6 +25,20 @@ export const SkillSelect = ({
         [excludeIds, skills],
     );
 
+    const groupedOptions = useMemo(() => {
+        const grouped: Record<string, SkillOption[]> = {};
+        options.forEach((skill) => {
+            const categoryName = skill.category?.name || "Other";
+            if (!grouped[categoryName]) {
+                grouped[categoryName] = [];
+            }
+            grouped[categoryName].push(skill);
+        });
+        return grouped;
+    }, [options]);
+
+    const categories = useMemo(() => Object.keys(groupedOptions).sort(), [groupedOptions]);
+
     return (
         <TextField
             select
@@ -35,12 +50,30 @@ export const SkillSelect = ({
             InputProps={{
                 endAdornment: loading ? <CircularProgress size={18} /> : null,
             }}
+            SelectProps={{
+                MenuProps: {
+                    PaperProps: {
+                        sx: {
+                            maxHeight: 300,
+                        },
+                    },
+                },
+            }}
         >
-            {options.map((skill) => (
-                <MenuItem key={skill.id} value={skill.id}>
-                    {skill.name}
-                </MenuItem>
-            ))}
+            {categories.map((categoryName) => [
+                <ListSubheader key={`header-${categoryName}`} sx={{ color: "primary.main" }}>
+                    {categoryName}
+                </ListSubheader>,
+                ...groupedOptions[categoryName].map((skill) => (
+                    <MenuItem 
+                        key={skill.id} 
+                        value={`${skill.name}:${skill.category?.id || -1}`} 
+                        sx={{ pl: 3 }}
+                    >
+                        {skill.name}
+                    </MenuItem>
+                )),
+            ])}
         </TextField>
     );
 };

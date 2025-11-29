@@ -28,10 +28,23 @@ export const CreateButton = ({
                 variant={variant === "primary" ? "contained" : "text"}
                 color={variant === "primary" ? "primary" : "inherit"}
                 onClick={handleOpen}
-                sx={{
+                sx={(theme) => ({
                     borderRadius: 999,
                     textTransform: "uppercase",
-                }}
+                    ...(variant === "secondary" && {
+                        color: theme.palette.text.secondary,
+                        "&:hover": {
+                            backgroundColor: "transparent",
+                            "& .MuiSvgIcon-root": {
+                                backgroundColor: theme.palette.action.hover,
+                                borderRadius: "50%",
+                                padding: "4px",
+                                marginLeft: "-4px",
+                                marginRight: "4px",
+                            },
+                        },
+                    }),
+                })}
             >
                 {actionName} {entityName}
             </Button>

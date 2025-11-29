@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
+import { SelectorButton } from "./SelectorButton";
 
 interface UpdateSelectorButtonProps {
     children: ReactNode;
@@ -14,9 +15,9 @@ export const UpdateSelectorButton = ({ children, renderDialog }: UpdateSelectorB
 
     return (
         <>
-            <div role="button" tabIndex={0} onClick={handleOpen} onKeyDown={handleOpen}>
+            <SelectorButton onClick={handleOpen}>
                 {children}
-            </div>
+            </SelectorButton>
             {renderDialog({ open, onClose: handleClose })}
         </>
     );

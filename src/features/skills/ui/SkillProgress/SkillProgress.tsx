@@ -3,6 +3,7 @@ import { LinearProgress, Stack, Typography, linearProgressClasses } from "@mui/m
 interface SkillProgressProps {
     skillName: string;
     mastery: number;
+    isSelected?: boolean;
 }
 
 const masteryPalette = [
@@ -17,11 +18,11 @@ const resolveColors = (mastery: number) => {
     return masteryPalette.find((item) => mastery <= item.threshold) ?? masteryPalette.at(-1)!;
 };
 
-export const SkillProgress = ({ skillName, mastery }: SkillProgressProps) => {
+export const SkillProgress = ({ skillName, mastery, isSelected = false }: SkillProgressProps) => {
     const { background, progress } = resolveColors(mastery);
 
     return (
-        <Stack direction="row" spacing={1.5} alignItems="center">
+        <Stack direction="row" sx={{ gap: "1rem", alignItems: "center" }}>
             <LinearProgress
                 variant="determinate"
                 value={mastery}
@@ -38,7 +39,15 @@ export const SkillProgress = ({ skillName, mastery }: SkillProgressProps) => {
                     },
                 }}
             />
-            <Typography variant="body2" fontWeight={500}>
+            <Typography 
+                variant="body2" 
+                fontWeight={isSelected ? 700 : 500}
+                sx={(theme) => ({
+                    color: isSelected 
+                        ? (theme.palette.mode === "dark" ? "#fff" : "#000")
+                        : "#767676",
+                })}
+            >
                 {skillName}
             </Typography>
         </Stack>
