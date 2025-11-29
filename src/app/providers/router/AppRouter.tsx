@@ -1,3 +1,12 @@
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { LoginPage } from "@pages/login";
+import { SignupPage } from "@pages/signup";
+import { UsersPage } from "@pages/users";
+import { UserSkillsPage } from "@pages/user-skills";
+import { MainLayout } from "@widgets/layout";
+import { tokenStorage } from "@shared/lib/tokenStorage.ts";
+
+
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import {LoginPage} from "@pages/login";
 import {SignupPage} from "@pages/signup";
@@ -34,6 +43,16 @@ export const AppRouter = () => {
                         <PrivateRoute>
                             <MainLayout>
                                 <UserProfile/>
+                            </MainLayout>
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/users/:userId/skills"
+                    element={
+                        <PrivateRoute>
+                            <MainLayout>
+                                <UserSkillsPage />
                             </MainLayout>
                         </PrivateRoute>
                     }
