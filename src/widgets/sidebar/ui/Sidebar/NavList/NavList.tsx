@@ -47,7 +47,7 @@ export const NavList = ({ isCollapsed }: NavListProps) => {
     const currentUserId = getCurrentUserId();
 
     const navItems: NavItem[] = [
-        { to: "/", label: "Employees", icon: <PeopleIcon /> },
+        { to: "/users", label: "Employees", icon: <PeopleIcon /> },
         {
             to: currentUserId ? `/users/${currentUserId}/skills` : "/skills",
             label: "Skills",
