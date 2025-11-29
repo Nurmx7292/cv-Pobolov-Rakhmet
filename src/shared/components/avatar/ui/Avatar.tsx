@@ -19,7 +19,8 @@ const Avatar: React.FC<AvatarProps> = ({
     const avatarAltText =
         firstName?.[0]?.toUpperCase() ||
         lastName?.[0]?.toUpperCase() ||
-        email[0].toUpperCase();
+        email?.[0]?.toUpperCase() ||
+        "?";
 
     const avatarStyle: React.CSSProperties = {
         width: `${size}px`,

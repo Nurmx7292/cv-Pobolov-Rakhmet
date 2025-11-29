@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Box, Avatar, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { UserMenu } from "./UserMenu/UserMenu";
 import styles from "./UserProfileNav.module.css";
 import { useQuery } from "@apollo/client/react";
 import {GET_USER_BY_ID_QUERY} from "@widgets/users/api/getUserByIdQuery.ts";
+import Avatar from "@shared/components/avatar/ui/Avatar.tsx";
 
 
 
@@ -57,14 +58,21 @@ export const UserProfileNav = ({ isCollapsed }: UserProfileProps) => {
                     },
                 }}
             >
-                <Avatar
-                    className={`${styles.avatar} ${isCollapsed ? styles.avatarCollapsed : ""}`}
-                    sx={{
-                        bgcolor: theme.palette.primary.main,
-                    }}
-                >
-                    T
-                </Avatar>
+                {/*<Avatar*/}
+                {/*    className={`${styles.avatar} ${isCollapsed ? styles.avatarCollapsed : ""}`}*/}
+                {/*    sx={{*/}
+                {/*        bgcolor: theme.palette.primary.main,*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*    T*/}
+                {/*</Avatar>*/}
+                <Avatar size={40}
+                        avatarReference={avatar}
+                        firstName={firstName}
+                        lastName={lastName}
+                        email={email}
+                />
+
                 <Box className={styles.emailBox}>
                     <Typography
                         variant="body2"
