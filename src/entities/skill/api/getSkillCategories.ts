@@ -5,6 +5,15 @@ export const GET_SKILL_CATEGORIES = gql`
         skillCategories {
             id
             name
+            order
+            parent {
+                id
+                name
+            }
+            children {
+                id
+                name
+            }
         }
     }
 `;
@@ -12,6 +21,9 @@ export const GET_SKILL_CATEGORIES = gql`
 export interface SkillCategory {
     id: string;
     name: string;
+    order: number;
+    parent: SkillCategory | null;
+    children: SkillCategory[];
 }
 
 export interface SkillCategoriesResponse {

@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const UPDATE_PROFILE_SKILL = gql`
-    mutation UpdateProfileSkill($skillId: ID!, $mastery: Int!) {
-        updateProfileSkill(skill: { skillId: $skillId, mastery: $mastery }) {
+    mutation UpdateProfileSkill($userId: ID!, $name: String!, $mastery: Mastery!) {
+        updateProfileSkill(skill: { userId: $userId, name: $name, mastery: $mastery }) {
             id
             full_name
             skills {
@@ -27,7 +27,8 @@ export interface UpdateProfileSkillResponse {
 }
 
 export interface UpdateProfileSkillVariables {
-    skillId: string;
-    mastery: number;
+    userId: string;
+    name: string;
+    mastery: string;
 }
 

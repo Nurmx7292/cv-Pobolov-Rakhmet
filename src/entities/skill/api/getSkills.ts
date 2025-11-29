@@ -5,7 +5,6 @@ export const GET_SKILLS = gql`
         skills {
             id
             name
-            category_id
             category {
                 id
                 name
@@ -22,7 +21,6 @@ export interface SkillOptionCategory {
 export interface SkillOption {
     id: string;
     name: string;
-    category_id: string;
     category: SkillOptionCategory;
 }
 
