@@ -89,10 +89,12 @@ export const UserList = () => {
 
 
 
-    const currentUserId = '835';
+    // const currentUserId = '835';
+    const currentUserId = localStorage.getItem('currentUserId');
+
     const currentUser = users.find((user) => user.id === currentUserId);
     let currentUserElement = null;
-    if(currentUser)currentUserElement = <UserCard key={currentUser.id} user={currentUser} />;
+    if(currentUser)currentUserElement = <UserCard  user={currentUser}/>;
 
 
 

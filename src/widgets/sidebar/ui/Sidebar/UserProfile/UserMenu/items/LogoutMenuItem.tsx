@@ -7,7 +7,7 @@ export const LogoutMenuItem = () => {
 
     const handleClick = () => {
         tokenStorage.clearTokens();
-        navigate("/login");
+        navigate("/auth/login");
     };
 
     return <MenuItem onClick={handleClick}>Logout</MenuItem>;

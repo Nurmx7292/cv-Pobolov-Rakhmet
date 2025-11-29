@@ -3,7 +3,7 @@ import { Drawer, Divider, useTheme } from "@mui/material";
 import type { Theme } from "@mui/material";
 import { NavList } from "./NavList/NavList";
 import { ToggleButton } from "./ToggleButton/ToggleButton";
-import { UserProfile } from "./UserProfile/UserProfile";
+import { UserProfileNav } from "./UserProfile/UserProfileNav.tsx";
 import styles from "./Sidebar.module.css";
 
 const expandedWidth = 200;
@@ -51,7 +51,7 @@ export const Sidebar = () => {
                 </div>
                 <div className={styles.footer}>
                     <Divider />
-                    <UserProfile isCollapsed={isCollapsed} />
+                    <UserProfileNav isCollapsed={isCollapsed} />
                 </div>
             </div>
             <ToggleButton isCollapsed={isCollapsed} onChange={setIsExpanded} />

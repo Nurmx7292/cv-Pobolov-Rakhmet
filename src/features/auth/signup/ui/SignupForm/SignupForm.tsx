@@ -47,39 +47,56 @@ export const SignupForm = () => {
         }
     };
 
+    const handleLoginClick = ( ) => {
+        navigate('/auth/login')
+    }
+
+
     return (
-        <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.title}>Sign up</div>
-            <input
-                className={styles.input}
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                required
-            />
-            <input
-                className={styles.input}
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                required
-            />
-            <input
-                className={styles.input}
-                type="password"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(event) => setConfirmPassword(event.target.value)}
-                required
-            />
-            {passwordError && <div>{passwordError}</div>}
-            {error && <div>{error.message}</div>}
-            <button className={styles.button} type="submit" disabled={loading}>
-                {loading ? "Signing up..." : "Sign up"}
-            </button>
-        </form>
+        <>
+            <button onClick={handleLoginClick}>LOG IN</button>
+            <button>SIGN UP</button>
+            <div>
+                Register now
+            </div>
+            <div>
+                Welcome! Sign up to continue
+            </div>
+            <form className={styles.form} onSubmit={handleSubmit}>
+                <div className={styles.title}>Sign up</div>
+                <input
+                    className={styles.input}
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    required
+                />
+                <input
+                    className={styles.input}
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    required
+                />
+                <input
+                    className={styles.input}
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(event) => setConfirmPassword(event.target.value)}
+                    required
+                />
+                {passwordError && <div>{passwordError}</div>}
+                {error && <div>{error.message}</div>}
+                <button className={styles.button} type="submit" disabled={loading}>
+                    {loading ? "Signing up..." : "CREATE ACCOUNT"}
+                </button>
+                <button onClick={handleLoginClick}>I HAVE AN ACCOUNT</button>
+            </form>
+        </>
+
     );
 };
 

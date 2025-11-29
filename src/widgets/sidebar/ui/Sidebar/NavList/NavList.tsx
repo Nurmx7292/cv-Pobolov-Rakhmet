@@ -16,6 +16,13 @@ interface NavItem {
     icon: React.ReactNode;
 }
 
+const navItems: NavItem[] = [
+    { to: "/users", label: "Employees", icon: <PeopleIcon /> },
+    { to: "/skills", label: "Skills", icon: <BarChartIcon /> },
+    { to: "/languages", label: "Languages", icon: <LanguageIcon /> },
+    { to: "/cvs", label: "CVs", icon: <DescriptionIcon /> },
+];
+
 interface NavListProps {
     isCollapsed: boolean;
 }
