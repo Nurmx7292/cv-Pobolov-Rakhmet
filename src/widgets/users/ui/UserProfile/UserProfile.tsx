@@ -189,9 +189,11 @@ const UserProfile = () => {
 
 
     let updateButton = null;
+    let uploadAvatarButton = null;
     let disableInputs = true;
     if (+currentUserId === +userId) {
-        updateButton = <Button variant="contained" onClick={onUpdateButtonClick} disabled={isUpdateDisabled}>UPDATE</Button>
+        updateButton = <Button variant="contained" onClick={onUpdateButtonClick} disabled={isUpdateDisabled}>UPDATE</Button>;
+        uploadAvatarButton =   <Button variant="contained" onClick={onUploadAvatarClick}>Upload Avatar</Button>;
         disableInputs = false;
     }
 
@@ -291,15 +293,13 @@ const UserProfile = () => {
 
             <input
                 type="file"
-                accept="image/*"
+                accept="image/png, image/jpeg, image/gif"
                 ref={fileInputRef}
                 style={{display: 'none'}} // скрываем input
                 onChange={onFileSelected}
             />
 
-            <Button variant="contained" onClick={onUploadAvatarClick}>
-                Upload Avatar
-            </Button>
+            {uploadAvatarButton}
 
         </div>
     );
