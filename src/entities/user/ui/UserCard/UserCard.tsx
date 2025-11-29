@@ -189,8 +189,14 @@ export const UserCard = ({ user }: Props) => {
                             <MenuItem disabled>Delete user</MenuItem>
                         </Menu>
 
-                        {/* Модальное окно для Update user */}
-                        <Dialog open={isUpdateDialogOpen} onClose={handleDialogClose}>
+                        <Dialog open={isUpdateDialogOpen} onClose={handleDialogClose}
+                                PaperProps={{
+                                    sx: {
+                                        width: 900,
+                                        height: 452,
+                                    }
+                                }}>
+
                             <DialogTitle>Update User</DialogTitle>
                             <IconButton
                                 aria-label="close"
@@ -206,15 +212,9 @@ export const UserCard = ({ user }: Props) => {
                             </IconButton>
                             <DialogContent>
 
-                                <UpdateUserDialog/>
+                                <UpdateUserDialog handleDialogClose={handleDialogClose}/>
 
                             </DialogContent>
-                            <DialogActions>
-                                <Button onClick={handleDialogClose}>Cancel</Button>
-                                <Button variant="contained" onClick={handleDialogClose}>
-                                    Save
-                                </Button>
-                            </DialogActions>
                         </Dialog>
                     </>
                 ) : (

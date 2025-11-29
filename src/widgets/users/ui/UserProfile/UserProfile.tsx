@@ -183,8 +183,6 @@ const UserProfile = () => {
         });
 
         await refetch();
-
-
     };
 
 
