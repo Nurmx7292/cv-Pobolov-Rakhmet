@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useLazyQuery } from "@apollo/client/react";
-import { useNavigate } from "react-router-dom";
-import { LOGIN_QUERY } from "../../api/loginQuery.ts";
-import { tokenStorage } from "@shared/lib/tokenStorage.ts";
+import {useState} from "react";
+import {useLazyQuery} from "@apollo/client/react";
+import {useNavigate} from "react-router-dom";
+import {LOGIN_QUERY} from "../../api/loginQuery.ts";
+import {tokenStorage} from "@shared/lib/tokenStorage.ts";
 import styles from "./LoginForm.module.css";
 
 interface LoginResponse {
@@ -21,7 +21,7 @@ export const LoginForm = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [login, { loading, error }] = useLazyQuery<LoginResponse, LoginVariables>(LOGIN_QUERY);
+    const [login, {loading, error}] = useLazyQuery<LoginResponse, LoginVariables>(LOGIN_QUERY);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -42,14 +42,9 @@ export const LoginForm = () => {
         navigate(`/users/${tokens.user.id}`);
     };
 
-    const handleSignUpClick = () => {
-        navigate('/auth/signup')
-    }
-
     return (
         <>
-            <button>LOG IN</button>
-            <button onClick={handleSignUpClick}>SIGN UP</button>
+
             <div>
                 Welcome back
             </div>

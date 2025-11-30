@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { SIGNUP_MUTATION } from "../../api/signupMutation.ts";
 import { tokenStorage } from "@shared/lib/tokenStorage.ts";
 import styles from "./SignupForm.module.css";
+import {Tab, Tabs} from "@mui/material";
 
 interface SignupResponse {
     signup: {
@@ -54,8 +55,6 @@ export const SignupForm = () => {
 
     return (
         <>
-            <button onClick={handleLoginClick}>LOG IN</button>
-            <button>SIGN UP</button>
             <div>
                 Register now
             </div>
