@@ -8,6 +8,7 @@ export const GET_CVS = gql`
             education
             description
             user {
+                id
                 email
             }
         }
@@ -15,6 +16,7 @@ export const GET_CVS = gql`
 `;
 
 export interface CvUser {
+    id: string;
     email: string;
 }
 
