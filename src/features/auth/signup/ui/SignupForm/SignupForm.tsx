@@ -65,8 +65,7 @@ export const SignupForm = () => {
     };
 
     return (
-        <div className={styles.login}>
-            <div className={styles.wrapper}>
+        <div className={styles.container}>
                 <div>Register now</div>
                 <div>Welcome! Sign up to continue</div>
 
@@ -130,7 +129,6 @@ export const SignupForm = () => {
                         I HAVE AN ACCOUNT
                     </Button>
                 </div>
-            </div>
         </div>
     );
 };
