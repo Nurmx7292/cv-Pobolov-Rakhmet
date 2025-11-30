@@ -4,4 +4,5 @@ export type { UserSkillsMock } from "./ui/UserSkillsLayout/UserSkillsLayout";
 export { AddProfileSkillButton } from "./ui/AddProfileSkillButton";
 export { UpdateProfileSkillButton } from "./ui/UpdateProfileSkillButton";
 export { UserCvsTable } from "./ui/UserCvsTable/UserCvsTable";
+export { UserCvsActionMenu } from "./ui/UserCvsActionMenu/UserCvsActionMenu";
 

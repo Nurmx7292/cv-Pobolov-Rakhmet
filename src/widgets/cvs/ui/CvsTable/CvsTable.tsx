@@ -1,4 +1,4 @@
-import { useState, useMemo, MouseEvent } from "react";
+import { useState, useMemo } from "react";
 import {
     Table,
     TableBody,
@@ -8,15 +8,12 @@ import {
     TableRow,
     Paper,
     TextField,
-    IconButton,
-    Menu,
-    MenuItem,
     Typography,
     Box,
     CircularProgress,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useCvs, type CvListItem } from "@entities/cv";
+import { CvsActionMenu } from "../CvsActionMenu/CvsActionMenu";
 
 type SortKey = "name" | "email" | null;
 type SortDirection = "asc" | "desc";
@@ -37,34 +34,6 @@ export const CvsTable = ({ userId, onEdit, onDelete }: CvsTableProps) => {
         key: null,
         direction: "asc",
     });
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [selectedCv, setSelectedCv] = useState<CvListItem | null>(null);
-
-    const isMenuOpen = Boolean(anchorEl);
-
-    const handleMenuOpen = (event: MouseEvent<HTMLElement>, cv: CvListItem) => {
-        setAnchorEl(event.currentTarget);
-        setSelectedCv(cv);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-        setSelectedCv(null);
-    };
-
-    const handleEdit = () => {
-        if (selectedCv && onEdit) {
-            onEdit(selectedCv);
-        }
-        handleMenuClose();
-    };
-
-    const handleDelete = () => {
-        if (selectedCv && onDelete) {
-            onDelete(selectedCv);
-        }
-        handleMenuClose();
-    };
 
     const handleSort = (key: SortKey) => {
         setSortConfig((prev) => {
@@ -215,12 +184,13 @@ export const CvsTable = ({ userId, onEdit, onDelete }: CvsTableProps) => {
                                     <TableCell>{cv.education}</TableCell>
                                     <TableCell>{cv.user?.email || "-"}</TableCell>
                                     <TableCell align="right">
-                                        <IconButton
-                                            size="small"
-                                            onClick={(e) => handleMenuOpen(e, cv)}
-                                        >
-                                            <MoreVertIcon />
-                                        </IconButton>
+                                        {onEdit && onDelete && (
+                                            <CvsActionMenu
+                                                cv={cv}
+                                                onEdit={onEdit}
+                                                onDelete={onDelete}
+                                            />
+                                        )}
                                     </TableCell>
                                 </TableRow>
                             ))
@@ -228,14 +198,6 @@ export const CvsTable = ({ userId, onEdit, onDelete }: CvsTableProps) => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Menu
-                anchorEl={anchorEl}
-                open={isMenuOpen}
-                onClose={handleMenuClose}
-            >
-                <MenuItem onClick={handleEdit}>Edit</MenuItem>
-                <MenuItem onClick={handleDelete}>Delete</MenuItem>
-            </Menu>
         </Box>
     );
 };

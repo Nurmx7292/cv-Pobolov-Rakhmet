@@ -6,4 +6,6 @@ export { CvFormDialog } from "./ui/CvFormDialog/CvFormDialog";
 export { CreateCvDialog } from "./ui/CreateCvDialog/CreateCvDialog";
 export { UpdateCvDialog } from "./ui/UpdateCvDialog/UpdateCvDialog";
 export { DeleteCvDialog } from "./ui/DeleteCvDialog/DeleteCvDialog";
+export { CreateCvButton } from "./ui/CreateCvButton/CreateCvButton";
+export { CvsActionMenu } from "./ui/CvsActionMenu/CvsActionMenu";
 
