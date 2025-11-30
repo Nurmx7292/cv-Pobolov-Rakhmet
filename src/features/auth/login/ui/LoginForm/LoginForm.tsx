@@ -63,7 +63,7 @@ export const LoginForm = () => {
             <p className={styles.text2}>
                 Hello again! Log in to continue
             </p>
-
+            <form onSubmit={handleSubmit} className={styles.container}>
                 <TextField
                     className={styles.input}
                     label="Email"
@@ -74,14 +74,14 @@ export const LoginForm = () => {
                         "& .MuiInputBase-root": {
                             height: 48,
                         },
-                        mt: "15px"
+                        mt: "15px",
                     }}
                     value={email}
                     type="text"
                     onChange={e => setEmail(e.target.value)}
                     placeholder={isFocusedEmail ? "example@gmail.com" : ""}
 
-                    InputLabelProps={{ shrink: email !== "" || isFocusedEmail }}
+                    InputLabelProps={{shrink: email !== "" || isFocusedEmail}}
                     onFocus={() => setIsFocusedEmail(true)}
                     onBlur={() => setIsFocusedEmail(false)}
                 />
@@ -105,24 +105,28 @@ export const LoginForm = () => {
                         endAdornment: (
                             <InputAdornment position="end">
                                 <IconButton onClick={togglePasswordVisibility} edge="end">
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    {showPassword ? <VisibilityOff/> : <Visibility/>}
                                 </IconButton>
                             </InputAdornment>
                         ),
                     }}
                     placeholder={isFocusedPassword ? "Enter your password" : ""}
-                    InputLabelProps={{ shrink: password !== "" || isFocusedPassword }}
+                    InputLabelProps={{shrink: password !== "" || isFocusedPassword}}
                     onFocus={() => setIsFocusedPassword(true)}
                     onBlur={() => setIsFocusedPassword(false)}
                 />
 
-            <div><Button variant="contained"   sx={{
-                width: 220,
-                height: 48,
-                mt: "60px",
-                fontWeight: "bold",
-            }} onClick={handleSubmit}>LOG IN</Button></div>
-            <div><Button variant="contained"    sx={{
+                <div><Button variant="contained" type="submit" sx={{
+                    width: 220,
+                    height: 48,
+                    mt: "60px",
+                    fontWeight: "bold",
+                }} onClick={handleSubmit}>LOG IN</Button></div>
+
+            </form>
+
+
+            <div><Button variant="contained" sx={{
                 width: 220,
                 height: 48,
                 backgroundColor: "#353535",
