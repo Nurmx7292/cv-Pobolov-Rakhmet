@@ -13,10 +13,11 @@ import {UPDATE_USER_MUTATION} from "@widgets/users/api/updateUserMutation";
 import {UPDATE_PROFILE_MUTATION} from "@widgets/users/api/updateProfileMutation.ts";
 import {UPLOAD_AVATAR_MUTATION} from "@widgets/users/api/uploadAvatarMutation";
 import Avatar from "@shared/components/avatar/ui/Avatar.tsx";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
-
-    const [view, setView] = useState<'profile' | 'skills | languages'>('profile');
+    const navigate = useNavigate();
+    const [view, setView] = useState<'profile' | 'skills' | 'languages'>('profile');
 
     const [updateUser] = useMutation(UPDATE_USER_MUTATION);
     const [updateProfile] = useMutation(UPDATE_PROFILE_MUTATION);
@@ -222,10 +223,10 @@ const UserProfile = () => {
                         // navigate('/auth/signup');
                     }
                     if (newValue === 'skills') {
-                        // navigate('/auth/signup');
+                        navigate(`/users/${userId}/skills`);
                     }
                     if (newValue === 'languages') {
-                        // navigate('/auth/signup');
+                        navigate(`/users/${userId}/languages`);
                     }
                 }}
                 centered
