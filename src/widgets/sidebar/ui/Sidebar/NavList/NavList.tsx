@@ -33,10 +33,29 @@ const activeBackground = (theme: Theme) =>
 const hoverBackground = (theme: Theme) =>
     theme.palette.mode === "dark" ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)";
 
+const getCurrentUserId = () => {
+    if (typeof window === "undefined") {
+        return null;
+    }
+    return window.localStorage.getItem("currentUserId");
+};
+
 export const NavList = ({ isCollapsed }: NavListProps) => {
     const theme = useTheme();
     const navigate = useNavigate();
     const { isActive } = useActiveNavItem();
+    const currentUserId = getCurrentUserId();
+
+    const navItems: NavItem[] = [
+        { to: "/users", label: "Employees", icon: <PeopleIcon /> },
+        {
+            to: currentUserId ? `/users/${currentUserId}/skills` : "/skills",
+            label: "Skills",
+            icon: <BarChartIcon />,
+        },
+        { to: "/languages", label: "Languages", icon: <LanguageIcon /> },
+        { to: "/cvs", label: "CVs", icon: <DescriptionIcon /> },
+    ];
 
     return (
         <List className={styles.list}>

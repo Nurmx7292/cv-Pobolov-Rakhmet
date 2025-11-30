@@ -19,9 +19,18 @@ const authLink = setContext((_, { headers }) => {
     };
 });
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
+const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors) {
         graphQLErrors.forEach((graphQLError) => {
+            console.error("GraphQL Error:", {
+                message: graphQLError.message,
+                locations: graphQLError.locations,
+                path: graphQLError.path,
+                extensions: graphQLError.extensions,
+                operation: operation.operationName,
+                variables: operation.variables,
+            });
+            
             if (
                 graphQLError.message === "Unauthorized" ||
                 graphQLError.extensions?.code === "UNAUTHENTICATED"
@@ -31,12 +40,20 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
         });
     }
 
-    if (
-        networkError &&
-        "statusCode" in networkError &&
-        (networkError.statusCode === 401 || networkError.statusCode === 403)
-    ) {
-        tokenStorage.clearTokens();
+    if (networkError) {
+        console.error("Network Error:", {
+            message: networkError.message,
+            statusCode: "statusCode" in networkError ? networkError.statusCode : undefined,
+            operation: operation.operationName,
+            variables: operation.variables,
+        });
+        
+        if (
+            "statusCode" in networkError &&
+            (networkError.statusCode === 401 || networkError.statusCode === 403)
+        ) {
+            tokenStorage.clearTokens();
+        }
     }
 });
 

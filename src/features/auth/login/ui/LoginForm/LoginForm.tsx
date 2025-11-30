@@ -1,9 +1,12 @@
-import { useState } from "react";
-import { useLazyQuery } from "@apollo/client/react";
-import { useNavigate } from "react-router-dom";
-import { LOGIN_QUERY } from "../../api/loginQuery.ts";
-import { tokenStorage } from "@shared/lib/tokenStorage.ts";
+import React, {useState} from "react";
+import {useLazyQuery} from "@apollo/client/react";
+import {useNavigate} from "react-router-dom";
+import {LOGIN_QUERY} from "../../api/loginQuery.ts";
+import {tokenStorage} from "@shared/lib/tokenStorage.ts";
 import styles from "./LoginForm.module.css";
+import TextField from "@mui/material/TextField";
+import {Button, InputAdornment, IconButton} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface LoginResponse {
     login: {
@@ -21,8 +24,15 @@ export const LoginForm = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [login, { loading, error }] = useLazyQuery<LoginResponse, LoginVariables>(LOGIN_QUERY);
+    const [isFocusedEmail, setIsFocusedEmail] = useState(false);
+    const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
+    const [login, {loading, error}] = useLazyQuery<LoginResponse, LoginVariables>(LOGIN_QUERY);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(prev => !prev);
+    };
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const result = await login({
@@ -42,45 +52,67 @@ export const LoginForm = () => {
         navigate(`/users/${tokens.user.id}`);
     };
 
-    const handleSignUpClick = () => {
-        navigate('/auth/signup')
-    }
+
 
     return (
-        <>
-            <button>LOG IN</button>
-            <button onClick={handleSignUpClick}>SIGN UP</button>
-            <div>
+        <div className={styles.login}>
+
+            <div className={styles.wrapper}>
+            <h4>
                 Welcome back
-            </div>
-            <div>
+            </h4>
+            <h4>
                 Hello again! Log in to continue
-            </div>
-            <form className={styles.form} onSubmit={handleSubmit}>
-                <div className={styles.title}>Log in</div>
-                <input
+            </h4>
+
+            <div>
+                <TextField
                     className={styles.input}
-                    type="email"
-                    placeholder="Email"
+                    label="Email"
+                    variant="outlined"
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    required
+                    type="text"
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder={isFocusedEmail ? "example@gmail.com" : ""}
+
+                    InputLabelProps={{ shrink: email !== "" || isFocusedEmail }}
+                    onFocus={() => setIsFocusedEmail(true)}
+                    onBlur={() => setIsFocusedEmail(false)}
                 />
-                <input
-                    className={styles.input}
-                    type="password"
-                    placeholder="Password"
+            </div>
+                <div>
+                <TextField
+                    label="Password"
+                    variant="outlined"
+                    type={showPassword ? "text" : "password"}
                     value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    required
+                    onChange={e => setPassword(e.target.value)}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={togglePasswordVisibility} edge="end">
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                    placeholder={isFocusedPassword ? "Enter your password" : ""}
+                    InputLabelProps={{ shrink: password !== "" || isFocusedPassword }}
+                    onFocus={() => setIsFocusedPassword(true)}
+                    onBlur={() => setIsFocusedPassword(false)}
                 />
-                {error && <div>{error.message}</div>}
-                <button className={styles.button} type="submit" disabled={loading}>
-                    {loading ? "logging in..." : "LOG IN"}
-                </button>
-                <button>FORGOT PASSWORD</button>
-            </form>
-        </>
+            </div>
+            <div><Button variant="contained" onClick={handleSubmit}>LOG IN</Button></div>
+            <div><Button variant="contained"    sx={{
+                backgroundColor: "#353535",   // цвет кнопки
+                boxShadow: "none",            // убираем тень
+                "&:hover": {
+                    backgroundColor: "#3A3A3A",
+                    boxShadow: "none",          // убираем тень при наведении
+                },
+            }}>FORGOT PASSWORD</Button></div>
+            </div>
+        </div>
 
     );
 };
