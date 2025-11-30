@@ -1,9 +1,25 @@
+.container {
+    padding-left: 140px;
+    padding-right: 140px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.employeeText {
+    padding-top: 16px;
+    padding-left: 20px;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    color: gray;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
 .columnTitles {
     display: grid;
     grid-template-areas: 'avatar fn ln email dn pn ';
-    grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr 1fr;
-    border-bottom: 1px solid black;
-    margin-bottom: 20px;
+    grid-template-columns: 1fr 2fr 2fr 5fr 2fr 3fr 1fr;
+    border-bottom: 1px solid dimgrey;
     height: 40px;
     margin-top: 10px;
     font-weight: bold;

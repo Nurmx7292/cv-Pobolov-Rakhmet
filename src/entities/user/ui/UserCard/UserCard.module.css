@@ -1,9 +1,17 @@
-.card {
+.container {
     display: grid;
+    height: 73px;
     grid-template-areas: 'avatar fn ln email dn pn profile';
-    grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr 1fr auto;
-    border-bottom: 1px solid black;
-    margin-bottom: 20px;
+    grid-template-columns: 1fr 2fr 2fr 5fr 2fr 3fr 1fr auto;
+    border-bottom: 1px solid dimgrey;
+    padding-left: 15px;
+    font-size: 14px;
+}
+
+.cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .profile {
