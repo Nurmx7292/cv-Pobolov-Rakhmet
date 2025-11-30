@@ -14,4 +14,10 @@ export { AddCvSkillForm } from "./ui/AddCvSkillForm/AddCvSkillForm";
 export { UpdateCvSkillButton } from "./ui/UpdateCvSkillButton/UpdateCvSkillButton";
 export { UpdateCvSkillDialog } from "./ui/UpdateCvSkillDialog/UpdateCvSkillDialog";
 export { DeleteCvSkillButton } from "./ui/DeleteCvSkillButton/DeleteCvSkillButton";
+export { CvProjectsTable } from "./ui/CvProjectsTable/CvProjectsTable";
+export { AddCvProjectDialog } from "./ui/AddCvProjectDialog/AddCvProjectDialog";
+export { AddCvProjectForm } from "./ui/AddCvProjectForm/AddCvProjectForm";
+export { UpdateCvProjectDialog } from "./ui/UpdateCvProjectDialog/UpdateCvProjectDialog";
+export { CvProjectForm } from "./ui/CvProjectForm/CvProjectForm";
+export { RemoveCvProjectDialog } from "./ui/RemoveCvProjectDialog/RemoveCvProjectDialog";
 
