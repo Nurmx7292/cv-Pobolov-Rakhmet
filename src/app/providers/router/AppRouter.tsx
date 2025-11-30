@@ -1,15 +1,18 @@
-import {BrowserRouter, Navigate, Route, Routes, useLocation} from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Navigate, Route, Routes, useLocation} from "react-router-dom";
 import { LoginPage } from "@pages/login";
 import { SignupPage } from "@pages/signup";
 import { UsersPage } from "@pages/users";
-import { UserSkillsPage } from "@pages/user-skills";
+import { UserLanguagesPage } from "@pages/user-languages";
 import { MainLayout } from "@widgets/layout";
 import { tokenStorage } from "@shared/lib/tokenStorage.ts";
+import UserProfile from "@widgets/users/ui/UserProfile/UserProfile";
+import { UserSkillsPage } from "@pages/user-skills";
 import UserProfile from "@widgets/users/ui/UserProfile/UserProfile";
 import AuthToggle from "@features/auth/authToggle/AuthToggle.tsx";
 import styles from './AppRouter.module.css'
 
-const PrivateRoute = ({children}: { children: JSX.Element }) => {
+const PrivateRoute = ({children}: { children: React.JSX.Element }) => {
     const isAuthorized = Boolean(tokenStorage.getAccessToken());
     return isAuthorized ? children : <Navigate to="/auth/login" replace/>;
 };
@@ -51,6 +54,16 @@ export const AppRouter = () => {
                     }
                 />
                 <Route
+                    path="/users/:userId/languages"
+                    element={
+                        <PrivateRoute>
+                            <MainLayout>
+                                <UserLanguagesPage />
+                            </MainLayout>
+                        </PrivateRoute>
+                      }
+                  />
+                  <Route
                     path="/users/:userId/skills"
                     element={
                         <PrivateRoute>
