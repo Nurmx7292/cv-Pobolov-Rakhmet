@@ -66,14 +66,21 @@ export const SignupForm = () => {
 
     return (
         <div className={styles.container}>
-                <div>Register now</div>
-                <div>Welcome! Sign up to continue</div>
+                <p className={styles.text1}>Register now</p>
+                <p className={styles.text2}>Welcome! Sign up to continue</p>
 
-                <div>
                     <TextField
                         className={styles.input}
                         label="Email"
                         variant="outlined"
+                        sx={{
+                            width: 560,
+                            height: 48,
+                            "& .MuiInputBase-root": {
+                                height: 48,
+                            },
+                            mt: "15px"
+                        }}
                         value={email}
                         type="text"
                         onChange={(e) => setEmail(e.target.value)}
@@ -82,12 +89,19 @@ export const SignupForm = () => {
                         onFocus={() => setIsFocusedEmail(true)}
                         onBlur={() => setIsFocusedEmail(false)}
                     />
-                </div>
 
-                <div>
                     <TextField
+                        className={styles.input}
                         label="Password"
                         variant="outlined"
+                        sx={{
+                            width: 560,
+                            height: 48,
+                            "& .MuiInputBase-root": {
+                                height: 48,
+                            },
+                            mt: "15px"
+                        }}
                         type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -105,10 +119,14 @@ export const SignupForm = () => {
                             ),
                         }}
                     />
-                </div>
 
                 <div>
-                    <Button variant="contained" onClick={handleSubmit}>
+                    <Button variant="contained" onClick={handleSubmit} sx={{
+                        width: 220,
+                        height: 48,
+                        mt: "60px",
+                        fontWeight: "bold",
+                    }}>
                         CREATE ACCOUNT
                     </Button>
                 </div>
@@ -118,7 +136,10 @@ export const SignupForm = () => {
                         variant="contained"
                         onClick={handleOnAccountExistsClick}
                         sx={{
+                            width: 220,
+                            height: 48,
                             backgroundColor: "#353535",
+                            color: "#767676",
                             boxShadow: "none",
                             "&:hover": {
                                 backgroundColor: "#3A3A3A",
