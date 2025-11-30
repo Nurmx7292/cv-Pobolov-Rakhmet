@@ -8,4 +8,10 @@ export { UpdateCvDialog } from "./ui/UpdateCvDialog/UpdateCvDialog";
 export { DeleteCvDialog } from "./ui/DeleteCvDialog/DeleteCvDialog";
 export { CreateCvButton } from "./ui/CreateCvButton/CreateCvButton";
 export { CvsActionMenu } from "./ui/CvsActionMenu/CvsActionMenu";
+export { AddCvSkillButton } from "./ui/AddCvSkillButton/AddCvSkillButton";
+export { AddCvSkillDialog } from "./ui/AddCvSkillDialog/AddCvSkillDialog";
+export { AddCvSkillForm } from "./ui/AddCvSkillForm/AddCvSkillForm";
+export { UpdateCvSkillButton } from "./ui/UpdateCvSkillButton/UpdateCvSkillButton";
+export { UpdateCvSkillDialog } from "./ui/UpdateCvSkillDialog/UpdateCvSkillDialog";
+export { DeleteCvSkillButton } from "./ui/DeleteCvSkillButton/DeleteCvSkillButton";
 
