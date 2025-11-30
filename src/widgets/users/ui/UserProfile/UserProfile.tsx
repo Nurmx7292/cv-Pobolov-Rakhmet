@@ -4,7 +4,7 @@ import {useParams} from "react-router-dom";
 import {useQuery} from "@apollo/client/react";
 import {GET_USER_BY_ID_QUERY} from "@widgets/users/api/getUserByIdQuery";
 import TextField from '@mui/material/TextField';
-import {Button} from "@mui/material";
+import {Button, Tab, Tabs} from "@mui/material";
 import {GET_DEPARTMENTS_QUERY} from "@widgets/users/api/getDepartmentsQuery";
 import {GET_POSITIONS_QUERY} from "@widgets/users/api/getPositionsQuery";
 import {MenuItem} from '@mui/material';
@@ -15,6 +15,9 @@ import {UPLOAD_AVATAR_MUTATION} from "@widgets/users/api/uploadAvatarMutation";
 import Avatar from "@shared/components/avatar/ui/Avatar.tsx";
 
 const UserProfile = () => {
+
+    const [view, setView] = useState<'profile' | 'skills | languages'>('profile');
+
     const [updateUser] = useMutation(UPDATE_USER_MUTATION);
     const [updateProfile] = useMutation(UPDATE_PROFILE_MUTATION);
 
@@ -210,6 +213,51 @@ const UserProfile = () => {
 
     return (
         <div className={styles.userProfile}>
+
+            <Tabs
+                value={view}
+                onChange={(e, newValue) => {
+                    setView(newValue);
+                    if (newValue === 'profile') {
+                        // navigate('/auth/signup');
+                    }
+                    if (newValue === 'skills') {
+                        // navigate('/auth/signup');
+                    }
+                    if (newValue === 'languages') {
+                        // navigate('/auth/signup');
+                    }
+                }}
+                centered
+                TabIndicatorProps={{
+                    sx: {
+                        backgroundColor: 'red',
+                        height: 3,
+                    },
+                }}
+            >
+                <Tab label="PROFILE" value="profile"     sx={{
+                    fontFamily: "Roboto, sans-serif",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    textTransform: "none",
+                    width: 160,
+                }}/>
+                <Tab label="SKILLS" value="skills"     sx={{
+                    fontFamily: "Roboto, sans-serif",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    textTransform: "none",
+                    width: 160,
+                }}/>
+                <Tab label="LANGUAGES" value="languages"     sx={{
+                    fontFamily: "Roboto, sans-serif",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    textTransform: "none",
+                    width: 160,
+                }}/>
+            </Tabs>
 
             <div>{firstName} {lastName}</div>
             <div>{email}</div>
