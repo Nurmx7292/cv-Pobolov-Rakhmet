@@ -104,11 +104,11 @@ export const LoginForm = () => {
             </div>
             <div><Button variant="contained" onClick={handleSubmit}>LOG IN</Button></div>
             <div><Button variant="contained"    sx={{
-                backgroundColor: "#353535",   // цвет кнопки
-                boxShadow: "none",            // убираем тень
+                backgroundColor: "#353535",
+                boxShadow: "none",
                 "&:hover": {
                     backgroundColor: "#3A3A3A",
-                    boxShadow: "none",          // убираем тень при наведении
+                    boxShadow: "none",
                 },
             }}>FORGOT PASSWORD</Button></div>
             </div>
