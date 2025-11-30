@@ -8,7 +8,6 @@ import { MainLayout } from "@widgets/layout";
 import { tokenStorage } from "@shared/lib/tokenStorage.ts";
 import UserProfile from "@widgets/users/ui/UserProfile/UserProfile";
 import { UserSkillsPage } from "@pages/user-skills";
-import UserProfile from "@widgets/users/ui/UserProfile/UserProfile";
 import AuthToggle from "@features/auth/authToggle/AuthToggle.tsx";
 import styles from './AppRouter.module.css'
 

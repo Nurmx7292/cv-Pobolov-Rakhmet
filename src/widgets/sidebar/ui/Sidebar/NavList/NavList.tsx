@@ -53,7 +53,11 @@ export const NavList = ({ isCollapsed }: NavListProps) => {
             label: "Skills",
             icon: <BarChartIcon />,
         },
-        { to: "/languages", label: "Languages", icon: <LanguageIcon /> },
+        {
+            to: currentUserId ? `/users/${currentUserId}/languages` : "/languages",
+            label: "languages",
+            icon: <LanguageIcon />,
+        },
         { to: "/cvs", label: "CVs", icon: <DescriptionIcon /> },
     ];
 
