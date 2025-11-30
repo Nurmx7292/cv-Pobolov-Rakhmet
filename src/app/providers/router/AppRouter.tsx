@@ -7,6 +7,7 @@ import { MainLayout } from "@widgets/layout";
 import { tokenStorage } from "@shared/lib/tokenStorage.ts";
 import UserProfile from "@widgets/users/ui/UserProfile/UserProfile";
 import AuthToggle from "@features/auth/authToggle/AuthToggle.tsx";
+import styles from './AppRouter.module.css'
 
 const PrivateRoute = ({children}: { children: JSX.Element }) => {
     const isAuthorized = Boolean(tokenStorage.getAccessToken());
@@ -21,7 +22,7 @@ const AuthToggleWrapper = () => {
 
 export const AppRouter = () => {
     return (
-        <>
+        <div className={styles.wrapper}>
 
         <BrowserRouter>
             <AuthToggleWrapper/>
@@ -61,7 +62,7 @@ export const AppRouter = () => {
                 />
             </Routes>
         </BrowserRouter>
-        </>
+        </div>
     );
 };
 
