@@ -1,6 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
 import Stack from "@mui/material/Stack";
-import Grid from "@mui/material/Grid2";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { AddProfileLanguageButton } from "../AddProfileLanguageButton/AddProfileLanguageButton";
@@ -13,7 +12,6 @@ import type { LanguageProficiency as LanguageProficiencyType } from "@entities/p
 interface UserLanguagesLayoutProps {
     languages: LanguageProficiencyType[];
     isEditable: boolean;
-    userId: string;
     onAddLanguage: (name: string, proficiency: string) => Promise<void>;
     onUpdateLanguage: (name: string, proficiency: string) => Promise<void>;
     onDeleteLanguages: (names: string[]) => Promise<void>;
@@ -28,7 +26,6 @@ interface UserLanguagesLayoutProps {
 export const UserLanguagesLayout = ({
     languages,
     isEditable,
-    userId,
     onAddLanguage,
     onUpdateLanguage,
     onDeleteLanguages,
@@ -199,24 +196,32 @@ export const UserLanguagesLayout = ({
                         No languages added yet.
                     </Typography>
                 ) : (
-                    <Grid
-                        container
-                        spacing={2}
-                        columns={{ xs: 1, sm: 2, lg: 3 }}
+                    <Box
+                        sx={{
+                            display: "grid",
+                            gridTemplateColumns: {
+                                xs: "1fr",
+                                sm: "repeat(2, 1fr)",
+                                lg: "repeat(3, 1fr)",
+                            },
+                            gap: 2,
+                            width: "100%",
+                        }}
                     >
                         {languages.map((language) => (
-                            <Grid key={language.name} size={1}>
-                                <Box
-                                    sx={{
-                                        minWidth: "17rem",
-                                        padding: "0.75rem 1rem",
-                                    }}
-                                >
-                                    {renderLanguage(language)}
-                                </Box>
-                            </Grid>
+                            <Box
+                                key={language.name}
+                                sx={{
+                                    minWidth: { xs: "100%", sm: "17rem" },
+                                    maxWidth: { xs: "100%", sm: "none" },
+                                    padding: "0.75rem 1rem",
+                                    width: "100%",
+                                }}
+                            >
+                                {renderLanguage(language)}
+                            </Box>
                         ))}
-                    </Grid>
+                    </Box>
                 )}
 
                 {addError && (

@@ -32,8 +32,11 @@ export const AddProfileLanguageButton = ({
                 sx={{
                     textTransform: "none",
                     color: "text.secondary",
+                    fontSize: "1rem",
+                    fontWeight: 400,
                     "&:hover": {
                         backgroundColor: "action.hover",
+                        borderRadius: "50%",
                     },
                 }}
             >

@@ -1,23 +1,23 @@
-import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
-import type {ReactElement} from "react";
-import {LoginPage} from "@pages/login";
-import {SignupPage} from "@pages/signup";
-import {UsersPage} from "@pages/users";
-import {UserLanguagesPage} from "@pages/user-languages";
-import {tokenStorage} from "@shared/lib/tokenStorage.ts";
+import React from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { LoginPage } from "@pages/login";
+import { SignupPage } from "@pages/signup";
+import { UsersPage } from "@pages/users";
+import { UserLanguagesPage } from "@pages/user-languages";
+import { MainLayout } from "@widgets/layout";
+import { tokenStorage } from "@shared/lib/tokenStorage.ts";
 import UserProfile from "@widgets/users/ui/UserProfile/UserProfile";
-import {MainLayout} from "@widgets/layout";
 
-const PrivateRoute = ({children}: { children: ReactElement }) => {
+const PrivateRoute = ({children}: { children: React.JSX.Element }) => {
     const isAuthorized = Boolean(tokenStorage.getAccessToken());
-    return isAuthorized ? children : <Navigate to="/login" replace/>;
+    return isAuthorized ? children : <Navigate to="/auth/login" replace/>;
 };
 
 export const AppRouter = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Navigate to="/auth/login" replace/>}/>
+                <Route path="/" element={<Navigate to="/users" replace/>}/>
                 <Route path="/auth/login" element={<LoginPage/>}/>
                 <Route path="/auth/signup" element={<SignupPage/>}/>
                 <Route
@@ -45,7 +45,7 @@ export const AppRouter = () => {
                     element={
                         <PrivateRoute>
                             <MainLayout>
-                                <UserLanguagesPage/>
+                                <UserLanguagesPage />
                             </MainLayout>
                         </PrivateRoute>
                     }
