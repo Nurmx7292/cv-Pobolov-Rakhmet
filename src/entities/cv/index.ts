@@ -14,4 +14,10 @@ export type { UpdateCvSkillResponse, UpdateCvSkillVariables } from "./api/update
 export { useUpdateCvSkill } from "./api/useUpdateCvSkill";
 export type { DeleteCvSkillResponse, DeleteCvSkillVariables } from "./api/deleteCvSkill";
 export { useDeleteCvSkill } from "./api/useDeleteCvSkill";
+export type { AddCvProjectResponse, AddCvProjectVariables } from "./api/addCvProject";
+export { useAddCvProject } from "./api/useAddCvProject";
+export type { UpdateCvProjectResponse, UpdateCvProjectVariables } from "./api/updateCvProject";
+export { useUpdateCvProject } from "./api/useUpdateCvProject";
+export type { RemoveCvProjectResponse, RemoveCvProjectVariables } from "./api/removeCvProject";
+export { useRemoveCvProject } from "./api/useRemoveCvProject";
 
