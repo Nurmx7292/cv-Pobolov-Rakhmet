@@ -55,35 +55,49 @@ export const LoginForm = () => {
 
 
     return (
-        <div className={styles.login}>
+        <div className={styles.container}>
 
-            <div className={styles.wrapper}>
-            <h4>
+            <p className={styles.text1}>
                 Welcome back
-            </h4>
-            <h4>
+            </p>
+            <p className={styles.text2}>
                 Hello again! Log in to continue
-            </h4>
-
-            <div>
+            </p>
+            <form onSubmit={handleSubmit} className={styles.container}>
                 <TextField
                     className={styles.input}
                     label="Email"
                     variant="outlined"
+                    sx={{
+                        width: 560,
+                        height: 48,
+                        "& .MuiInputBase-root": {
+                            height: 48,
+                        },
+                        mt: "15px",
+                    }}
                     value={email}
                     type="text"
                     onChange={e => setEmail(e.target.value)}
                     placeholder={isFocusedEmail ? "example@gmail.com" : ""}
 
-                    InputLabelProps={{ shrink: email !== "" || isFocusedEmail }}
+                    InputLabelProps={{shrink: email !== "" || isFocusedEmail}}
                     onFocus={() => setIsFocusedEmail(true)}
                     onBlur={() => setIsFocusedEmail(false)}
                 />
-            </div>
-                <div>
+
                 <TextField
+                    className={styles.input}
                     label="Password"
                     variant="outlined"
+                    sx={{
+                        width: 560,
+                        height: 48,
+                        "& .MuiInputBase-root": {
+                            height: 48,
+                        },
+                        mt: "15px"
+                    }}
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
@@ -91,27 +105,38 @@ export const LoginForm = () => {
                         endAdornment: (
                             <InputAdornment position="end">
                                 <IconButton onClick={togglePasswordVisibility} edge="end">
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    {showPassword ? <VisibilityOff/> : <Visibility/>}
                                 </IconButton>
                             </InputAdornment>
                         ),
                     }}
                     placeholder={isFocusedPassword ? "Enter your password" : ""}
-                    InputLabelProps={{ shrink: password !== "" || isFocusedPassword }}
+                    InputLabelProps={{shrink: password !== "" || isFocusedPassword}}
                     onFocus={() => setIsFocusedPassword(true)}
                     onBlur={() => setIsFocusedPassword(false)}
                 />
-            </div>
-            <div><Button variant="contained" onClick={handleSubmit}>LOG IN</Button></div>
-            <div><Button variant="contained"    sx={{
-                backgroundColor: "#353535",   // цвет кнопки
-                boxShadow: "none",            // убираем тень
+
+                <div><Button variant="contained" type="submit" sx={{
+                    width: 220,
+                    height: 48,
+                    mt: "60px",
+                    fontWeight: "bold",
+                }} onClick={handleSubmit}>LOG IN</Button></div>
+
+            </form>
+
+
+            <div><Button variant="contained" sx={{
+                width: 220,
+                height: 48,
+                backgroundColor: "#353535",
+                color: "#767676",
+                boxShadow: "none",
                 "&:hover": {
                     backgroundColor: "#3A3A3A",
                     boxShadow: "none",          // убираем тень при наведении
                 },
             }}>FORGOT PASSWORD</Button></div>
-            </div>
         </div>
 
     );

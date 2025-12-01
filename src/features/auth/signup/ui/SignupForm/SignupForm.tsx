@@ -65,61 +65,81 @@ export const SignupForm = () => {
     };
 
     return (
-        <div className={styles.login}>
-            <div className={styles.wrapper}>
-                <div>Register now</div>
-                <div>Welcome! Sign up to continue</div>
+        <div className={styles.container}>
+            <p className={styles.text1}>Register now</p>
+            <p className={styles.text2}>Welcome! Sign up to continue</p>
+            <form onSubmit={handleSubmit} className={styles.container}>
+                <TextField
+                    className={styles.input}
+                    label="Email"
+                    variant="outlined"
+                    sx={{
+                        width: 560,
+                        height: 48,
+                        "& .MuiInputBase-root": {
+                            height: 48,
+                        },
+                        mt: "15px"
+                    }}
+                    value={email}
+                    type="text"
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder={isFocusedEmail ? "example@gmail.com" : ""}
+                    InputLabelProps={{shrink: email !== "" || isFocusedEmail}}
+                    onFocus={() => setIsFocusedEmail(true)}
+                    onBlur={() => setIsFocusedEmail(false)}
+                />
+
+                <TextField
+                    className={styles.input}
+                    label="Password"
+                    variant="outlined"
+                    sx={{
+                        width: 560,
+                        height: 48,
+                        "& .MuiInputBase-root": {
+                            height: 48,
+                        },
+                        mt: "15px"
+                    }}
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder={isFocusedPassword ? "Enter your password" : ""}
+                    InputLabelProps={{shrink: password !== "" || isFocusedPassword}}
+                    onFocus={() => setIsFocusedPassword(true)}
+                    onBlur={() => setIsFocusedPassword(false)}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={togglePasswordVisibility} edge="end">
+                                    {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
 
                 <div>
-                    <TextField
-                        className={styles.input}
-                        label="Email"
-                        variant="outlined"
-                        value={email}
-                        type="text"
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder={isFocusedEmail ? "example@gmail.com" : ""}
-                        InputLabelProps={{ shrink: email !== "" || isFocusedEmail }}
-                        onFocus={() => setIsFocusedEmail(true)}
-                        onBlur={() => setIsFocusedEmail(false)}
-                    />
-                </div>
-
-                <div>
-                    <TextField
-                        label="Password"
-                        variant="outlined"
-                        type={showPassword ? "text" : "password"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder={isFocusedPassword ? "Enter your password" : ""}
-                        InputLabelProps={{ shrink: password !== "" || isFocusedPassword }}
-                        onFocus={() => setIsFocusedPassword(true)}
-                        onBlur={() => setIsFocusedPassword(false)}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={togglePasswordVisibility} edge="end">
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </div>
-
-                <div>
-                    <Button variant="contained" onClick={handleSubmit}>
+                    <Button variant="contained" type="submit" onClick={handleSubmit} sx={{
+                        width: 220,
+                        height: 48,
+                        mt: "60px",
+                        fontWeight: "bold",
+                    }}>
                         CREATE ACCOUNT
                     </Button>
                 </div>
-
+            </form>
                 <div>
                     <Button
                         variant="contained"
                         onClick={handleOnAccountExistsClick}
                         sx={{
+                            width: 220,
+                            height: 48,
                             backgroundColor: "#353535",
+                            color: "#767676",
                             boxShadow: "none",
                             "&:hover": {
                                 backgroundColor: "#3A3A3A",
@@ -130,7 +150,6 @@ export const SignupForm = () => {
                         I HAVE AN ACCOUNT
                     </Button>
                 </div>
-            </div>
         </div>
-    );
+);
 };

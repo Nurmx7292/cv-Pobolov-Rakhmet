@@ -1,6 +1,11 @@
 import {UserCard, useUsersQuery} from "@entities/user";
 import styles from './UserList.module.css'
 import React, {useState} from "react";
+import TextField from "@mui/material/TextField";
+import {InputAdornment} from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 export const UserList = () => {
     const { data, loading, error } = useUsersQuery();
@@ -52,16 +57,23 @@ export const UserList = () => {
         let newKey = key;
 
         if (sortConfig.key === key) {
-            // Меняем направление
             direction = sortConfig.direction === 'ascend' ? 'descend' : 'ascend';
         }
 
         setSortConfig({ key: newKey, direction });
     };
 
+    // const getSortIcon = (key) => {
+    //     if (sortConfig.key !== key) return null;
+    //     return sortConfig.direction === 'ascend' ? ' ▲' : ' ▼';
+    // };
     const getSortIcon = (key) => {
         if (sortConfig.key !== key) return null;
-        return sortConfig.direction === 'ascend' ? ' ▲' : ' ▼';
+        return sortConfig.direction === 'ascend' ? (
+            <ArrowUpwardIcon style={{ fontSize: 16, marginLeft: 4 }} />
+        ) : (
+            <ArrowDownwardIcon style={{ fontSize: 16, marginLeft: 4 }} />
+        );
     };
 
 
@@ -89,7 +101,6 @@ export const UserList = () => {
 
 
 
-    // const currentUserId = '835';
     const currentUserId = localStorage.getItem('currentUserId');
 
     const currentUser = users.find((user) => user.id === currentUserId);
@@ -126,8 +137,49 @@ export const UserList = () => {
     }
 
     return (
-        <div>
-            <input type="text" value={searchString} onChange={(e)=>setSearchString(e.target.value)}/>
+        <div className={styles.container}>
+            <div className={styles.employeeText}>Employees</div>
+            <TextField
+                label="Search"
+                variant="outlined"
+                value={searchString}
+                onChange={(e) => setSearchString(e.target.value)}
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <SearchIcon style={{ color: '#767676' }} />
+                        </InputAdornment>
+                    ),
+                }}
+                InputLabelProps={{
+                    shrink: false,
+                    style: {
+                        display: searchString ? 'none' : 'block',
+                        top: '50%',
+                        left:'15%',
+                        transform: 'translateY(-50%)',
+                        fontWeight: 'bold'
+                    },
+                }}
+                sx={{
+                    width: 320,
+                    mb: 2,
+                    "& .MuiOutlinedInput-root": {
+                        height: 40,
+                        "& fieldset": {
+                            borderColor: "#A0A0A0",
+                            borderRadius: '120px',
+                        },
+                        "&:hover fieldset": {
+                            borderColor: "#FFFFFF",
+                        },
+                        "&.Mui-focused fieldset": {
+                            borderColor: "#FF0000",
+                        },
+                    },
+                }}
+            />
+
             <div className={styles.columnTitles}>
                 <div className={styles.firstName} onClick={() => requestSort('first_name')}>First Name {getSortIcon('first_name')}</div>
                 <div className={styles.lastName} onClick={() => requestSort('last_name')}>Last Name {getSortIcon('last_name')}</div>

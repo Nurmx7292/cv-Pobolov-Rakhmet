@@ -1,8 +1,32 @@
-.input {
+.userProfile {
+    display: grid;
+    grid-template-areas: 'a''ui''i';
 
-    width: 400px;
 }
 
-.userProfile {
+.avatar {
+    grid-area: a;
+    display: flex;
+    justify-content: center;
+}
+
+.userInfo {
+    grid-area: ui;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input {
+    width: 410px;
+    height: 48px;
+}
+
+.inputs {
+    grid-area: i;
+    display: flex;
+    flex-wrap: wrap;
+    width: 850px;
+    justify-content: flex-end;
 
 }
