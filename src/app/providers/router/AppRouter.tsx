@@ -36,9 +36,9 @@ const UserProfileToggleWrapper = () => {
     const location = useLocation();
 
     const showProfileToggle =
-        matchPath("/users/:id", location.pathname)
-    matchPath("/users/:id/skills", location.pathname)
-    matchPath("/users/:id/languages", location.pathname);
+        matchPath("/users/:id", location.pathname)  
+        || matchPath("/users/:id/skills", location.pathname)
+    || matchPath("/users/:id/languages", location.pathname);
 
     return showProfileToggle ? <UserProfileToggle /> : null;
 }
