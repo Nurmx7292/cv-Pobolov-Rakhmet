@@ -1,15 +1,16 @@
 import { useState, MouseEvent } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useNavigate } from "react-router-dom";
 import type { CvListItem } from "@entities/cv";
 
 interface CvsActionMenuProps {
     cv: CvListItem;
-    onEdit: (cv: CvListItem) => void;
     onDelete: (cv: CvListItem) => void;
 }
 
-export const CvsActionMenu = ({ cv, onEdit, onDelete }: CvsActionMenuProps) => {
+export const CvsActionMenu = ({ cv, onDelete }: CvsActionMenuProps) => {
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const isMenuOpen = Boolean(anchorEl);
 
@@ -22,8 +23,8 @@ export const CvsActionMenu = ({ cv, onEdit, onDelete }: CvsActionMenuProps) => {
         setAnchorEl(null);
     };
 
-    const handleEdit = () => {
-        onEdit(cv);
+    const handleDetails = () => {
+        navigate(`/cvs/${cv.id}/details`);
         handleMenuClose();
     };
 
@@ -45,7 +46,7 @@ export const CvsActionMenu = ({ cv, onEdit, onDelete }: CvsActionMenuProps) => {
                 open={isMenuOpen}
                 onClose={handleMenuClose}
             >
-                <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                <MenuItem onClick={handleDetails}>Details</MenuItem>
                 <MenuItem onClick={handleDelete}>Delete</MenuItem>
             </Menu>
         </>

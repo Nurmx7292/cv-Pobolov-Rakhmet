@@ -11,9 +11,12 @@ interface CvFormData {
 interface CvFormProps {
     initialData?: CvFormData;
     onSubmit: (data: CvFormData) => Promise<void>;
-    onCancel: () => void;
+    onCancel?: () => void;
     loading?: boolean;
     error?: Error | null;
+    disabled?: boolean;
+    maxWidth?: string;
+    btnWidth?: string;
 }
 
 export const CvForm = ({
@@ -22,6 +25,9 @@ export const CvForm = ({
     onCancel,
     loading = false,
     error,
+    disabled = false,
+    maxWidth,
+    btnWidth,
 }: CvFormProps) => {
     const [name, setName] = useState(initialData?.name || "");
     const [education, setEducation] = useState(initialData?.education || "");
@@ -66,7 +72,14 @@ export const CvForm = ({
 
     return (
         <form onSubmit={handleSubmit}>
-            <Stack spacing={3}>
+            <Stack 
+                spacing={3} 
+                sx={{ 
+                    paddingTop: "0.5rem",
+                    maxWidth: maxWidth || "100%",
+                    width: "100%",
+                }}
+            >
                 {error && <Alert severity="error">{error.message}</Alert>}
                 <TextField
                     label="Name"
@@ -76,7 +89,7 @@ export const CvForm = ({
                     fullWidth
                     error={!!validationErrors.name}
                     helperText={validationErrors.name}
-                    disabled={loading}
+                    disabled={loading || disabled}
                 />
                 <TextField
                     label="Education"
@@ -86,7 +99,7 @@ export const CvForm = ({
                     fullWidth
                     error={!!validationErrors.education}
                     helperText={validationErrors.education}
-                    disabled={loading}
+                    disabled={loading || disabled}
                 />
                 <TextField
                     label="Description"
@@ -95,16 +108,17 @@ export const CvForm = ({
                     required
                     fullWidth
                     multiline
-                    rows={4}
+                    rows={7}
                     error={!!validationErrors.description}
                     helperText={validationErrors.description}
-                    disabled={loading}
+                    disabled={loading || disabled}
                 />
                 <FormButtons
-                    title="Save"
+                    title="UPDATE"
                     loading={loading}
-                    disabled={loading}
+                    disabled={loading || disabled}
                     onCancel={onCancel}
+                    maxWidth={btnWidth}
                 />
             </Stack>
         </form>

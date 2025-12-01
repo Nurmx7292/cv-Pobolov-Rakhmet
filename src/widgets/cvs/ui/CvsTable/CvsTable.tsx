@@ -20,11 +20,10 @@ type SortDirection = "asc" | "desc";
 
 interface CvsTableProps {
     userId?: string;
-    onEdit?: (cv: CvListItem) => void;
     onDelete?: (cv: CvListItem) => void;
 }
 
-export const CvsTable = ({ userId, onEdit, onDelete }: CvsTableProps) => {
+export const CvsTable = ({ userId, onDelete }: CvsTableProps) => {
     const { data, loading, error } = useCvs();
     const [searchString, setSearchString] = useState("");
     const [sortConfig, setSortConfig] = useState<{
@@ -184,10 +183,9 @@ export const CvsTable = ({ userId, onEdit, onDelete }: CvsTableProps) => {
                                     <TableCell>{cv.education}</TableCell>
                                     <TableCell>{cv.user?.email || "-"}</TableCell>
                                     <TableCell align="right">
-                                        {onEdit && onDelete && (
+                                        {onDelete && (
                                             <CvsActionMenu
                                                 cv={cv}
-                                                onEdit={onEdit}
                                                 onDelete={onDelete}
                                             />
                                         )}

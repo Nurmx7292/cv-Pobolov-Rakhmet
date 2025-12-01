@@ -1,14 +1,13 @@
 import { useState, useMemo } from "react";
 import { Stack, Typography, Box } from "@mui/material";
 import { useCvs } from "@entities/cv";
-import { CvsTable, CreateCvDialog, UpdateCvDialog, DeleteCvDialog } from "@widgets/cvs";
+import { CvsTable, CreateCvDialog, DeleteCvDialog } from "@widgets/cvs";
 import { CreateCvButton } from "@widgets/cvs";
 import { useNotification } from "@shared/lib/notifications";
 import type { CvListItem } from "@entities/cv";
 
 export const CvsPage = () => {
     const [createDialogOpen, setCreateDialogOpen] = useState(false);
-    const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedCv, setSelectedCv] = useState<CvListItem | null>(null);
     const { showNotification, NotificationComponent } = useNotification();
@@ -23,16 +22,6 @@ export const CvsPage = () => {
         setCreateDialogOpen(false);
     };
 
-    const handleEdit = (cv: CvListItem) => {
-        setSelectedCv(cv);
-        setUpdateDialogOpen(true);
-    };
-
-    const handleUpdateClose = () => {
-        setUpdateDialogOpen(false);
-        setSelectedCv(null);
-    };
-
     const handleDelete = (cv: CvListItem) => {
         setSelectedCv(cv);
         setDeleteDialogOpen(true);
@@ -41,10 +30,6 @@ export const CvsPage = () => {
     const handleDeleteClose = () => {
         setDeleteDialogOpen(false);
         setSelectedCv(null);
-    };
-
-    const handleUpdateSuccess = () => {
-        showNotification("CV was updated", "success");
     };
 
     const handleDeleteSuccess = () => {
@@ -75,7 +60,7 @@ export const CvsPage = () => {
                     </Typography>
                     <CreateCvButton userId={currentUserId} />
                 </Stack>
-                <CvsTable onEdit={handleEdit} onDelete={handleDelete} />
+                <CvsTable onDelete={handleDelete} />
             </Stack>
             <CreateCvDialog
                 open={createDialogOpen}
@@ -83,20 +68,12 @@ export const CvsPage = () => {
                 userId={currentUserId}
             />
             {selectedCv && (
-                <>
-                    <UpdateCvDialog
-                        open={updateDialogOpen}
-                        onClose={handleUpdateClose}
-                        cv={selectedCv}
-                        onSuccess={handleUpdateSuccess}
-                    />
-                    <DeleteCvDialog
-                        open={deleteDialogOpen}
-                        onClose={handleDeleteClose}
-                        cv={selectedCv}
-                        onSuccess={handleDeleteSuccess}
-                    />
-                </>
+                <DeleteCvDialog
+                    open={deleteDialogOpen}
+                    onClose={handleDeleteClose}
+                    cv={selectedCv}
+                    onSuccess={handleDeleteSuccess}
+                />
             )}
             <NotificationComponent />
         </>

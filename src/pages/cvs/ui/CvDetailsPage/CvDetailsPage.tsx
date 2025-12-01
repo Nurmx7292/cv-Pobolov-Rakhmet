@@ -1,21 +1,36 @@
 import { useOutletContext } from "react-router-dom";
-import { useState } from "react";
-import { Stack, Typography, Box, Button } from "@mui/material";
-import { UpdateCvDialog, type CvPageContextValue } from "@widgets/cvs";
+import { Stack, Typography, Box } from "@mui/material";
+import { CvForm, type CvPageContextValue } from "@widgets/cvs";
 import { useUpdateCv } from "@entities/cv";
 import { useNotification } from "@shared/lib/notifications";
-import type { CvListItem } from "@entities/cv";
 
 export const CvDetailsPage = () => {
     const { cv, refetch } = useOutletContext<CvPageContextValue>();
-    const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+    const [updateCv, { loading, error }] = useUpdateCv();
     const { showNotification, NotificationComponent } = useNotification();
 
     const currentUserId = localStorage.getItem("currentUserId");
     const isEditable = cv?.user?.id === currentUserId;
 
-    const handleUpdateSuccess = () => {
-        showNotification("CV was updated", "success");
+    const handleSubmit = async (data: { name: string; education: string; description: string }) => {
+        if (!cv) return;
+        try {
+            await updateCv({
+                variables: {
+                    cv: {
+                        cvId: cv.id,
+                        name: data.name,
+                        education: data.education,
+                        description: data.description,
+                    },
+                },
+            });
+            await refetch();
+            showNotification("CV was updated", "success");
+        } catch (err) {
+            console.error("Failed to update CV:", err);
+            showNotification("Failed to update CV", "error");
+        }
     };
 
     if (!cv) {
@@ -33,58 +48,23 @@ export const CvDetailsPage = () => {
         );
     }
 
-    const cvListItem: CvListItem = {
-        id: cv.id,
-        name: cv.name,
-        education: cv.education,
-        description: cv.description,
-        user: cv.user ? {
-            id: cv.user.id,
-            email: "",
-        } : null,
-    };
-
     return (
         <>
-            <Stack spacing={3} sx={{ p: 3 }}>
-                {isEditable && (
-                    <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                        <Button
-                            variant="contained"
-                            onClick={() => setUpdateDialogOpen(true)}
-                        >
-                            Edit CV
-                        </Button>
-                    </Box>
-                )}
-                <Stack spacing={2}>
-                    <Typography variant="h5" component="h1">
-                        {cv.name}
-                    </Typography>
-                    <Box>
-                        <Typography variant="h6" component="h3">
-                            Education
-                        </Typography>
-                        <Typography variant="body1">{cv.education}</Typography>
-                    </Box>
-                    {cv.description && (
-                        <Box>
-                            <Typography variant="h6" component="h3">
-                                Description
-                            </Typography>
-                            <Typography variant="body1">{cv.description}</Typography>
-                        </Box>
-                    )}
-                </Stack>
-            </Stack>
-            {isEditable && (
-                <UpdateCvDialog
-                    open={updateDialogOpen}
-                    onClose={() => setUpdateDialogOpen(false)}
-                    cv={cvListItem}
-                    onSuccess={handleUpdateSuccess}
+            <Stack alignItems="center" sx={{ width: "100%" }}>
+                <CvForm
+                    initialData={{
+                        name: cv.name,
+                        education: cv.education,
+                        description: cv.description,
+                    }}
+                    onSubmit={handleSubmit}
+                    loading={loading}
+                    error={error}
+                    disabled={!isEditable}
+                    maxWidth="852px"
+                    btnWidth="50%"
                 />
-            )}
+            </Stack>
             <NotificationComponent />
         </>
     );
