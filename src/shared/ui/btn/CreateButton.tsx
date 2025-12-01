@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import type { ReactNode } from "react";
+import type { SxProps, Theme } from "@mui/material/styles";
 
 interface CreateButtonProps {
     entityName: string;
     actionName?: string;
     variant?: "primary" | "secondary";
     renderDialog: (controls: { open: boolean; onClose: () => void }) => ReactNode;
+    sx?: SxProps<Theme>;
 }
 
 export const CreateButton = ({
@@ -15,6 +17,7 @@ export const CreateButton = ({
     actionName = "Add",
     variant = "primary",
     renderDialog,
+    sx,
 }: CreateButtonProps) => {
     const [open, setOpen] = useState(false);
 
@@ -24,26 +27,24 @@ export const CreateButton = ({
     return (
         <>
             <Button
-                startIcon={<AddIcon />}
-                variant={variant === "primary" ? "contained" : "text"}
-                color={variant === "primary" ? "primary" : "inherit"}
+                variant="outlined"
+                startIcon={
+                    <AddIcon
+                        sx={(theme) => ({
+                            color: variant === "primary" ? theme.palette.primary.main : "#767676",
+                        })}
+                    />
+                }
                 onClick={handleOpen}
                 sx={(theme) => ({
-                    borderRadius: 999,
                     textTransform: "uppercase",
-                    ...(variant === "secondary" && {
-                        color: theme.palette.text.secondary,
-                        "&:hover": {
-                            backgroundColor: "transparent",
-                            "& .MuiSvgIcon-root": {
-                                backgroundColor: theme.palette.action.hover,
-                                borderRadius: "50%",
-                                padding: "4px",
-                                marginLeft: "-4px",
-                                marginRight: "4px",
-                            },
-                        },
-                    }),
+                    ...(variant === "primary"
+                        ? {}
+                        : {
+                              color: "#767676",
+                              width: "15rem",
+                          }),
+                    ...(typeof sx === "function" ? sx(theme) : sx),
                 })}
             >
                 {actionName} {entityName}

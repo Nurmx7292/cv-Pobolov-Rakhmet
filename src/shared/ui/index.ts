@@ -5,5 +5,6 @@ export { DeleteSelectorButton } from "./btn/DeleteSelectorButton";
 export { SelectSkillButton } from "./btn/SelectSkillButton";
 export { SelectorButton } from "./btn/SelectorButton";
 export { FormButtons } from "./form/FormButtons";
+export { Searchbar } from "./search/Searchbar";
 
 
