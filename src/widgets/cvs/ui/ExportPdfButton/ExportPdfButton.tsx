@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, CircularProgress } from "@mui/material";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 import { gql } from "@apollo/client";
 import { useNotification } from "@shared/lib/notifications";
 

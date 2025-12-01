@@ -4,10 +4,16 @@ import { LoginPage } from "@pages/login";
 import { SignupPage } from "@pages/signup";
 import { UsersPage } from "@pages/users";
 import { UserLanguagesPage } from "@pages/user-languages";
+import { CvsPage } from "@pages/cvs";
+import { CvDetailsPage } from "@pages/cvs/ui/CvDetailsPage/CvDetailsPage";
+import { CvSkillsPage } from "@pages/cvs/ui/CvSkillsPage/CvSkillsPage";
+import { CvProjectsPage } from "@pages/cvs/ui/CvProjectsPage/CvProjectsPage";
+import { CvPreviewPage } from "@pages/cvs/ui/CvPreviewPage/CvPreviewPage";
 import { MainLayout } from "@widgets/layout";
 import { tokenStorage } from "@shared/lib/tokenStorage.ts";
 import UserProfile from "@widgets/users/ui/UserProfile/UserProfile";
 import { UserSkillsPage } from "@pages/user-skills";
+import { CvPageLayout } from "@widgets/cvs";
 import AuthToggle from "@features/auth/authToggle/AuthToggle.tsx";
 import styles from './AppRouter.module.css'
 
@@ -72,6 +78,32 @@ export const AppRouter = () => {
                         </PrivateRoute>
                     }
                 />
+                <Route
+                    path="/cvs"
+                    element={
+                        <PrivateRoute>
+                            <MainLayout>
+                                <CvsPage />
+                            </MainLayout>
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/cvs/:cvId"
+                    element={
+                        <PrivateRoute>
+                            <MainLayout>
+                                <CvPageLayout />
+                            </MainLayout>
+                        </PrivateRoute>
+                    }
+                >
+                    <Route index element={<Navigate to="details" replace />} />
+                    <Route path="details" element={<CvDetailsPage />} />
+                    <Route path="skills" element={<CvSkillsPage />} />
+                    <Route path="projects" element={<CvProjectsPage />} />
+                    <Route path="preview" element={<CvPreviewPage />} />
+                </Route>
             </Routes>
         </BrowserRouter>
         </div>
