@@ -97,8 +97,9 @@ export const UserCard = ({ user }: Props) => {
                         <Dialog open={isUpdateDialogOpen} onClose={handleDialogClose}
                                 PaperProps={{
                                     sx: {
-                                        width: 900,
+                                        width: 950,
                                         height: 540,
+                                        maxWidth: 950,
                                     }
                                 }}>
 

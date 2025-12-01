@@ -23,7 +23,7 @@ const UserProfile = () => {
     const [uploadAvatar] = useMutation(UPLOAD_AVATAR_MUTATION);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const onUploadAvatarClick = () => {
-        fileInputRef.current?.click(); // открываем диалог
+        fileInputRef.current?.click();
     };
 
     const onFileSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
