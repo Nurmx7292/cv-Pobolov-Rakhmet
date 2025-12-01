@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useLazyQuery} from "@apollo/client/react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import {LOGIN_QUERY} from "../../api/loginQuery.ts";
 import {tokenStorage} from "@shared/lib/tokenStorage.ts";
 import styles from "./LoginForm.module.css";
@@ -55,11 +55,9 @@ export const LoginForm = () => {
 
 
     return (
-        <div className={styles.container}>
-
-            <p className={styles.text1}>
-                Welcome back
-            </p>
+        <div className={styles.container}><p className={styles.text1}>
+            Welcome back
+        </p>
             <p className={styles.text2}>
                 Hello again! Log in to continue
             </p>
@@ -136,6 +134,8 @@ export const LoginForm = () => {
 
             <div>
                 <Button
+                    component={Link}
+                    to="/forgot-password"
                     variant="contained"
                     sx={{
                         width: 220,
@@ -154,6 +154,5 @@ export const LoginForm = () => {
             </div>
         </div>
 
-            );
-            };
-
+    );
+};
