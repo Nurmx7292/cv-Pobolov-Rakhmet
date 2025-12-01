@@ -1,2 +1,39 @@
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 24px;
+    width: 900px;
+}
+
 .input {
+    width: 410px;
+}
+
+
+.buttonsContainer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    width: 100%;
+    margin-top: 32px;
+}
+
+
+.button {
+    border-radius: 8px;
+    padding: 8px 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+:global(.MuiInputBase-input) {
+    color: white;
+}
+:global(.MuiInputLabel-root) {
+    color: #ccc;
+}
+:global(.MuiOutlinedInput-notchedOutline) {
+    border-color: #777 !important;
 }

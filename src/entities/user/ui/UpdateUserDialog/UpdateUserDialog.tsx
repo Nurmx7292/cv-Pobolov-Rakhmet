@@ -82,8 +82,6 @@ const UpdateUserDialog = (props) => {
     }
 
 
-
-
     const {
         loading: departmentsLoading,
         error: departmentEerror,
@@ -134,7 +132,7 @@ const UpdateUserDialog = (props) => {
             variables: {
                 user: {
                     userId: currentUserId.toString(),
-                    departmentId:  departmentId.toString(),
+                    departmentId: departmentId.toString(),
                     positionId: positionId.toString(),
                 },
             },
@@ -157,7 +155,7 @@ const UpdateUserDialog = (props) => {
 
 
     return (
-        <div>
+        <div className={styles.container}>
             <TextField
                 className={styles.input}
                 label="Email"
@@ -243,10 +241,123 @@ const UpdateUserDialog = (props) => {
                 InputLabelProps={{shrink: roleInputValue !== ''}}
             />
 
-            <Button variant="contained" onClick={onCancelClick}>Cancel</Button>
-            <Button variant="contained" onClick={onUpdateButtonClick} disabled={isUpdateDisabled}>Update</Button>
+            <div className={styles.input}></div>
+
+
+            <div className={styles.buttonsContainer}>
+                <Button
+                    variant="contained"
+                    onClick={onCancelClick}
+                    className={styles.cancelButton}
+                >
+                    Cancel
+                </Button>
+                <Button
+                    variant="contained"
+                    onClick={onUpdateButtonClick}
+                    disabled={isUpdateDisabled}
+                    className={styles.updateButton}
+                >
+                    Update
+                </Button>
+            </div>
         </div>
     );
-};
+}
+
+
+    //original
+//     return (
+//         <div>
+//             <TextField
+//                 className={styles.input}
+//                 label="Email"
+//                 variant="outlined"
+//                 value={emailInputValue}
+//                 disabled={true}
+//                 onChange={e => setEmailInputValue(e.target.value)}
+//                 InputLabelProps={{shrink: emailInputValue !== ''}}
+//             />
+//             <TextField
+//                 className={styles.input}
+//                 label="Password"
+//                 variant="outlined"
+//                 value={passwordInputValue}
+//                 disabled={true}
+//                 onChange={e => setPasswordInputValue(e.target.value)}
+//                 InputLabelProps={{shrink: passwordInputValue !== ''}}
+//             />
+//
+//             <TextField
+//                 className={styles.input}
+//                 label="First Name"
+//                 variant="outlined"
+//                 value={firstNameInputValue}
+//                 onChange={e => setFirstNameInputValue(e.target.value)}
+//                 InputLabelProps={{shrink: firstNameInputValue !== ''}}
+//             />
+//
+//
+//             <TextField
+//                 className={styles.input}
+//                 label="Last Name"
+//                 variant="outlined"
+//                 value={lastNameInputValue}
+//                 onChange={e => setLastNameInputValue(e.target.value)}
+//                 InputLabelProps={{shrink: lastNameInputValue !== ''}}
+//             />
+//
+//
+//             <TextField
+//                 className={styles.input}
+//                 label="Department"
+//                 variant="outlined"
+//                 select
+//                 value={departmentInputValue}
+//                 onChange={onDepartmentChange}
+//             >
+//                 {departments !== null ?
+//
+//                     departments.map((department) => (
+//                         <MenuItem key={department} value={department}>
+//                             {department}
+//                         </MenuItem>
+//                     )) : null
+//                 }
+//             </TextField>
+//
+//
+//             <TextField
+//                 className={styles.input}
+//                 label="Position"
+//                 variant="outlined"
+//                 select
+//                 value={positionInputValue}
+//                 onChange={onPositionChange}
+//             >
+//                 {positions !== null ?
+//                     positions.map((position) => (
+//                         <MenuItem key={position} value={position}>
+//                             {position}
+//                         </MenuItem>
+//                     )) : null
+//                 }
+//             </TextField>
+//
+//             <TextField
+//                 className={styles.input}
+//                 label="Role"
+//                 variant="outlined"
+//                 value={roleInputValue}
+//                 disabled={true}
+//                 onChange={e => setRoleInputValue(e.target.value)}
+//                 InputLabelProps={{shrink: roleInputValue !== ''}}
+//             />
+//
+//             <Button variant="contained" onClick={onCancelClick}>Cancel</Button>
+//             <Button variant="contained" onClick={onUpdateButtonClick} disabled={isUpdateDisabled}>Update</Button>
+//         </div>
+//     );
+// };
 
 export default UpdateUserDialog;
