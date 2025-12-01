@@ -155,11 +155,15 @@ export const UserList = () => {
                     shrink: false,
                     style: {
                         display: searchString ? 'none' : 'block',
-                        marginLeft: 36,
+                        top: '50%',
+                        left:'15%',
+                        transform: 'translateY(-50%)',
+                        fontWeight: 'bold'
                     },
                 }}
                 sx={{
                     width: 320,
+                    mb: 2,
                     "& .MuiOutlinedInput-root": {
                         height: 40,
                         "& fieldset": {
