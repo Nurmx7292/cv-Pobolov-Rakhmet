@@ -1,20 +1,24 @@
 .userProfile {
     display: grid;
     grid-template-areas: 'a''ui''i';
-
+    font-family: Roboto, sans-serif;
 }
 
 .avatar {
     grid-area: a;
     display: flex;
     justify-content: center;
+    margin-top: 30px;
+    gap: 30px;
 }
+
 
 .userInfo {
     grid-area: ui;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 40px;
 }
 
 .input {
@@ -28,5 +32,8 @@
     flex-wrap: wrap;
     width: 850px;
     justify-content: flex-end;
+    margin-left: 420px;
+    gap:30px;
+    margin-top: 50px;
 
 }

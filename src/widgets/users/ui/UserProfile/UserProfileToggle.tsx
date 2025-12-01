@@ -47,7 +47,6 @@ const UserProfileToggle = () => {
                         navigate(`/users/${userId}/languages`);
                     }
                 }}
-                centered
                 TabIndicatorProps={{
                     sx: {
                         backgroundColor: 'red',

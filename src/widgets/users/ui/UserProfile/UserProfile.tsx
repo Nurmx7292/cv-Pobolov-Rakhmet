@@ -13,6 +13,7 @@ import {UPDATE_USER_MUTATION} from "@widgets/users/api/updateUserMutation";
 import {UPDATE_PROFILE_MUTATION} from "@widgets/users/api/updateProfileMutation.ts";
 import {UPLOAD_AVATAR_MUTATION} from "@widgets/users/api/uploadAvatarMutation";
 import Avatar from "@shared/components/avatar/ui/Avatar.tsx";
+import uploadImg from '../../../../shared/ui/assets/upload-icon.png'
 
 const UserProfile = () => {
 
@@ -190,9 +191,41 @@ const UserProfile = () => {
     let uploadAvatarButton = null;
     let disableInputs = true;
     if (+currentUserId === +userId) {
-        updateButton = <Button variant="contained" onClick={onUpdateButtonClick} disabled={isUpdateDisabled}>UPDATE</Button>;
-        uploadAvatarButton =   <Button variant="contained" onClick={onUploadAvatarClick}>Upload Avatar</Button>;
+        updateButton = <Button variant="contained" onClick={onUpdateButtonClick} disabled={isUpdateDisabled} style={{width:'410px'}}>UPDATE</Button>;
+
         disableInputs = false;
+    }
+
+    if (+currentUserId === +userId) {
+        uploadAvatarButton = (
+            <div
+                onClick={onUploadAvatarClick}
+                style={{
+                    display: "inline-block",
+                    padding: "10px 20px",
+                    backgroundColor: "#353535",
+                    color: "white",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    textAlign: "center",
+                    userSelect: "none",
+                    marginTop: "10px",
+                }}
+            >
+                <div style={{display:'flex', alignItems:'center', gap:'30px'}}>
+                    <div>
+                        <img src={uploadImg} alt="" style={{width: "30px"}}/>
+                    </div>
+                    <div style={{fontWeight: 'bold', fontSize: '20px'}}>
+                        Upload avatar image
+                    </div>
+                </div>
+
+                <div style={{fontWeight: 'bold', fontSize: '16px', color: 'gray'}}>
+                    png, jpg or gif no more than 0.5MB
+                </div>
+            </div>
+        );
     }
 
     const onDepartmentChange = (e) => {
@@ -212,11 +245,12 @@ const UserProfile = () => {
 
             <div className={styles.avatar}>
                 <div>
-                    <Avatar size={60}
-                            avatarReference={user.profile.avatar}
-                            firstName={firstNameInputValue}
-                            lastName={lastNameInputValue}
-                            email={email}
+                    <Avatar
+                        size={120}
+                        avatarReference={user.profile.avatar}
+                        firstName={firstNameInputValue}
+                        lastName={lastNameInputValue}
+                        email={email}
                     />
                 </div>
                 {uploadAvatarButton}
@@ -224,9 +258,9 @@ const UserProfile = () => {
 
 
             <div className={styles.userInfo}>
-                <div>{firstName} {lastName}</div>
-                <div>{email}</div>
-                <div>A member since {memberSinceString}</div>
+                <div style={{fontSize:'24px'}}>{firstName} {lastName}</div>
+                <div style={{fontSize: '16px', color:'lightgray'}}>{email}</div>
+                <div style={{fontSize:'16px'}}>A member since {memberSinceString}</div>
             </div>
 
 
@@ -299,7 +333,7 @@ const UserProfile = () => {
                 type="file"
                 accept="image/png, image/jpeg, image/gif"
                 ref={fileInputRef}
-                style={{display: 'none'}} // скрываем input
+                style={{display: 'none'}}
                 onChange={onFileSelected}
             />
 
