@@ -13,16 +13,12 @@ import {UPDATE_USER_MUTATION} from "@widgets/users/api/updateUserMutation";
 import {UPDATE_PROFILE_MUTATION} from "@widgets/users/api/updateProfileMutation.ts";
 import {UPLOAD_AVATAR_MUTATION} from "@widgets/users/api/uploadAvatarMutation";
 import Avatar from "@shared/components/avatar/ui/Avatar.tsx";
-import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
-    const navigate = useNavigate();
-    const [view, setView] = useState<'profile' | 'skills' | 'languages'>('profile');
 
     const [updateUser] = useMutation(UPDATE_USER_MUTATION);
     const [updateProfile] = useMutation(UPDATE_PROFILE_MUTATION);
 
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [uploadAvatar] = useMutation(UPLOAD_AVATAR_MUTATION);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const onUploadAvatarClick = () => {
@@ -211,54 +207,8 @@ const UserProfile = () => {
         } else setPositionInputValue(e.target.value)
     }
 
-
     return (
         <div className={styles.userProfile}>
-
-            <Tabs
-                value={view}
-                onChange={(e, newValue) => {
-                    setView(newValue);
-                    if (newValue === 'profile') {
-                        // navigate('/auth/signup');
-                    }
-                    if (newValue === 'skills') {
-                        navigate(`/users/${userId}/skills`);
-                    }
-                    if (newValue === 'languages') {
-                        navigate(`/users/${userId}/languages`);
-                    }
-                }}
-                centered
-                TabIndicatorProps={{
-                    sx: {
-                        backgroundColor: 'red',
-                        height: 3,
-                    },
-                }}
-            >
-                <Tab label="PROFILE" value="profile"     sx={{
-                    fontFamily: "Roboto, sans-serif",
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    textTransform: "none",
-                    width: 160,
-                }}/>
-                <Tab label="SKILLS" value="skills"     sx={{
-                    fontFamily: "Roboto, sans-serif",
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    textTransform: "none",
-                    width: 160,
-                }}/>
-                <Tab label="LANGUAGES" value="languages"     sx={{
-                    fontFamily: "Roboto, sans-serif",
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    textTransform: "none",
-                    width: 160,
-                }}/>
-            </Tabs>
 
             <div>{firstName} {lastName}</div>
             <div>{email}</div>
@@ -272,7 +222,6 @@ const UserProfile = () => {
                         email={email}
                 />
             </div>
-
 
             <TextField
                 className={styles.input}
@@ -348,8 +297,9 @@ const UserProfile = () => {
 
             {uploadAvatarButton}
 
-        </div>
-    );
+</div>
+)
+    ;
 };
 
 export default UserProfile;

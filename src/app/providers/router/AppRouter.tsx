@@ -10,6 +10,8 @@ import UserProfile from "@widgets/users/ui/UserProfile/UserProfile";
 import { UserSkillsPage } from "@pages/user-skills";
 import AuthToggle from "@features/auth/authToggle/AuthToggle.tsx";
 import styles from './AppRouter.module.css'
+import UserProfileToggle from "@widgets/users/ui/UserProfile/UserProfileToggle.tsx";
+import { matchPath } from "react-router-dom";
 
 const PrivateRoute = ({children}: { children: React.JSX.Element }) => {
     const isAuthorized = Boolean(tokenStorage.getAccessToken());
@@ -21,6 +23,17 @@ const AuthToggleWrapper = () => {
     const showAuthToggle = location.pathname === "/auth/login" || location.pathname === "/auth/signup";
     return showAuthToggle ? <AuthToggle /> : null;
 };
+
+const UserProfileToggleWrapper = () => {
+    const location = useLocation();
+
+    const showProfileToggle =
+        matchPath("/users/:id", location.pathname) ||
+        matchPath("/users/:id/skills", location.pathname) ||
+        matchPath("/users/:id/languages", location.pathname);
+
+    return showProfileToggle ? <UserProfileToggle /> : null;
+}
 
 export const AppRouter = () => {
     return (
@@ -47,6 +60,7 @@ export const AppRouter = () => {
                     element={
                         <PrivateRoute>
                             <MainLayout>
+                                <UserProfileToggleWrapper/>
                                 <UserProfile/>
                             </MainLayout>
                         </PrivateRoute>
@@ -57,6 +71,7 @@ export const AppRouter = () => {
                     element={
                         <PrivateRoute>
                             <MainLayout>
+                                <UserProfileToggleWrapper/>
                                 <UserLanguagesPage />
                             </MainLayout>
                         </PrivateRoute>
@@ -67,6 +82,7 @@ export const AppRouter = () => {
                     element={
                         <PrivateRoute>
                             <MainLayout>
+                                <UserProfileToggleWrapper/>
                                 <UserSkillsPage />
                             </MainLayout>
                         </PrivateRoute>
