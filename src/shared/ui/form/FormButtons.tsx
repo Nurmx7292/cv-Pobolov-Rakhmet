@@ -22,10 +22,11 @@ export const FormButtons = ({
             direction="row" 
             spacing={1} 
             sx={{ 
-                justifyContent: "end",
-                maxWidth: maxWidth || "100%",
+                justifyContent: "flex-end",
+                maxWidth: fullWidth ? (maxWidth || "100%") : "220px",
                 width: fullWidth ? (maxWidth || "100%") : "auto",
                 marginLeft: "auto",
+                alignSelf: "flex-end",
             }}
         >
             {onCancel && (
