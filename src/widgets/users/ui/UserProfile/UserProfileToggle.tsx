@@ -5,6 +5,7 @@ import {useParams} from "react-router-dom";
 import styles from "./UserProfileToggle.module.css";
 import {GET_USER_BY_ID_QUERY} from "@widgets/users/api/getUserByIdQuery";
 import {useQuery} from "@apollo/client/react";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 const UserProfileToggle = () => {
     const navigate = useNavigate();
@@ -23,12 +24,38 @@ const UserProfileToggle = () => {
     const firstName = profile?.first_name || '';
     const lastName = profile?.last_name || '';
 
+    const onUserLabelClick = () => {
+        setView('profile');
+        navigate(`/users/${userId}`);
+    }
+
+    const userLabeltext= (firstName || lastName) ? (
+        <>
+            <PersonOutlineIcon
+                sx={{ fontSize: 22, mx: 0.5, verticalAlign: "middle", color:'red' }}
+            />
+            {firstName} {lastName}
+        </>
+    ) : (
+        <>
+            &gt;
+            <PersonOutlineIcon
+                sx={{ fontSize: 22, mx: 0.5, verticalAlign: "middle", color:'red' }}
+            />
+            {email}
+        </>
+    );
 
 
-    const userLabel = (firstName||lastName) ? `> ${firstName} ${lastName}`: `> ${email}`;
+    const userLabel = (view === 'skills' || view === 'languages')
+        ? <span className={styles.userLabel} onClick={onUserLabelClick}>{userLabeltext}</span>
+        : userLabeltext;
 
-    const skillsLabel = view==='skills' ? " > Skills" : "";
-    const languagesLabel = view==="languages" ? " > Languages" : "";
+    const skillsLabel = view === 'skills' ? " > Skills" : "";
+    const languagesLabel = view === "languages" ? " > Languages" : "";
+
+
+
 
     return (
         <div className={styles.container}>

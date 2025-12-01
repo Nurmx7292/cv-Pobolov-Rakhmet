@@ -14,3 +14,13 @@
     font-weight: bold;
     margin-bottom: 10px;
 }
+
+.userLabel {
+    color: red;
+}
+
+.userLabel:hover {
+    color: red;
+    text-decoration: underline;
+    cursor: pointer;
+}
