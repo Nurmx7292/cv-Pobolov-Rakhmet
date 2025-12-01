@@ -14,11 +14,13 @@ import {UPDATE_PROFILE_MUTATION} from "@widgets/users/api/updateProfileMutation.
 import {UPLOAD_AVATAR_MUTATION} from "@widgets/users/api/uploadAvatarMutation";
 import Avatar from "@shared/components/avatar/ui/Avatar.tsx";
 import uploadImg from '../../../../shared/ui/assets/upload-icon.png'
+import {DELETE_AVATAR_MUTATION} from "@widgets/users/api/deleteAvatarMutation";
 
 const UserProfile = () => {
 
     const [updateUser] = useMutation(UPDATE_USER_MUTATION);
     const [updateProfile] = useMutation(UPDATE_PROFILE_MUTATION);
+    const [deleteAvatar] = useMutation(DELETE_AVATAR_MUTATION);
 
     const [uploadAvatar] = useMutation(UPLOAD_AVATAR_MUTATION);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -49,7 +51,7 @@ const UserProfile = () => {
     function fileToBase64(file: File): Promise<string> {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = () => resolve(reader.result as string); // сохраняем полный data URL
+            reader.onload = () => resolve(reader.result as string);
             reader.onerror = reject;
             reader.readAsDataURL(file);
         });
@@ -186,13 +188,23 @@ const UserProfile = () => {
         await refetch();
     };
 
+    const onDeleteAvatarButtonClick = async () => {
+        await deleteAvatar({
+            variables: {
+                "userId": currentUserId,
+            },
+        });
+        await refetch();
+        console.log('deleted')
+    }
 
     let updateButton = null;
     let uploadAvatarButton = null;
+    let deleteAvatarButton = null;
     let disableInputs = true;
     if (+currentUserId === +userId) {
         updateButton = <Button variant="contained" onClick={onUpdateButtonClick} disabled={isUpdateDisabled} style={{width:'410px'}}>UPDATE</Button>;
-
+        deleteAvatarButton = <div onClick={onDeleteAvatarButtonClick}>X</div>
         disableInputs = false;
     }
 
@@ -253,6 +265,7 @@ const UserProfile = () => {
                         email={email}
                     />
                 </div>
+                {deleteAvatarButton}
                 {uploadAvatarButton}
             </div>
 
