@@ -82,12 +82,10 @@ export const CvSkillsPage = () => {
             try {
                 await addCvSkill({
                     variables: {
-                        skill: {
-                            cvId,
-                            name,
-                            categoryId,
-                            mastery,
-                        },
+                        cvId,
+                        name,
+                        categoryId: categoryId || undefined,
+                        mastery,
                     },
                 });
                 await refetch();
@@ -110,12 +108,10 @@ export const CvSkillsPage = () => {
             try {
                 await updateCvSkill({
                     variables: {
-                        skill: {
-                            cvId,
-                            name: skillName,
-                            categoryId: skill.categoryId || "",
-                            mastery: masteryEnum,
-                        },
+                        cvId,
+                        name: skillName,
+                        categoryId: skill.categoryId || undefined,
+                        mastery: masteryEnum,
                     },
                 });
                 await refetch();
@@ -134,10 +130,8 @@ export const CvSkillsPage = () => {
             try {
                 await deleteCvSkill({
                     variables: {
-                        skill: {
-                            cvId,
-                            name: skillNames,
-                        },
+                        cvId,
+                        name: skillNames,
                     },
                 });
                 await refetch();

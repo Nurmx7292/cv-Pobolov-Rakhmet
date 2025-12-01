@@ -39,6 +39,7 @@ export const UpdateCvProjectDialog = ({
                 onCancel={onClose}
                 loading={loading}
                 error={error}
+                variant="update"
             />
         </FormDialog>
     );

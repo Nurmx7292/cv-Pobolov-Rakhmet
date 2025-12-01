@@ -1,7 +1,8 @@
-import { useState, FormEvent, useEffect } from "react";
-import { Stack, TextField, Alert, Chip, Box } from "@mui/material";
-import { useProjects } from "@entities/project";
+import { useState, FormEvent, useEffect, useMemo } from "react";
+import { Stack, TextField, Alert, Chip, Box, MenuItem } from "@mui/material";
+import { useProjects, type Project } from "@entities/project";
 import { FormButtons } from "@shared/ui";
+import type { CvProject } from "@entities/cv";
 
 interface CvProjectFormData {
     projectId: string;
@@ -12,12 +13,13 @@ interface CvProjectFormData {
 }
 
 interface CvProjectFormProps {
-    initialData?: CvProjectFormData;
+    initialData?: Partial<CvProjectFormData>;
     onSubmit: (data: CvProjectFormData) => Promise<void>;
     onCancel: () => void;
     loading?: boolean;
     error?: Error | null;
     excludeProjectIds?: string[];
+    variant?: "add" | "update";
 }
 
 export const CvProjectForm = ({
@@ -27,36 +29,39 @@ export const CvProjectForm = ({
     loading = false,
     error,
     excludeProjectIds = [],
+    variant = "add",
 }: CvProjectFormProps) => {
     const { data: projectsData } = useProjects();
     const [projectId, setProjectId] = useState(initialData?.projectId || "");
-    const [startDate, setStartDate] = useState(
-        initialData?.start_date || "",
+    const [startDate, setStartDate] = useState(initialData?.start_date || "");
+    const [endDate, setEndDate] = useState(initialData?.end_date || "");
+    const [responsibilities, setResponsibilities] = useState(
+        initialData?.responsibilities ? initialData.responsibilities.join("\n") : "",
     );
-    const [endDate, setEndDate] = useState(
-        initialData?.end_date || "",
-    );
-    const [roles, setRoles] = useState<string[]>(initialData?.roles || []);
-    const [currentRole, setCurrentRole] = useState("");
-    const [responsibilities, setResponsibilities] = useState<string[]>(
-        initialData?.responsibilities || [],
-    );
-    const [currentResponsibility, setCurrentResponsibility] = useState("");
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+
+    const selectedProject = useMemo(() => {
+        if (!projectId || !projectsData?.projects) return null;
+        return projectsData.projects.find((p) => p.id === projectId) || null;
+    }, [projectId, projectsData?.projects]);
+
+    const availableProjects = useMemo(() => {
+        if (!projectsData?.projects) return [];
+        return projectsData.projects.filter(
+            (p) => !excludeProjectIds.includes(p.id) || p.id === initialData?.projectId,
+        );
+    }, [projectsData?.projects, excludeProjectIds, initialData?.projectId]);
 
     useEffect(() => {
         if (initialData) {
-            setProjectId(initialData.projectId);
+            setProjectId(initialData.projectId || "");
             setStartDate(initialData.start_date || "");
             setEndDate(initialData.end_date || "");
-            setRoles(initialData.roles);
-            setResponsibilities(initialData.responsibilities);
+            setResponsibilities(
+                initialData.responsibilities ? initialData.responsibilities.join("\n") : "",
+            );
         }
     }, [initialData]);
-
-    const availableProjects = projectsData?.projects.filter(
-        (p) => !excludeProjectIds.includes(p.id),
-    ) || [];
 
     const validate = (): boolean => {
         const errors: Record<string, string> = {};
@@ -73,30 +78,12 @@ export const CvProjectForm = ({
             errors.endDate = "End date must be after start date";
         }
 
+        if (!responsibilities.trim()) {
+            errors.responsibilities = "Responsibilities are required";
+        }
+
         setValidationErrors(errors);
         return Object.keys(errors).length === 0;
-    };
-
-    const handleAddRole = () => {
-        if (currentRole.trim() && !roles.includes(currentRole.trim())) {
-            setRoles([...roles, currentRole.trim()]);
-            setCurrentRole("");
-        }
-    };
-
-    const handleRemoveRole = (role: string) => {
-        setRoles(roles.filter((r) => r !== role));
-    };
-
-    const handleAddResponsibility = () => {
-        if (currentResponsibility.trim() && !responsibilities.includes(currentResponsibility.trim())) {
-            setResponsibilities([...responsibilities, currentResponsibility.trim()]);
-            setCurrentResponsibility("");
-        }
-    };
-
-    const handleRemoveResponsibility = (responsibility: string) => {
-        setResponsibilities(responsibilities.filter((r) => r !== responsibility));
     };
 
     const handleSubmit = async (e: FormEvent) => {
@@ -105,125 +92,118 @@ export const CvProjectForm = ({
             return;
         }
 
+        const responsibilitiesArray = responsibilities
+            .split("\n")
+            .map((r) => r.trim())
+            .filter(Boolean);
+
         await onSubmit({
             projectId,
             start_date: startDate,
             end_date: endDate || null,
-            roles,
-            responsibilities,
+            roles: [],
+            responsibilities: responsibilitiesArray,
         });
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <Stack spacing={3}>
+            <Stack spacing={3} sx={{ paddingTop: "0.5rem" }}>
                 {error && <Alert severity="error">{error.message}</Alert>}
+                <Stack direction="row" spacing={3}>
+                    <TextField
+                        select
+                        label="Project"
+                        value={projectId}
+                        onChange={(e) => setProjectId(e.target.value)}
+                        required
+                        fullWidth
+                        error={!!validationErrors.projectId}
+                        helperText={validationErrors.projectId}
+                        disabled={loading || variant === "update"}
+                    >
+                        {availableProjects.map((project) => (
+                            <MenuItem key={project.id} value={project.id}>
+                                {project.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        label="Domain"
+                        value={selectedProject?.domain || ""}
+                        fullWidth
+                        disabled
+                    />
+                </Stack>
+                <Stack direction="row" spacing={3}>
+                    <TextField
+                        label="Start Date"
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        required
+                        fullWidth
+                        error={!!validationErrors.startDate}
+                        helperText={validationErrors.startDate}
+                        disabled={loading}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                    <TextField
+                        label="End Date"
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        fullWidth
+                        error={!!validationErrors.endDate}
+                        helperText={validationErrors.endDate}
+                        disabled={loading}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </Stack>
                 <TextField
-                    select
-                    label="Project"
-                    value={projectId}
-                    onChange={(e) => setProjectId(e.target.value)}
-                    required
+                    label="Description"
+                    value={selectedProject?.description || ""}
                     fullWidth
-                    error={!!validationErrors.projectId}
-                    helperText={validationErrors.projectId}
-                    disabled={loading}
-                    SelectProps={{
-                        native: true,
-                    }}
-                >
-                    <option value="">Select a project</option>
-                    {availableProjects.map((project) => (
-                        <option key={project.id} value={project.id}>
-                            {project.name}
-                        </option>
-                    ))}
-                </TextField>
-                <TextField
-                    label="Start Date"
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    required
-                    fullWidth
-                    error={!!validationErrors.startDate}
-                    helperText={validationErrors.startDate}
-                    disabled={loading}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
+                    multiline
+                    rows={7}
+                    disabled
                 />
-                <TextField
-                    label="End Date (optional)"
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    fullWidth
-                    error={!!validationErrors.endDate}
-                    helperText={validationErrors.endDate}
-                    disabled={loading}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
+                {selectedProject?.environment && selectedProject.environment.length > 0 && (
                     <Box>
                         <TextField
-                            label="Roles"
-                            value={currentRole}
-                            onChange={(e) => setCurrentRole(e.target.value)}
-                            onKeyPress={(e) => {
-                                if (e.key === "Enter") {
-                                    e.preventDefault();
-                                    handleAddRole();
-                                }
-                            }}
+                            label="Environment"
+                            value=""
                             fullWidth
-                            disabled={loading}
+                            disabled
                             InputProps={{
-                                onBlur: handleAddRole,
+                                readOnly: true,
                             }}
                         />
                         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
-                            {roles.map((role) => (
-                                <Chip
-                                    key={role}
-                                    label={role}
-                                    onDelete={() => handleRemoveRole(role)}
-                                    disabled={loading}
-                                />
+                            {selectedProject.environment.map((env) => (
+                                <Chip key={env} label={env} variant="outlined" />
                             ))}
                         </Box>
                     </Box>
-                    <Box>
-                        <TextField
-                            label="Responsibilities"
-                            value={currentResponsibility}
-                            onChange={(e) => setCurrentResponsibility(e.target.value)}
-                            onKeyPress={(e) => {
-                                if (e.key === "Enter") {
-                                    e.preventDefault();
-                                    handleAddResponsibility();
-                                }
-                            }}
-                            fullWidth
-                            disabled={loading}
-                            InputProps={{
-                                onBlur: handleAddResponsibility,
-                            }}
-                        />
-                        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
-                            {responsibilities.map((responsibility) => (
-                                <Chip
-                                    key={responsibility}
-                                    label={responsibility}
-                                    onDelete={() => handleRemoveResponsibility(responsibility)}
-                                    disabled={loading}
-                                />
-                            ))}
-                        </Box>
-                    </Box>
+                )}
+                <TextField
+                    label="Responsibilities"
+                    value={responsibilities}
+                    onChange={(e) => setResponsibilities(e.target.value)}
+                    required
+                    fullWidth
+                    multiline
+                    rows={7}
+                    error={!!validationErrors.responsibilities}
+                    helperText={validationErrors.responsibilities}
+                    disabled={loading}
+                />
                 <FormButtons
-                    title="Save"
+                    title={variant === "add" ? "ADD" : "UPDATE"}
                     loading={loading}
                     disabled={loading}
                     onCancel={onCancel}
@@ -232,4 +212,3 @@ export const CvProjectForm = ({
         </form>
     );
 };
-

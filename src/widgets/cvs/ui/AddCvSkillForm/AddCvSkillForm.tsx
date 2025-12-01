@@ -35,9 +35,10 @@ export const AddCvSkillForm = ({
         if (!skillValue) {
             return;
         }
-        const [name, categoryId] = skillValue.split(":");
+        const [name, categoryIdStr] = skillValue.split(":");
+        const categoryId = categoryIdStr === "-1" || categoryIdStr === "" ? "" : categoryIdStr;
         const masteryEnum = masteryNumberToEnum(mastery);
-        await onSubmit(name, categoryId, masteryEnum);
+        await onSubmit(name, categoryId || "", masteryEnum);
     };
 
     return (

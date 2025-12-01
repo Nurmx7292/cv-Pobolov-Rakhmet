@@ -1,6 +1,6 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import { useState, useMemo, useCallback } from "react";
-import { Stack, Typography, Box } from "@mui/material";
+import { Stack, Typography, Box, TextField } from "@mui/material";
 import {
     CvProjectsTable,
     AddCvProjectDialog,
@@ -24,6 +24,7 @@ export const CvProjectsPage = () => {
     const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
     const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
     const [selectedProject, setSelectedProject] = useState<CvProject | null>(null);
+    const [searchString, setSearchString] = useState("");
     const [addCvProject, { loading: adding, error: addError }] = useAddCvProject();
     const [updateCvProject, { loading: updating, error: updateError }] = useUpdateCvProject();
     const [removeCvProject, { loading: removing, error: removeError }] = useRemoveCvProject();
@@ -154,9 +155,24 @@ export const CvProjectsPage = () => {
 
     return (
         <>
-            <Stack spacing={3} sx={{ p: 3 }}>
-                {isEditable && (
-                    <Stack direction="row" justifyContent="flex-end">
+            <Stack spacing={2} sx={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
+                <Stack
+                    direction="row"
+                    gap={2}
+                    sx={{
+                        paddingLeft: "1.25rem",
+                        paddingTop: "0.5rem",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}
+                >
+                    <TextField
+                        placeholder="Search by name or domain"
+                        value={searchString}
+                        onChange={(e) => setSearchString(e.target.value)}
+                        sx={{ flex: 1, maxWidth: "400px" }}
+                    />
+                    {isEditable && (
                         <CreateButton
                             entityName="Project"
                             actionName="Add"
@@ -172,13 +188,16 @@ export const CvProjectsPage = () => {
                                 />
                             )}
                         />
-                    </Stack>
-                )}
-                <CvProjectsTable
-                    projects={cv.projects}
-                    onEdit={isEditable ? handleEdit : undefined}
-                    onRemove={isEditable ? handleRemoveClick : undefined}
-                />
+                    )}
+                </Stack>
+                <Box sx={{ flex: 1, minHeight: 0, overflow: "auto", px: "1.25rem", pb: "2rem" }}>
+                    <CvProjectsTable
+                        projects={cv.projects}
+                        searchString={searchString}
+                        onEdit={isEditable ? handleEdit : undefined}
+                        onRemove={isEditable ? handleRemoveClick : undefined}
+                    />
+                </Box>
             </Stack>
             {selectedProject && (
                 <>

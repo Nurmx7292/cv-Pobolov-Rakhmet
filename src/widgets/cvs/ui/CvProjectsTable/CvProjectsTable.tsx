@@ -1,4 +1,4 @@
-import { useState, useMemo, MouseEvent } from "react";
+import { useState, useMemo, MouseEvent, Fragment } from "react";
 import {
     Table,
     TableBody,
@@ -14,6 +14,8 @@ import {
     Typography,
     Box,
     CircularProgress,
+    Stack,
+    Chip,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import type { CvProject } from "@entities/cv";
@@ -25,6 +27,7 @@ interface CvProjectsTableProps {
     projects: CvProject[];
     loading?: boolean;
     error?: Error | null;
+    searchString?: string;
     onEdit?: (project: CvProject) => void;
     onRemove?: (project: CvProject) => void;
 }
@@ -42,10 +45,10 @@ export const CvProjectsTable = ({
     projects,
     loading = false,
     error,
+    searchString: externalSearchString = "",
     onEdit,
     onRemove,
 }: CvProjectsTableProps) => {
-    const [searchString, setSearchString] = useState("");
     const [sortConfig, setSortConfig] = useState<{
         key: SortKey;
         direction: SortDirection;
@@ -103,12 +106,13 @@ export const CvProjectsTable = ({
     const filteredAndSortedProjects = useMemo(() => {
         let filtered = [...projects];
 
-        if (searchString) {
-            const searchLower = searchString.toLowerCase();
+        if (externalSearchString) {
+            const searchLower = externalSearchString.toLowerCase();
             filtered = filtered.filter(
                 (project) =>
                     project.name.toLowerCase().includes(searchLower) ||
-                    (project.domain && project.domain.toLowerCase().includes(searchLower)),
+                    (project.domain && project.domain.toLowerCase().includes(searchLower)) ||
+                    (project.description && project.description.toLowerCase().includes(searchLower)),
             );
         }
 
@@ -138,7 +142,7 @@ export const CvProjectsTable = ({
         }
 
         return filtered;
-    }, [projects, searchString, sortConfig]);
+    }, [projects, externalSearchString, sortConfig]);
 
     if (loading) {
         return (
@@ -174,13 +178,6 @@ export const CvProjectsTable = ({
 
     return (
         <Box>
-            <TextField
-                fullWidth
-                placeholder="Search by name or domain"
-                value={searchString}
-                onChange={(e) => setSearchString(e.target.value)}
-                sx={{ mb: 2 }}
-            />
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -225,24 +222,51 @@ export const CvProjectsTable = ({
                             </TableRow>
                         ) : (
                             filteredAndSortedProjects.map((project) => (
-                                <TableRow key={project.id} hover>
-                                    <TableCell>{project.name}</TableCell>
-                                    <TableCell>{project.domain || "-"}</TableCell>
-                                    <TableCell>{formatDate(project.start_date)}</TableCell>
-                                    <TableCell>
-                                        {project.end_date ? formatDate(project.end_date) : "Present"}
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        {(onEdit || onRemove) && (
-                                            <IconButton
-                                                size="small"
-                                                onClick={(e) => handleMenuOpen(e, project)}
-                                            >
-                                                <MoreVertIcon />
-                                            </IconButton>
-                                        )}
-                                    </TableCell>
-                                </TableRow>
+                                <Fragment key={project.id}>
+                                    <TableRow hover>
+                                        <TableCell sx={{ borderBottom: "none" }}>{project.name}</TableCell>
+                                        <TableCell sx={{ borderBottom: "none" }}>{project.domain || "-"}</TableCell>
+                                        <TableCell sx={{ borderBottom: "none" }}>{formatDate(project.start_date)}</TableCell>
+                                        <TableCell sx={{ borderBottom: "none" }}>
+                                            {project.end_date ? formatDate(project.end_date) : "Present"}
+                                        </TableCell>
+                                        <TableCell align="right" sx={{ borderBottom: "none" }}>
+                                            {(onEdit || onRemove) && (
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={(e) => handleMenuOpen(e, project)}
+                                                >
+                                                    <MoreVertIcon />
+                                                </IconButton>
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+                                    {(project.description || (project.responsibilities && project.responsibilities.length > 0)) && (
+                                        <TableRow>
+                                            <TableCell colSpan={5} sx={{ paddingTop: 0, paddingBottom: 2 }}>
+                                                <Stack spacing={2}>
+                                                    {project.description && (
+                                                        <Typography variant="body2" color="text.secondary">
+                                                            {project.description}
+                                                        </Typography>
+                                                    )}
+                                                    {project.responsibilities && project.responsibilities.length > 0 && (
+                                                        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+                                                            {project.responsibilities.map((resp, index) => (
+                                                                <Chip
+                                                                    key={index}
+                                                                    label={resp}
+                                                                    variant="filled"
+                                                                    size="small"
+                                                                />
+                                                            ))}
+                                                        </Box>
+                                                    )}
+                                                </Stack>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </Fragment>
                             ))
                         )}
                     </TableBody>

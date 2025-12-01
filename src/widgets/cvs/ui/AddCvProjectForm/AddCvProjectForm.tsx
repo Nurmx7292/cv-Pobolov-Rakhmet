@@ -28,6 +28,7 @@ export const AddCvProjectForm = ({
             loading={loading}
             error={error}
             excludeProjectIds={excludeProjectIds}
+            variant="add"
         />
     );
 };
