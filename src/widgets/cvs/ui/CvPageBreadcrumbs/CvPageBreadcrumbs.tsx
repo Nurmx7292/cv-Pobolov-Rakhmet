@@ -23,7 +23,7 @@ export const CvPageBreadcrumbs = ({
     const theme = useTheme();
 
     return (
-        <Breadcrumbs>
+        <Breadcrumbs separator={">"}>
             <Link
                 component={RouterLink}
                 to="/cvs"
