@@ -8,8 +8,9 @@ interface CreateCvButtonProps {
 export const CreateCvButton = ({ userId }: CreateCvButtonProps) => {
     return (
         <CreateButton
+            sx={{ marginRight:"50px" }}
             entityName="CV"
-            actionName="+ CREATE"
+            actionName="CREATE"
             variant="primary"
             renderDialog={({ open, onClose }) => (
                 <CreateCvDialog open={open} onClose={onClose} userId={userId} />

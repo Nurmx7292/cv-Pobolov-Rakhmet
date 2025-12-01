@@ -1,5 +1,5 @@
 import { useOutletContext } from "react-router-dom";
-import { Stack, Typography, Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { CvForm, type CvPageContextValue } from "@widgets/cvs";
 import { useUpdateCv } from "@entities/cv";
 import { useNotification } from "@shared/lib/notifications";
@@ -50,21 +50,23 @@ export const CvDetailsPage = () => {
 
     return (
         <>
-            <Stack alignItems="center" sx={{ width: "100%" }}>
-                <CvForm
-                    initialData={{
-                        name: cv.name,
-                        education: cv.education,
-                        description: cv.description,
-                    }}
-                    onSubmit={handleSubmit}
-                    loading={loading}
-                    error={error}
-                    disabled={!isEditable}
-                    maxWidth="852px"
-                    btnWidth="50%"
-                />
-            </Stack>
+            <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                <Box sx={{ width: "100%", maxWidth: "852px" }}>
+                    <CvForm
+                        initialData={{
+                            name: cv.name,
+                            education: cv.education,
+                            description: cv.description,
+                        }}
+                        onSubmit={handleSubmit}
+                        loading={loading}
+                        error={error}
+                        disabled={!isEditable}
+                        maxWidth="852px"
+                        btnWidth="50%"
+                    />
+                </Box>
+            </Box>
             <NotificationComponent />
         </>
     );

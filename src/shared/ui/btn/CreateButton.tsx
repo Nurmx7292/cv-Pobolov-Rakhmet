@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import type { ReactNode } from "react";
+import type { SxProps, Theme } from "@mui/material/styles";
 
 interface CreateButtonProps {
     entityName: string;
     actionName?: string;
     variant?: "primary" | "secondary";
     renderDialog: (controls: { open: boolean; onClose: () => void }) => ReactNode;
+    sx?: SxProps<Theme>;
 }
 
 export const CreateButton = ({
@@ -15,6 +17,7 @@ export const CreateButton = ({
     actionName = "Add",
     variant = "primary",
     renderDialog,
+    sx,
 }: CreateButtonProps) => {
     const [open, setOpen] = useState(false);
 
@@ -41,6 +44,7 @@ export const CreateButton = ({
                               color: "#767676",
                               width: "15rem",
                           }),
+                    ...(typeof sx === "function" ? sx(theme) : sx),
                 })}
             >
                 {actionName} {entityName}

@@ -1,4 +1,5 @@
-import { useState, FormEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
+import type { FormEvent } from "react";
 import { Stack, TextField, Alert } from "@mui/material";
 import { FormButtons } from "@shared/ui/form/FormButtons";
 
@@ -119,6 +120,7 @@ export const CvForm = ({
                     disabled={loading || disabled}
                     onCancel={onCancel}
                     maxWidth={btnWidth}
+                    fullWidth
                 />
             </Stack>
         </form>

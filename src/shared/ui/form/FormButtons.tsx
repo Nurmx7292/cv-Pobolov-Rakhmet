@@ -24,19 +24,30 @@ export const FormButtons = ({
             sx={{ 
                 justifyContent: "end",
                 maxWidth: maxWidth || "100%",
-                width: fullWidth ? "100%" : "auto",
+                width: fullWidth ? (maxWidth || "100%") : "auto",
+                marginLeft: "auto",
             }}
         >
             {onCancel && (
-                <Button variant="outlined" onClick={onCancel} fullWidth={fullWidth}>
+                <Button 
+                    variant="outlined" 
+                    onClick={onCancel} 
+                    sx={{ 
+                        flex: fullWidth ? 1 : "none",
+                        minWidth: fullWidth ? 0 : "auto",
+                    }}
+                >
                     Cancel
                 </Button>
             )}
             <Button 
                 type="submit" 
                 variant="contained" 
-                disabled={disabled || loading} 
-                fullWidth={fullWidth}
+                disabled={disabled || loading}
+                sx={{ 
+                    flex: fullWidth ? 1 : "none",
+                    minWidth: fullWidth ? 0 : "auto",
+                }}
             >
                 {loading ? "Saving..." : title}
             </Button>

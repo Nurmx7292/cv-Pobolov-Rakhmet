@@ -6,16 +6,17 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Paper,
-    TextField,
-    IconButton,
-    Menu,
-    MenuItem,
     Typography,
     Box,
     CircularProgress,
     Stack,
     Chip,
+    TableSortLabel,
+    useMediaQuery,
+    useTheme,
+    Button,
+    Menu,
+    MenuItem,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import type { CvProject } from "@entities/cv";
@@ -31,6 +32,8 @@ interface CvProjectsTableProps {
     onEdit?: (project: CvProject) => void;
     onRemove?: (project: CvProject) => void;
 }
+
+const rowHeight = 72;
 
 const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -49,6 +52,8 @@ export const CvProjectsTable = ({
     onEdit,
     onRemove,
 }: CvProjectsTableProps) => {
+    const theme = useTheme();
+    const isMd = useMediaQuery(theme.breakpoints.up("md"));
     const [sortConfig, setSortConfig] = useState<{
         key: SortKey;
         direction: SortDirection;
@@ -96,11 +101,6 @@ export const CvProjectsTable = ({
             }
             return { key, direction: "asc" };
         });
-    };
-
-    const getSortIcon = (key: SortKey) => {
-        if (sortConfig.key !== key) return null;
-        return sortConfig.direction === "asc" ? " ▲" : " ▼";
     };
 
     const filteredAndSortedProjects = useMemo(() => {
@@ -177,44 +177,79 @@ export const CvProjectsTable = ({
     }
 
     return (
-        <Box>
-            <TableContainer component={Paper}>
-                <Table>
+        <Box sx={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
+            <TableContainer sx={{ overflowY: "auto", flex: 1 }}>
+                <Table size="medium" stickyHeader sx={{ opacity: loading ? 0.5 : 1 }}>
                     <TableHead>
                         <TableRow>
                             <TableCell
+                                style={{
+                                    flex: 1,
+                                    cursor: "pointer",
+                                    userSelect: "none",
+                                }}
                                 onClick={() => handleSort("name")}
-                                sx={{
-                                    cursor: "pointer",
-                                    userSelect: "none",
-                                    "&:hover": {
-                                        backgroundColor: "action.hover",
-                                    },
-                                }}
                             >
-                                Name{getSortIcon("name")}
+                                <TableSortLabel
+                                    active={sortConfig.key === "name"}
+                                    direction={sortConfig.key === "name" ? sortConfig.direction : "asc"}
+                                >
+                                    Name
+                                </TableSortLabel>
                             </TableCell>
-                            <TableCell>Domain</TableCell>
-                            <TableCell
-                                onClick={() => handleSort("start_date")}
-                                sx={{
-                                    cursor: "pointer",
-                                    userSelect: "none",
-                                    "&:hover": {
-                                        backgroundColor: "action.hover",
-                                    },
-                                }}
-                            >
-                                Start Date{getSortIcon("start_date")}
-                            </TableCell>
-                            <TableCell>End Date</TableCell>
-                            <TableCell align="right">Actions</TableCell>
+                            {isMd && (
+                                <TableCell
+                                    style={{
+                                        flex: 1,
+                                        cursor: "pointer",
+                                        userSelect: "none",
+                                    }}
+                                    onClick={() => handleSort("domain")}
+                                >
+                                    <TableSortLabel
+                                        active={sortConfig.key === "domain"}
+                                        direction={sortConfig.key === "domain" ? sortConfig.direction : "asc"}
+                                    >
+                                        Domain
+                                    </TableSortLabel>
+                                </TableCell>
+                            )}
+                            {isMd && (
+                                <TableCell
+                                    style={{
+                                        flex: 1,
+                                        cursor: "pointer",
+                                        userSelect: "none",
+                                    }}
+                                    onClick={() => handleSort("start_date")}
+                                >
+                                    <TableSortLabel
+                                        active={sortConfig.key === "start_date"}
+                                        direction={sortConfig.key === "start_date" ? sortConfig.direction : "asc"}
+                                    >
+                                        Start Date
+                                    </TableSortLabel>
+                                </TableCell>
+                            )}
+                            {isMd && <TableCell style={{ flex: 1 }}>End Date</TableCell>}
+                            {(onEdit || onRemove) && <TableCell style={{ width: 100 }} align="right">Actions</TableCell>}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {filteredAndSortedProjects.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={5} align="center">
+                                <TableCell
+                                    colSpan={
+                                        isMd
+                                            ? onEdit || onRemove
+                                                ? 5
+                                                : 4
+                                            : onEdit || onRemove
+                                                ? 2
+                                                : 1
+                                    }
+                                    align="center"
+                                >
                                     <Typography variant="body2" color="text.secondary">
                                         No projects found
                                     </Typography>
@@ -223,27 +258,80 @@ export const CvProjectsTable = ({
                         ) : (
                             filteredAndSortedProjects.map((project) => (
                                 <Fragment key={project.id}>
-                                    <TableRow hover>
-                                        <TableCell sx={{ borderBottom: "none" }}>{project.name}</TableCell>
-                                        <TableCell sx={{ borderBottom: "none" }}>{project.domain || "-"}</TableCell>
-                                        <TableCell sx={{ borderBottom: "none" }}>{formatDate(project.start_date)}</TableCell>
-                                        <TableCell sx={{ borderBottom: "none" }}>
-                                            {project.end_date ? formatDate(project.end_date) : "Present"}
+                                    <TableRow sx={{ height: rowHeight }} hover>
+                                        <TableCell
+                                            sx={(theme) => ({
+                                                color: theme.palette.text.secondary,
+                                                borderBottom: "none",
+                                            })}
+                                        >
+                                            {project.name}
                                         </TableCell>
-                                        <TableCell align="right" sx={{ borderBottom: "none" }}>
-                                            {(onEdit || onRemove) && (
-                                                <IconButton
-                                                    size="small"
+                                        {isMd && (
+                                            <TableCell
+                                                sx={(theme) => ({
+                                                    color: theme.palette.text.secondary,
+                                                    borderBottom: "none",
+                                                })}
+                                            >
+                                                {project.domain || "-"}
+                                            </TableCell>
+                                        )}
+                                        {isMd && (
+                                            <TableCell
+                                                sx={(theme) => ({
+                                                    color: theme.palette.text.secondary,
+                                                    borderBottom: "none",
+                                                })}
+                                            >
+                                                {formatDate(project.start_date)}
+                                            </TableCell>
+                                        )}
+                                        {isMd && (
+                                            <TableCell
+                                                sx={(theme) => ({
+                                                    color: theme.palette.text.secondary,
+                                                    borderBottom: "none",
+                                                })}
+                                            >
+                                                {project.end_date ? formatDate(project.end_date) : "Present"}
+                                            </TableCell>
+                                        )}
+                                        {(onEdit || onRemove) && (
+                                            <TableCell align="right" sx={{ borderBottom: "none" }}>
+                                                <Button
+                                                    sx={{
+                                                        textTransform: "none",
+                                                        fontWeight: "400",
+                                                        fontSize: "1rem",
+                                                        minWidth: "auto",
+                                                        padding: "4px",
+                                                    }}
                                                     onClick={(e) => handleMenuOpen(e, project)}
                                                 >
                                                     <MoreVertIcon />
-                                                </IconButton>
-                                            )}
-                                        </TableCell>
+                                                </Button>
+                                            </TableCell>
+                                        )}
                                     </TableRow>
                                     {(project.description || (project.responsibilities && project.responsibilities.length > 0)) && (
                                         <TableRow>
-                                            <TableCell colSpan={5} sx={{ paddingTop: 0, paddingBottom: 2 }}>
+                                            <TableCell
+                                                colSpan={
+                                                    isMd
+                                                        ? onEdit || onRemove
+                                                            ? 5
+                                                            : 4
+                                                        : onEdit || onRemove
+                                                            ? 2
+                                                            : 1
+                                                }
+                                                sx={(theme) => ({
+                                                    color: theme.palette.text.secondary,
+                                                    paddingTop: 0,
+                                                    paddingBottom: 2,
+                                                })}
+                                            >
                                                 <Stack spacing={2}>
                                                     {project.description && (
                                                         <Typography variant="body2" color="text.secondary">
@@ -272,15 +360,10 @@ export const CvProjectsTable = ({
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Menu
-                anchorEl={anchorEl}
-                open={isMenuOpen}
-                onClose={handleMenuClose}
-            >
+            <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
                 {onEdit && <MenuItem onClick={handleEdit}>Edit</MenuItem>}
                 {onRemove && <MenuItem onClick={handleRemove}>Remove</MenuItem>}
             </Menu>
         </Box>
     );
 };
-

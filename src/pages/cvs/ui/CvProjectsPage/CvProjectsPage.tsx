@@ -1,6 +1,6 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import { useState, useMemo, useCallback } from "react";
-import { Stack, Typography, Box, TextField } from "@mui/material";
+import { Stack, Typography, Box } from "@mui/material";
 import {
     CvProjectsTable,
     AddCvProjectDialog,
@@ -8,7 +8,7 @@ import {
     RemoveCvProjectDialog,
     type CvPageContextValue,
 } from "@widgets/cvs";
-import { CreateButton } from "@shared/ui/btn/CreateButton";
+import { CreateButton, Searchbar } from "@shared/ui";
 import {
     useAddCvProject,
     useUpdateCvProject,
@@ -166,11 +166,10 @@ export const CvProjectsPage = () => {
                         alignItems: "center",
                     }}
                 >
-                    <TextField
-                        placeholder="Search by name or domain"
+                    <Searchbar
                         value={searchString}
-                        onChange={(e) => setSearchString(e.target.value)}
-                        sx={{ flex: 1, maxWidth: "400px" }}
+                        onChange={setSearchString}
+                        placeholder="Search by name or domain"
                     />
                     {isEditable && (
                         <CreateButton

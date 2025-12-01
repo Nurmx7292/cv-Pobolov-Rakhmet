@@ -197,7 +197,7 @@ export const CvProjectForm = ({
                     required
                     fullWidth
                     multiline
-                    rows={7}
+                    rows={1}
                     error={!!validationErrors.responsibilities}
                     helperText={validationErrors.responsibilities}
                     disabled={loading}
