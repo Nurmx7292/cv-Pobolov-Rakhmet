@@ -9,7 +9,9 @@ import { UserSkillsLayout, type UserSkillsMock } from "@widgets/users";
 
 export const UserSkillsPage = () => {
     const { userId } = useParams();
-    const { data, loading, error, refetch } = useProfileSkills(userId);
+    const currentUserId = localStorage.getItem("currentUserId");
+    const effectiveUserId = userId || currentUserId;
+    const { data, loading, error, refetch } = useProfileSkills(effectiveUserId);
     const [addProfileSkill, { loading: adding, error: addError }] = useAddProfileSkill();
     const [updateProfileSkill, { loading: updating, error: updateError }] = useUpdateProfileSkill();
     const [deleteProfileSkill, { loading: deleting, error: deleteError }] = useDeleteProfileSkill();
@@ -66,7 +68,7 @@ export const UserSkillsPage = () => {
     }, [skills, skillsMap]);
 
     const user = useMemo<UserSkillsMock | null>(() => {
-        if (!data?.profile || !userId) {
+        if (!data?.profile || !effectiveUserId) {
             return null;
         }
 
@@ -75,16 +77,16 @@ export const UserSkillsPage = () => {
             fullName: data.profile.full_name ?? "",
             skills,
         };
-    }, [data?.profile, skills, userId]);
+    }, [data?.profile, skills, effectiveUserId]);
 
     const handleAddSkill = useCallback(
         async (name: string, categoryId: string, mastery: number) => {
-            if (!userId) return;
+            if (!effectiveUserId) return;
 
             try {
                 await addProfileSkill({
                     variables: {
-                        userId,
+                        userId: effectiveUserId,
                         name,
                         categoryId: categoryId === "-1" ? undefined : categoryId,
                         mastery: masteryNumberToEnum(mastery),
@@ -96,16 +98,16 @@ export const UserSkillsPage = () => {
                 notify("Failed to add skill", "error");
             }
         },
-        [addProfileSkill, notify, refetch, userId],
+        [addProfileSkill, notify, refetch, effectiveUserId],
     );
 
     const handleUpdateSkill = useCallback(
         async (skillName: string, mastery: number) => {
-            if (!userId) return;
+            if (!effectiveUserId) return;
             try {
                 await updateProfileSkill({
                     variables: {
-                        userId,
+                        userId: effectiveUserId,
                         name: skillName,
                         mastery: masteryNumberToEnum(mastery),
                     },
@@ -116,16 +118,16 @@ export const UserSkillsPage = () => {
                 notify("Failed to update skill", "error");
             }
         },
-        [updateProfileSkill, notify, refetch, userId],
+        [updateProfileSkill, notify, refetch, effectiveUserId],
     );
 
     const handleDeleteSkills = useCallback(
         async (skillNames: string[]) => {
-            if (!userId || !skillNames.length) return;
+            if (!effectiveUserId || !skillNames.length) return;
             try {
                 await deleteProfileSkill({
                     variables: {
-                        userId,
+                        userId: effectiveUserId,
                         name: skillNames,
                     },
                 });
@@ -135,7 +137,7 @@ export const UserSkillsPage = () => {
                 notify("Failed to delete skill", "error");
             }
         },
-        [deleteProfileSkill, notify, refetch, userId],
+        [deleteProfileSkill, notify, refetch, effectiveUserId],
     );
 
     if (loading || skillsLoading) {
@@ -146,7 +148,7 @@ export const UserSkillsPage = () => {
         return <div>Failed to load skills: {error.message}</div>;
     }
 
-    if (!user || !userId) {
+    if (!user || !effectiveUserId) {
         return <div>Profile not found</div>;
     }
 

@@ -95,6 +95,26 @@ export const AppRouter = () => {
                     }
                 />
                 <Route
+                    path="/skills"
+                    element={
+                        <PrivateRoute>
+                            <MainLayout>
+                                <UserSkillsPage />
+                            </MainLayout>
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/languages"
+                    element={
+                        <PrivateRoute>
+                            <MainLayout>
+                                <UserLanguagesPage />
+                            </MainLayout>
+                        </PrivateRoute>
+                    }
+                />
+                <Route
                     path="/cvs"
                     element={
                         <PrivateRoute>

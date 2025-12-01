@@ -15,13 +15,14 @@ import { useNotification } from "@shared/lib/notifications";
 
 export const UserLanguagesPage = () => {
     const { userId } = useParams<{ userId: string }>();
-    const { data, loading, error, refetch } = useProfileLanguages(userId);
+    const currentUserId = localStorage.getItem("currentUserId");
+    const effectiveUserId = userId || currentUserId;
+    const { data, loading, error, refetch } = useProfileLanguages(effectiveUserId);
     const [addProfileLanguage, { loading: adding, error: addError }] = useAddProfileLanguage();
     const [updateProfileLanguage, { loading: updating, error: updateError }] = useUpdateProfileLanguage();
     const [deleteProfileLanguage, { loading: deleting, error: deleteError }] = useDeleteProfileLanguage();
     const { showNotification, NotificationComponent } = useNotification();
 
-    const currentUserId = localStorage.getItem("currentUserId");
 
     const languages = useMemo<LanguageProficiency[]>(() => {
         if (!data?.profile?.languages) {
@@ -31,16 +32,16 @@ export const UserLanguagesPage = () => {
     }, [data?.profile?.languages]);
 
     const isEditable = useMemo(() => {
-        return userId === currentUserId || false;
-    }, [userId, currentUserId]);
+        return effectiveUserId === currentUserId || false;
+    }, [effectiveUserId, currentUserId]);
 
     const handleAddLanguage = useCallback(
         async (name: string, proficiency: string) => {
-            if (!userId) return;
+            if (!effectiveUserId) return;
             try {
                 await addProfileLanguage({
                     variables: {
-                        userId,
+                        userId: effectiveUserId,
                         name,
                         proficiency,
                     },
@@ -52,16 +53,16 @@ export const UserLanguagesPage = () => {
                 showNotification("Failed to add language", "error");
             }
         },
-        [addProfileLanguage, refetch, userId, showNotification],
+        [addProfileLanguage, refetch, effectiveUserId, showNotification],
     );
 
     const handleUpdateLanguage = useCallback(
         async (name: string, proficiency: string) => {
-            if (!userId) return;
+            if (!effectiveUserId) return;
             try {
                 await updateProfileLanguage({
                     variables: {
-                        userId,
+                        userId: effectiveUserId,
                         name,
                         proficiency,
                     },
@@ -73,16 +74,16 @@ export const UserLanguagesPage = () => {
                 showNotification("Failed to update language", "error");
             }
         },
-        [updateProfileLanguage, refetch, userId, showNotification],
+        [updateProfileLanguage, refetch, effectiveUserId, showNotification],
     );
 
     const handleDeleteLanguages = useCallback(
         async (names: string[]) => {
-            if (!userId || !names.length) return;
+            if (!effectiveUserId || !names.length) return;
             try {
                 await deleteProfileLanguage({
                     variables: {
-                        userId,
+                        userId: effectiveUserId,
                         name: names,
                     },
                 });
@@ -93,7 +94,7 @@ export const UserLanguagesPage = () => {
                 showNotification("Failed to delete language", "error");
             }
         },
-        [deleteProfileLanguage, refetch, userId, showNotification],
+        [deleteProfileLanguage, refetch, effectiveUserId, showNotification],
     );
 
     if (loading) {
@@ -128,7 +129,7 @@ export const UserLanguagesPage = () => {
         );
     }
 
-    if (!userId) {
+    if (!effectiveUserId) {
         return (
             <Box
                 sx={{
