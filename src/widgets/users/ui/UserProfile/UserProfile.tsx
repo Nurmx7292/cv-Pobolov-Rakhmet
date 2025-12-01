@@ -4,7 +4,7 @@ import {useParams} from "react-router-dom";
 import {useQuery} from "@apollo/client/react";
 import {GET_USER_BY_ID_QUERY} from "@widgets/users/api/getUserByIdQuery";
 import TextField from '@mui/material/TextField';
-import {Button} from "@mui/material";
+import {Button, Tab, Tabs} from "@mui/material";
 import {GET_DEPARTMENTS_QUERY} from "@widgets/users/api/getDepartmentsQuery";
 import {GET_POSITIONS_QUERY} from "@widgets/users/api/getPositionsQuery";
 import {MenuItem} from '@mui/material';
@@ -15,10 +15,10 @@ import {UPLOAD_AVATAR_MUTATION} from "@widgets/users/api/uploadAvatarMutation";
 import Avatar from "@shared/components/avatar/ui/Avatar.tsx";
 
 const UserProfile = () => {
+
     const [updateUser] = useMutation(UPDATE_USER_MUTATION);
     const [updateProfile] = useMutation(UPDATE_PROFILE_MUTATION);
 
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [uploadAvatar] = useMutation(UPLOAD_AVATAR_MUTATION);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const onUploadAvatarClick = () => {
@@ -207,87 +207,93 @@ const UserProfile = () => {
         } else setPositionInputValue(e.target.value)
     }
 
-
     return (
         <div className={styles.userProfile}>
 
-            <div>{firstName} {lastName}</div>
-            <div>{email}</div>
-            <div>A member since {memberSinceString}</div>
-
-            <div>
-                <Avatar size={60}
-                        avatarReference={user.profile.avatar}
-                        firstName={firstNameInputValue}
-                        lastName={lastNameInputValue}
-                        email={email}
-                />
+            <div className={styles.avatar}>
+                <div>
+                    <Avatar size={60}
+                            avatarReference={user.profile.avatar}
+                            firstName={firstNameInputValue}
+                            lastName={lastNameInputValue}
+                            email={email}
+                    />
+                </div>
+                {uploadAvatarButton}
             </div>
 
 
-            <TextField
-                className={styles.input}
-                label="First Name"
-                variant="outlined"
-                value={firstNameInputValue}
-                disabled={disableInputs}
-                onChange={e => setFirstNameInputValue(e.target.value)}
-                InputLabelProps={{shrink: firstNameInputValue !== ''}}
-            />
+            <div className={styles.userInfo}>
+                <div>{firstName} {lastName}</div>
+                <div>{email}</div>
+                <div>A member since {memberSinceString}</div>
+            </div>
 
 
-            <TextField
-                className={styles.input}
-                label="Last Name"
-                variant="outlined"
-                value={lastNameInputValue}
-                disabled={disableInputs}
-                onChange={e => setLastNameInputValue(e.target.value)}
-                InputLabelProps={{shrink: lastNameInputValue !== ''}}
-            />
+            <div className={styles.inputs}>
+                <TextField
+                    className={styles.input}
+                    label="First Name"
+                    variant="outlined"
+                    value={firstNameInputValue}
+                    disabled={disableInputs}
+                    onChange={e => setFirstNameInputValue(e.target.value)}
+                    InputLabelProps={{shrink: firstNameInputValue !== ''}}
+                />
 
 
-            <TextField
-                className={styles.input}
-                label="Department"
-                variant="outlined"
-                select
-                value={departmentInputValue}
-                disabled={disableInputs}
-                onChange={onDepartmentChange}
-            >
-                {departments !== null ?
-
-                    departments.map((department) => (
-                        <MenuItem key={department} value={department}>
-                            {department}
-                        </MenuItem>
-                    )) : null
-                }
-            </TextField>
+                <TextField
+                    className={styles.input}
+                    label="Last Name"
+                    variant="outlined"
+                    value={lastNameInputValue}
+                    disabled={disableInputs}
+                    onChange={e => setLastNameInputValue(e.target.value)}
+                    InputLabelProps={{shrink: lastNameInputValue !== ''}}
+                />
 
 
-            <TextField
-                className={styles.input}
-                label="Position"
-                variant="outlined"
-                select
-                value={positionInputValue}
-                disabled={disableInputs}
-                onChange={onPositionChange}
-            >
-                {positions !== null ?
+                <TextField
+                    className={styles.input}
+                    label="Department"
+                    variant="outlined"
+                    select
+                    value={departmentInputValue}
+                    disabled={disableInputs}
+                    onChange={onDepartmentChange}
+                >
+                    {departments !== null ?
 
-                    positions.map((position) => (
-                        <MenuItem key={position} value={position}>
-                            {position}
-                        </MenuItem>
-                    )) : null
-                }
-            </TextField>
+                        departments.map((department) => (
+                            <MenuItem key={department} value={department}>
+                                {department}
+                            </MenuItem>
+                        )) : null
+                    }
+                </TextField>
 
 
-            {updateButton}
+                <TextField
+                    className={styles.input}
+                    label="Position"
+                    variant="outlined"
+                    select
+                    value={positionInputValue}
+                    disabled={disableInputs}
+                    onChange={onPositionChange}
+                >
+                    {positions !== null ?
+
+                        positions.map((position) => (
+                            <MenuItem key={position} value={position}>
+                                {position}
+                            </MenuItem>
+                        )) : null
+                    }
+                </TextField>
+                {updateButton}
+            </div>
+
 
             <input
                 type="file"
@@ -297,10 +303,10 @@ const UserProfile = () => {
                 onChange={onFileSelected}
             />
 
-            {uploadAvatarButton}
 
         </div>
-    );
+    )
+        ;
 };
 
 export default UserProfile;

@@ -153,8 +153,8 @@ export const UserCard = ({ user }: Props) => {
     const isCurrentUser = currentUserId === user.id;
 
     return (
-        <article className={styles.card}>
-            <div>
+        <div className={styles.container}>
+            <div className={styles.cell}>
                 <Avatar
                     size={40}
                     avatarReference={user.avatar ?? ""}
@@ -163,11 +163,11 @@ export const UserCard = ({ user }: Props) => {
                     email={user.email ?? ""}
                 />
             </div>
-            <div className={styles.firstName}>{user.first_name}</div>
-            <div className={styles.lastName}>{user.last_name}</div>
-            <div className={styles.email}>{user.email}</div>
-            <div className={styles.departmentName}>{user.department_name}</div>
-            <div className={styles.positionName}>{user.position_name}</div>
+            <div className={`${styles.firstName} ${styles.cell}`}>{user.first_name}</div>
+            <div className={`${styles.lastName} ${styles.cell}`}>{user.last_name}</div>
+            <div className={`${styles.email} ${styles.cell}`}>{user.email}</div>
+            <div className={`${styles.departmentName} ${styles.cell}`}>{user.department_name}</div>
+            <div className={`${styles.positionName} ${styles.cell}`}>{user.position_name}</div>
 
             <div className={styles.profile}>
                 {isCurrentUser ? (
@@ -223,6 +223,6 @@ export const UserCard = ({ user }: Props) => {
                     </IconButton>
                 )}
             </div>
-        </article>
+        </div>
     );
 };

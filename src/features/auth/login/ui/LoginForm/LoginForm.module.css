@@ -1,37 +1,30 @@
-
-.title {
-    font-size: 20px;
-    font-weight: 600;
-    text-align: center;
-}
-
 .input {
+    width: 560px;
+    height: 48px;
     padding: 10px 12px;
     border-radius: 8px;
     border: 1px solid #cbd5f5;
     font-size: 16px;
 }
 
-.button {
-    padding: 10px 12px;
-    border: none;
-    border-radius: 8px;
-    background-color: #2563eb;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.wrapper {
+.container {
+    font-family: "Roboto", sans-serif;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
+
+.text1 {
+    font-size: 34px;
+    margin-top: 222px;
+}
+
+.text2 {
+
+    font-size: 16px;
+}
+
+
+
 

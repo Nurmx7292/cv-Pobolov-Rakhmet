@@ -58,14 +58,7 @@ export const UserProfileNav = ({ isCollapsed }: UserProfileProps) => {
                     },
                 }}
             >
-                {/*<Avatar*/}
-                {/*    className={`${styles.avatar} ${isCollapsed ? styles.avatarCollapsed : ""}`}*/}
-                {/*    sx={{*/}
-                {/*        bgcolor: theme.palette.primary.main,*/}
-                {/*    }}*/}
-                {/*>*/}
-                {/*    T*/}
-                {/*</Avatar>*/}
+
                 <Avatar size={40}
                         avatarReference={avatar}
                         firstName={firstName}
