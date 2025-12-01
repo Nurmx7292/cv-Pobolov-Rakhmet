@@ -16,6 +16,7 @@ import Avatar from "@shared/components/avatar/ui/Avatar.tsx";
 import uploadImg from '../../../../shared/ui/assets/upload-icon.png'
 import {DELETE_AVATAR_MUTATION} from "@widgets/users/api/deleteAvatarMutation";
 
+
 const UserProfile = () => {
 
     const [updateUser] = useMutation(UPDATE_USER_MUTATION);
@@ -204,7 +205,7 @@ const UserProfile = () => {
     let disableInputs = true;
     if (+currentUserId === +userId) {
         updateButton = <Button variant="contained" onClick={onUpdateButtonClick} disabled={isUpdateDisabled} style={{width:'410px'}}>UPDATE</Button>;
-        deleteAvatarButton = <div onClick={onDeleteAvatarButtonClick}>X</div>
+        if(user.profile.avatar) deleteAvatarButton = <div onClick={onDeleteAvatarButtonClick}>X</div>
         disableInputs = false;
     }
 
