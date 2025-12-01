@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { UpdateSelectorButton } from "@shared/ui";
 import { UpdateProfileLanguageDialog } from "../UpdateProfileLanguageDialog/UpdateProfileLanguageDialog";
-import { LanguageProficiency } from "@features/languages";
+import type { ReactNode } from "react";
 
 interface UpdateProfileLanguageButtonProps {
     languageName: string;
     proficiency: string;
-    onSubmit: (proficiency: string) => void;
+    onSubmit: (proficiency: string) => Promise<void>;
     loading?: boolean;
+    error?: Error | null;
+    children: ReactNode;
 }
 
 export const UpdateProfileLanguageButton = ({
@@ -14,37 +16,28 @@ export const UpdateProfileLanguageButton = ({
     proficiency,
     onSubmit,
     loading = false,
+    error,
+    children,
 }: UpdateProfileLanguageButtonProps) => {
-    const [open, setOpen] = useState(false);
-
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-    const handleSubmit = (newProficiency: string) => {
-        onSubmit(newProficiency);
-        handleClose();
-    };
-
     return (
-        <>
-            <div
-                onClick={handleOpen}
-                style={{ cursor: "pointer", width: "100%" }}
-            >
-                <LanguageProficiency
+        <UpdateSelectorButton
+            renderDialog={({ open, onClose }) => (
+                <UpdateProfileLanguageDialog
+                    open={open}
+                    onClose={onClose}
                     languageName={languageName}
-                    proficiency={proficiency}
+                    initialProficiency={proficiency}
+                    onSubmit={async (newProficiency) => {
+                        await onSubmit(newProficiency);
+                        onClose();
+                    }}
+                    loading={loading}
+                    error={error}
                 />
-            </div>
-            <UpdateProfileLanguageDialog
-                open={open}
-                onClose={handleClose}
-                languageName={languageName}
-                initialProficiency={proficiency}
-                onSubmit={handleSubmit}
-                loading={loading}
-            />
-        </>
+            )}
+        >
+            {children}
+        </UpdateSelectorButton>
     );
 };
 

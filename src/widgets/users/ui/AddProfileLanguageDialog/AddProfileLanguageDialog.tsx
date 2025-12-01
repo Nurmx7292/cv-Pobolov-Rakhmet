@@ -13,6 +13,7 @@ interface AddProfileLanguageDialogProps {
     onSubmit: (name: string, proficiency: string) => void;
     existingLanguageNames?: string[];
     loading?: boolean;
+    error?: Error | null;
 }
 
 export const AddProfileLanguageDialog = ({
@@ -21,6 +22,7 @@ export const AddProfileLanguageDialog = ({
     onSubmit,
     existingLanguageNames = [],
     loading = false,
+    error,
 }: AddProfileLanguageDialogProps) => {
     const handleSubmit = (name: string, proficiency: string) => {
         onSubmit(name, proficiency);
@@ -57,6 +59,7 @@ export const AddProfileLanguageDialog = ({
                     onCancel={onClose}
                     existingLanguageNames={existingLanguageNames}
                     disabled={loading}
+                    error={error}
                 />
             </DialogContent>
             <DialogActions>
