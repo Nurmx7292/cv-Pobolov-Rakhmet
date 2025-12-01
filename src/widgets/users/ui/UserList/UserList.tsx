@@ -63,10 +63,6 @@ export const UserList = () => {
         setSortConfig({ key: newKey, direction });
     };
 
-    // const getSortIcon = (key) => {
-    //     if (sortConfig.key !== key) return null;
-    //     return sortConfig.direction === 'ascend' ? ' ▲' : ' ▼';
-    // };
     const getSortIcon = (key) => {
         if (sortConfig.key !== key) return null;
         return sortConfig.direction === 'ascend' ? (
@@ -140,45 +136,37 @@ export const UserList = () => {
         <div className={styles.container}>
             <div className={styles.employeeText}>Employees</div>
             <TextField
-                label="Search"
+                placeholder="Search"
                 variant="outlined"
                 value={searchString}
                 onChange={(e) => setSearchString(e.target.value)}
                 InputProps={{
                     startAdornment: (
-                        <InputAdornment position="start">
-                            <SearchIcon style={{ color: '#767676' }} />
+                        <InputAdornment position="start" style={{borderColor:'red'}}>
+                            <SearchIcon style={{ color: ' white' }} />
                         </InputAdornment>
                     ),
-                }}
-                InputLabelProps={{
-                    shrink: false,
-                    style: {
-                        display: searchString ? 'none' : 'block',
-                        top: '50%',
-                        left:'15%',
-                        transform: 'translateY(-50%)',
-                        fontWeight: 'bold'
-                    },
                 }}
                 sx={{
                     width: 320,
                     mb: 2,
                     "& .MuiOutlinedInput-root": {
                         height: 40,
+                        borderRadius: '120px',
                         "& fieldset": {
                             borderColor: "#A0A0A0",
-                            borderRadius: '120px',
                         },
                         "&:hover fieldset": {
                             borderColor: "#FFFFFF",
                         },
-                        "&.Mui-focused fieldset": {
+                        "&.Mui-focused, &.Mui-focused fieldset": {
                             borderColor: "#FF0000",
                         },
                     },
                 }}
             />
+
+
 
             <div className={styles.columnTitles}>
                 <div className={styles.firstName} onClick={() => requestSort('first_name')}>First Name {getSortIcon('first_name')}</div>

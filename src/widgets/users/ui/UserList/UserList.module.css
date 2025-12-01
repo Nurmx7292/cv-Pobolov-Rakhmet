@@ -15,8 +15,6 @@
     margin-bottom: 10px;
 }
 
-
-
 .columnTitles {
     display: grid;
     grid-template-areas: 'avatar fn ln email dn pn ';
