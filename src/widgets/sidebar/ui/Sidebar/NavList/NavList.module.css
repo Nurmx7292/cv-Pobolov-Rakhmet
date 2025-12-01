@@ -1,0 +1,32 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    margin-top: 2.75rem !important;
+    padding: 0;
+    overflow: auto;
+    max-height: calc(100vh - 12rem);
+}
+
+.listItem {
+    margin: 0;
+}
+
+.listItemButton {
+    width: 100%;
+}
+
+.listItemButtonCollapsed {
+    justify-content: center;
+}
+
+.listItemIcon {
+    justify-content: center;
+}
+
+.listItemText {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+

@@ -1,0 +1,71 @@
+.container {
+    display: grid;
+    height: 73px;
+    grid-template-areas: 'avatar fn ln email dn pn profile';
+    grid-template-columns: 1fr 2fr 2fr 5fr 2fr 3fr 1fr auto;
+    border-bottom: 1px solid dimgrey;
+    padding-left: 15px;
+    font-size: 14px;
+}
+
+.cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.profile {
+    grid-area: profile;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.firstName {
+    grid-area: fn;
+}
+
+.lastName {
+    grid-area: ln;
+}
+
+.email {
+    grid-area: email;
+}
+
+
+.departmentName {
+    grid-area: dn;
+}
+
+.positionName {
+    grid-area: pn;
+}
+
+.avatar {
+    grid-area: avatar;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: black;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.profile {
+    grid-area: profile;
+}
+
+.avatar p {
+    color: white;
+    padding-left: 20px;
+}

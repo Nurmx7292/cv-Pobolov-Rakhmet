@@ -1,0 +1,45 @@
+.userProfile {
+    display: grid;
+    grid-template-areas:
+      "avatar"
+      "info"
+      "inputs";
+
+    gap: 48px;
+    padding: 40px 16px;
+
+    max-width: 960px;
+    margin: 0 auto;
+    font-family: Roboto, sans-serif;
+}
+
+.avatar {
+    grid-area: avatar;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+
+.userInfo {
+    grid-area: info;
+    text-align: center;
+    color: white;
+}
+
+
+.inputs {
+    grid-area: inputs;
+    display: flex;
+    flex-wrap: wrap;
+    width: 850px;
+    justify-content: flex-end;
+    gap:30px;
+    margin-top: 20px;
+
+}
+
+.input {
+    width: 410px;
+}
