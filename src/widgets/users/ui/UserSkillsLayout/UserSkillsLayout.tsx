@@ -41,7 +41,7 @@ export const UserSkillsLayout = ({
 }: UserSkillsLayoutProps) => {
     return (
         <Stack spacing={3} padding={{ xs: 2, md: 4 }}>
-            <Typography variant="h4" component="h1">
+            <Typography variant="h6" component="h1">
                 Skills
             </Typography>
             <SkillsSection

@@ -14,6 +14,7 @@ interface UpdateProfileLanguageDialogProps {
     initialProficiency: string;
     onSubmit: (proficiency: string) => void;
     loading?: boolean;
+    error?: Error | null;
 }
 
 export const UpdateProfileLanguageDialog = ({
@@ -23,6 +24,7 @@ export const UpdateProfileLanguageDialog = ({
     initialProficiency,
     onSubmit,
     loading = false,
+    error,
 }: UpdateProfileLanguageDialogProps) => {
     const handleSubmit = (proficiency: string) => {
         onSubmit(proficiency);

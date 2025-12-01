@@ -27,7 +27,7 @@ export const CreateButton = ({
     return (
         <>
             <Button
-                variant="outlined"
+                variant={variant === "secondary" ? "text" : "outlined"}
                 startIcon={
                     <AddIcon
                         sx={(theme) => ({
