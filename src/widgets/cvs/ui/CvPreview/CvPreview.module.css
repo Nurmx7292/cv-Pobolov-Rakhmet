@@ -1,0 +1,108 @@
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .cv-preview-container {
+        max-width: 210mm;
+        margin: 0 auto;
+        padding: 20mm;
+        background: white;
+        color: black;
+    }
+
+    .cv-preview-container * {
+        color: black !important;
+        background: white !important;
+    }
+
+    .cv-preview-container .no-print {
+        display: none !important;
+    }
+
+    .cv-name {
+        font-size: 24pt;
+        font-weight: bold;
+        margin-bottom: 8pt;
+    }
+
+    .cv-user-name {
+        font-size: 18pt;
+        margin-bottom: 4pt;
+    }
+
+    .cv-position {
+        font-size: 14pt;
+        margin-bottom: 12pt;
+    }
+
+    .cv-education-title,
+    .cv-description-title,
+    .cv-skills-title,
+    .cv-projects-title,
+    .cv-languages-title {
+        font-size: 16pt;
+        font-weight: bold;
+        margin-top: 16pt;
+        margin-bottom: 8pt;
+        border-bottom: 1pt solid #000;
+        padding-bottom: 4pt;
+    }
+
+    .cv-education,
+    .cv-description-text {
+        font-size: 12pt;
+        line-height: 1.6;
+        margin-bottom: 12pt;
+    }
+
+    .cv-skills-category-title {
+        font-size: 14pt;
+        font-weight: bold;
+        margin-top: 12pt;
+        margin-bottom: 6pt;
+    }
+
+    .cv-project-item {
+        margin-bottom: 16pt;
+        page-break-inside: avoid;
+    }
+
+    .cv-project-name {
+        font-size: 14pt;
+        font-weight: bold;
+        margin-bottom: 4pt;
+    }
+
+    .cv-project-domain,
+    .cv-project-dates {
+        font-size: 11pt;
+        margin-bottom: 4pt;
+    }
+
+    .cv-project-description {
+        font-size: 12pt;
+        line-height: 1.6;
+        margin-bottom: 6pt;
+    }
+
+    .cv-project-roles-title,
+    .cv-project-responsibilities-title,
+    .cv-project-environment-title {
+        font-size: 11pt;
+        font-weight: bold;
+        margin-top: 4pt;
+    }
+
+    .cv-project-responsibilities-list {
+        font-size: 11pt;
+        line-height: 1.5;
+    }
+
+    @page {
+        size: A4;
+        margin: 0;
+    }
+}
+

@@ -20,4 +20,9 @@ export { AddCvProjectForm } from "./ui/AddCvProjectForm/AddCvProjectForm";
 export { UpdateCvProjectDialog } from "./ui/UpdateCvProjectDialog/UpdateCvProjectDialog";
 export { CvProjectForm } from "./ui/CvProjectForm/CvProjectForm";
 export { RemoveCvProjectDialog } from "./ui/RemoveCvProjectDialog/RemoveCvProjectDialog";
+export { CvDescription } from "./ui/CvDescription/CvDescription";
+export { ExportPdfButton } from "./ui/ExportPdfButton/ExportPdfButton";
+export { ProjectsDescription } from "./ui/ProjectsDescription/ProjectsDescription";
+export { ProfessionalSkills } from "./ui/ProfessionalSkills/ProfessionalSkills";
+export { CvLanguages } from "./ui/CvLanguages/CvLanguages";
 
