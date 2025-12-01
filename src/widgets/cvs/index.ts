@@ -25,4 +25,6 @@ export { ExportPdfButton } from "./ui/ExportPdfButton/ExportPdfButton";
 export { ProjectsDescription } from "./ui/ProjectsDescription/ProjectsDescription";
 export { ProfessionalSkills } from "./ui/ProfessionalSkills/ProfessionalSkills";
 export { CvLanguages } from "./ui/CvLanguages/CvLanguages";
+export { LabeledText } from "./ui/LabeledText/LabeledText";
+export { CvReviewSection } from "./ui/CvReviewSection/CvReviewSection";
 

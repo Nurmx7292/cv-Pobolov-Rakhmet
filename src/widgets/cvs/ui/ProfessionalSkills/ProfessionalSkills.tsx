@@ -1,25 +1,20 @@
 import { useMemo } from "react";
-import { Stack, Typography, Grid } from "@mui/material";
-import { SkillProgress } from "@features/skills";
+import { Stack, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, List, ListItem, Box } from "@mui/material";
 import { useSkillCategories } from "@entities/skill";
+import { useTheme } from "@mui/material/styles";
 import type { CvSkill } from "@entities/cv";
 
 interface ProfessionalSkillsProps {
     skills: CvSkill[];
 }
 
-const masteryEnumToNumber = (enumValue: string): number => {
-    const map: Record<string, number> = {
-        Novice: 20,
-        Advanced: 40,
-        Competent: 60,
-        Proficient: 80,
-        Expert: 100,
-    };
-    return map[enumValue] || 20;
-};
+interface SkillRow {
+    name: string;
+    skills: string[];
+}
 
 export const ProfessionalSkills = ({ skills }: ProfessionalSkillsProps) => {
+    const theme = useTheme();
     const { data: categoriesData } = useSkillCategories();
 
     const categoryMap = useMemo(() => {
@@ -33,55 +28,89 @@ export const ProfessionalSkills = ({ skills }: ProfessionalSkillsProps) => {
         return map;
     }, [categoriesData]);
 
-    const groupedSkills = useMemo(() => {
-        return skills.reduce<Record<string, CvSkill[]>>((acc, skill) => {
-            const categoryKey = skill.categoryId && categoryMap[skill.categoryId]
+    const skillChart = useMemo(() => {
+        return skills.reduce<Record<string, Array<{ name: string }>>>((acc, skill) => {
+            const categoryName = skill.categoryId && categoryMap[skill.categoryId]
                 ? categoryMap[skill.categoryId]
                 : "Other";
-            if (!acc[categoryKey]) {
-                acc[categoryKey] = [];
+            if (!acc[categoryName]) {
+                acc[categoryName] = [];
             }
-            acc[categoryKey].push(skill);
+            acc[categoryName].push({ name: skill.name });
             return acc;
         }, {});
     }, [skills, categoryMap]);
 
+    const rows: SkillRow[] = Object.entries(skillChart).map(([name, skills]) => ({
+        name,
+        skills: skills.map((s) => s.name),
+    }));
+
     if (skills.length === 0) {
-        return (
-            <Stack spacing={2} className="cv-skills">
-                <Typography variant="h6" component="h3" className="cv-skills-title">
-                    Professional Skills
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    No skills added yet.
-                </Typography>
-            </Stack>
-        );
+        return null;
     }
 
     return (
-        <Stack spacing={4} className="cv-skills">
-            <Typography variant="h6" component="h3" className="cv-skills-title">
-                Professional Skills
+        <Stack gap={4} sx={{ breakAfter: "page" }}>
+            <Typography variant="h3" sx={{ fontSize: "2.125rem" }}>
+                Professional skills
             </Typography>
-            {Object.entries(groupedSkills).map(([categoryName, categorySkills]) => (
-                <Stack spacing={2} key={categoryName} className="cv-skills-category">
-                    <Typography variant="subtitle1" component="h4" className="cv-skills-category-title">
-                        {categoryName}
-                    </Typography>
-                    <Grid container columns={{ xs: 1, sm: 2, lg: 3 }} spacing={2}>
-                        {categorySkills.map((skill) => (
-                            <Grid key={skill.name} size={1} className="cv-skill-item">
-                                <SkillProgress
-                                    skillName={skill.name}
-                                    mastery={masteryEnumToNumber(skill.mastery)}
-                                />
-                            </Grid>
+            <TableContainer>
+                <Table
+                    sx={{
+                        "& .MuiTableCell-head": {
+                            borderBottom: `1px solid ${theme.palette.primary.main}`,
+                            "@media print": {
+                                backgroundColor: "#fff",
+                                color: "#000",
+                            },
+                        },
+                        "& .MuiTableCell-body": {
+                            verticalAlign: "top",
+                            "@media print": {
+                                borderBottom: `1px solid ${theme.palette.secondary.main}`,
+                            },
+                        },
+                        "& .MuiListItem-gutters": {
+                            "@media print": {
+                                color: theme.palette.secondary.main,
+                            },
+                        },
+                    }}
+                >
+                    <TableHead>
+                        <TableRow>
+                            <TableCell sx={{ width: 260 }}>SKILLS</TableCell>
+                            <TableCell />
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map((row) => (
+                            <TableRow key={row.name}>
+                                <TableCell>
+                                    <Box
+                                        sx={{
+                                            color: theme.palette.primary.main,
+                                            fontWeight: 600,
+                                        }}
+                                    >
+                                        {row.name}
+                                    </Box>
+                                </TableCell>
+                                <TableCell>
+                                    <List sx={{ padding: 0 }}>
+                                        {row.skills.map((skillName) => (
+                                            <ListItem key={`${row.name}-${skillName}`} sx={{ pt: 0 }}>
+                                                {skillName}
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                </TableCell>
+                            </TableRow>
                         ))}
-                    </Grid>
-                </Stack>
-            ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Stack>
     );
 };
-

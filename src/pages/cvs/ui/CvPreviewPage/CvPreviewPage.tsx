@@ -1,35 +1,53 @@
-import { useOutletContext, useParams } from "react-router-dom";
-import { Stack, Box } from "@mui/material";
+import { useRef } from "react";
+import { useOutletContext } from "react-router-dom";
+import { Stack, Box, Typography } from "@mui/material";
 import {
     CvDescription,
     ProfessionalSkills,
     ProjectsDescription,
-    CvLanguages,
     ExportPdfButton,
     type CvPageContextValue,
 } from "@widgets/cvs";
-import "@widgets/cvs/ui/CvPreview/CvPreview.module.css";
 
 export const CvPreviewPage = () => {
     const { cv } = useOutletContext<CvPageContextValue>();
-    const { cvId } = useParams<{ cvId: string }>();
+    const ref = useRef<HTMLDivElement>(null);
 
-    if (!cv || !cvId) {
+    if (!cv) {
         return null;
     }
 
     return (
-        <Box className="cv-preview-container" sx={{ p: 3 }}>
-            <Stack spacing={4}>
-                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                    <ExportPdfButton cvId={cvId} />
-                </Box>
+        <Stack alignItems="center">
+            <Box
+                ref={ref}
+                maxWidth="900px"
+                width="100%"
+                px={3}
+                sx={{
+                    "@media print": {
+                        maxWidth: "unset",
+                        padding: 0,
+                    },
+                }}
+            >
+                <Stack component="header" direction="row" alignItems="start" sx={{ mb: 4 }}>
+                    <Stack flexGrow={1}>
+                        <Typography variant="h3" sx={{ fontSize: "2.125rem" }}>
+                            {cv.user?.profile.full_name}
+                        </Typography>
+                        {cv.user?.position_name && (
+                            <Typography variant="subtitle1" textTransform="uppercase">
+                                {cv.user.position_name}
+                            </Typography>
+                        )}
+                    </Stack>
+                    <ExportPdfButton elementRef={ref} fileName={cv.name} />
+                </Stack>
                 <CvDescription cv={cv} />
-                {cv.languages.length > 0 && <CvLanguages languages={cv.languages} />}
-                {cv.skills.length > 0 && <ProfessionalSkills skills={cv.skills} />}
-                {cv.projects.length > 0 && <ProjectsDescription projects={cv.projects} />}
-            </Stack>
-        </Box>
+                {cv.projects && cv.projects.length > 0 && <ProjectsDescription cv={cv} />}
+                {cv.skills && cv.skills.length > 0 && <ProfessionalSkills skills={cv.skills} />}
+            </Box>
+        </Stack>
     );
 };
-
