@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo, Fragment, useState } from "react";
 import {
     Table,
     TableBody,
@@ -6,11 +6,12 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Paper,
-    TextField,
     Typography,
     Box,
     CircularProgress,
+    TableSortLabel,
+    useMediaQuery,
+    useTheme,
 } from "@mui/material";
 import { useCvs, type CvListItem } from "@entities/cv";
 import { CvsActionMenu } from "../CvsActionMenu/CvsActionMenu";
@@ -20,12 +21,17 @@ type SortDirection = "asc" | "desc";
 
 interface CvsTableProps {
     userId?: string;
+    searchString?: string;
     onDelete?: (cv: CvListItem) => void;
 }
 
-export const CvsTable = ({ userId, onDelete }: CvsTableProps) => {
+const rowHeight = 72;
+
+export const CvsTable = ({ userId, searchString = "", onDelete }: CvsTableProps) => {
     const { data, loading, error } = useCvs();
-    const [searchString, setSearchString] = useState("");
+    const theme = useTheme();
+    const isMd = useMediaQuery(theme.breakpoints.up("md"));
+    const isSm = useMediaQuery(theme.breakpoints.up("sm"));
     const [sortConfig, setSortConfig] = useState<{
         key: SortKey;
         direction: SortDirection;
@@ -44,11 +50,6 @@ export const CvsTable = ({ userId, onDelete }: CvsTableProps) => {
             }
             return { key, direction: "asc" };
         });
-    };
-
-    const getSortIcon = (key: SortKey) => {
-        if (sortConfig.key !== key) return null;
-        return sortConfig.direction === "asc" ? " ▲" : " ▼";
     };
 
     const filteredAndSortedCvs = useMemo(() => {
@@ -127,50 +128,59 @@ export const CvsTable = ({ userId, onDelete }: CvsTableProps) => {
     }
 
     return (
-        <Box>
-            <TextField
-                fullWidth
-                placeholder="Search by name or description"
-                value={searchString}
-                onChange={(e) => setSearchString(e.target.value)}
-                sx={{ mb: 2 }}
-            />
-            <TableContainer component={Paper}>
-                <Table>
+        <Box sx={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
+            <TableContainer sx={{ overflowY: "auto", flex: 1 }}>
+                <Table size="medium" stickyHeader sx={{ opacity: loading ? 0.5 : 1 }}>
                     <TableHead>
                         <TableRow>
                             <TableCell
+                                style={{
+                                    flex: 1,
+                                    cursor: "pointer",
+                                    userSelect: "none",
+                                }}
                                 onClick={() => handleSort("name")}
-                                sx={{
-                                    cursor: "pointer",
-                                    userSelect: "none",
-                                    "&:hover": {
-                                        backgroundColor: "action.hover",
-                                    },
-                                }}
                             >
-                                Name{getSortIcon("name")}
+                                <TableSortLabel
+                                    active={sortConfig.key === "name"}
+                                    direction={sortConfig.key === "name" ? sortConfig.direction : "asc"}
+                                >
+                                    Name
+                                </TableSortLabel>
                             </TableCell>
-                            <TableCell>Education</TableCell>
-                            <TableCell
-                                onClick={() => handleSort("email")}
-                                sx={{
-                                    cursor: "pointer",
-                                    userSelect: "none",
-                                    "&:hover": {
-                                        backgroundColor: "action.hover",
-                                    },
-                                }}
-                            >
-                                Email{getSortIcon("email")}
-                            </TableCell>
-                            <TableCell align="right">Actions</TableCell>
+                            {isMd && (
+                                <TableCell
+                                    style={{
+                                        flex: 1,
+                                    }}
+                                >
+                                    Education
+                                </TableCell>
+                            )}
+                            {isSm && (
+                                <TableCell
+                                    style={{
+                                        flex: 1,
+                                        cursor: "pointer",
+                                        userSelect: "none",
+                                    }}
+                                    onClick={() => handleSort("email")}
+                                >
+                                    <TableSortLabel
+                                        active={sortConfig.key === "email"}
+                                        direction={sortConfig.key === "email" ? sortConfig.direction : "asc"}
+                                    >
+                                        Employee
+                                    </TableSortLabel>
+                                </TableCell>
+                            )}
+                            <TableCell style={{ width: 100 }}>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {filteredAndSortedCvs.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={4} align="center">
+                                <TableCell colSpan={isMd && isSm ? 4 : isSm ? 3 : 2} align="center">
                                     <Typography variant="body2" color="text.secondary">
                                         No CVs found
                                     </Typography>
@@ -178,19 +188,52 @@ export const CvsTable = ({ userId, onDelete }: CvsTableProps) => {
                             </TableRow>
                         ) : (
                             filteredAndSortedCvs.map((cv) => (
-                                <TableRow key={cv.id} hover>
-                                    <TableCell>{cv.name}</TableCell>
-                                    <TableCell>{cv.education}</TableCell>
-                                    <TableCell>{cv.user?.email || "-"}</TableCell>
-                                    <TableCell align="right">
-                                        {onDelete && (
-                                            <CvsActionMenu
-                                                cv={cv}
-                                                onDelete={onDelete}
-                                            />
+                                <Fragment key={cv.id}>
+                                    <TableRow sx={{ height: rowHeight }} hover>
+                                        <TableCell
+                                            sx={(theme) => ({
+                                                color: theme.palette.text.secondary,
+                                            })}
+                                        >
+                                            {cv.name}
+                                        </TableCell>
+                                        {isMd && (
+                                            <TableCell
+                                                sx={(theme) => ({
+                                                    color: theme.palette.text.secondary,
+                                                })}
+                                            >
+                                                {cv.education}
+                                            </TableCell>
                                         )}
-                                    </TableCell>
-                                </TableRow>
+                                        {isSm && (
+                                            <TableCell
+                                                sx={(theme) => ({
+                                                    color: theme.palette.text.secondary,
+                                                })}
+                                            >
+                                                {cv.user?.email || "-"}
+                                            </TableCell>
+                                        )}
+                                        <TableCell align="right">
+                                            {onDelete && (
+                                                <CvsActionMenu cv={cv} onDelete={onDelete} />
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+                                    {cv.description && (
+                                        <TableRow>
+                                            <TableCell
+                                                colSpan={isMd && isSm ? 4 : isSm ? 3 : 2}
+                                                sx={(theme) => ({
+                                                    color: theme.palette.text.secondary,
+                                                })}
+                                            >
+                                                {cv.description}
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </Fragment>
                             ))
                         )}
                     </TableBody>
@@ -199,4 +242,3 @@ export const CvsTable = ({ userId, onDelete }: CvsTableProps) => {
         </Box>
     );
 };
-

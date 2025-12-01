@@ -1,26 +1,18 @@
-import { useState, useMemo } from "react";
-import { Stack, Typography, Box } from "@mui/material";
-import { useCvs } from "@entities/cv";
-import { CvsTable, CreateCvDialog, DeleteCvDialog } from "@widgets/cvs";
+import { useState } from "react";
+import { Stack, Typography, Box, Breadcrumbs } from "@mui/material";
+import { CvsTable, DeleteCvDialog } from "@widgets/cvs";
 import { CreateCvButton } from "@widgets/cvs";
+import { Searchbar } from "@shared/ui";
 import { useNotification } from "@shared/lib/notifications";
 import type { CvListItem } from "@entities/cv";
 
 export const CvsPage = () => {
-    const [createDialogOpen, setCreateDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedCv, setSelectedCv] = useState<CvListItem | null>(null);
+    const [searchString, setSearchString] = useState("");
     const { showNotification, NotificationComponent } = useNotification();
 
     const currentUserId = localStorage.getItem("currentUserId");
-
-    const handleCreateClick = () => {
-        setCreateDialogOpen(true);
-    };
-
-    const handleCreateClose = () => {
-        setCreateDialogOpen(false);
-    };
 
     const handleDelete = (cv: CvListItem) => {
         setSelectedCv(cv);
@@ -53,20 +45,29 @@ export const CvsPage = () => {
 
     return (
         <>
-            <Stack spacing={3} sx={{ p: 3 }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h4" component="h1">
-                        CVs
-                    </Typography>
-                    <CreateCvButton userId={currentUserId} />
+            <Stack spacing={2} sx={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
+                <Stack spacing={0.5}>
+                    <Breadcrumbs>
+                        <Typography>CVs</Typography>
+                    </Breadcrumbs>
+                    <Stack
+                        direction="row"
+                        gap={2}
+                        sx={{
+                            paddingLeft: "1.25rem",
+                            paddingTop: "0.5rem",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Searchbar value={searchString} onChange={setSearchString} />
+                        <CreateCvButton userId={currentUserId} />
+                    </Stack>
                 </Stack>
-                <CvsTable onDelete={handleDelete} />
+                <Box sx={{ flex: 1, minHeight: 0, overflow: "auto", px: "1.25rem", pb: "2rem" }}>
+                    <CvsTable searchString={searchString} onDelete={handleDelete} />
+                </Box>
             </Stack>
-            <CreateCvDialog
-                open={createDialogOpen}
-                onClose={handleCreateClose}
-                userId={currentUserId}
-            />
             {selectedCv && (
                 <DeleteCvDialog
                     open={deleteDialogOpen}
@@ -79,4 +80,3 @@ export const CvsPage = () => {
         </>
     );
 };
-

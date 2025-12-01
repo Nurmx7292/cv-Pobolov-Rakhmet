@@ -9,7 +9,7 @@ export const CreateCvButton = ({ userId }: CreateCvButtonProps) => {
     return (
         <CreateButton
             entityName="CV"
-            actionName="Create"
+            actionName="+ CREATE"
             variant="primary"
             renderDialog={({ open, onClose }) => (
                 <CreateCvDialog open={open} onClose={onClose} userId={userId} />

@@ -24,26 +24,23 @@ export const CreateButton = ({
     return (
         <>
             <Button
-                startIcon={<AddIcon />}
-                variant={variant === "primary" ? "contained" : "text"}
-                color={variant === "primary" ? "primary" : "inherit"}
+                variant="outlined"
+                startIcon={
+                    <AddIcon
+                        sx={(theme) => ({
+                            color: variant === "primary" ? theme.palette.primary.main : "#767676",
+                        })}
+                    />
+                }
                 onClick={handleOpen}
                 sx={(theme) => ({
-                    borderRadius: 999,
                     textTransform: "uppercase",
-                    ...(variant === "secondary" && {
-                        color: theme.palette.text.secondary,
-                        "&:hover": {
-                            backgroundColor: "transparent",
-                            "& .MuiSvgIcon-root": {
-                                backgroundColor: theme.palette.action.hover,
-                                borderRadius: "50%",
-                                padding: "4px",
-                                marginLeft: "-4px",
-                                marginRight: "4px",
-                            },
-                        },
-                    }),
+                    ...(variant === "primary"
+                        ? {}
+                        : {
+                              color: "#767676",
+                              width: "15rem",
+                          }),
                 })}
             >
                 {actionName} {entityName}

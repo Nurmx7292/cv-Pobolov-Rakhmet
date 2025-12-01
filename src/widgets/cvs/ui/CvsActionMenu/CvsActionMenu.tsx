@@ -1,5 +1,5 @@
 import { useState, MouseEvent } from "react";
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { Button, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
 import type { CvListItem } from "@entities/cv";
@@ -35,12 +35,18 @@ export const CvsActionMenu = ({ cv, onDelete }: CvsActionMenuProps) => {
 
     return (
         <>
-            <IconButton
-                size="small"
+            <Button
+                sx={{
+                    textTransform: "none",
+                    fontWeight: "400",
+                    fontSize: "1rem",
+                    minWidth: "auto",
+                    padding: "4px",
+                }}
                 onClick={handleMenuOpen}
             >
                 <MoreVertIcon />
-            </IconButton>
+            </Button>
             <Menu
                 anchorEl={anchorEl}
                 open={isMenuOpen}
